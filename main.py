@@ -109,7 +109,7 @@ def run_arbitrage_cycle(
     # En yüksek indirim oranına sahip adaylara öncelik ver
     sorted_candidates = sorted(all_scraped, key=lambda x: x.total_discount_rate, reverse=True)
     live_akakce_queries = 0
-    max_live_akakce_per_cycle = 15
+    max_live_akakce_per_cycle = 30
 
     for prod in sorted_candidates:
         passed_pre, _ = ArbitrageEngine.check_pre_filters(prod)

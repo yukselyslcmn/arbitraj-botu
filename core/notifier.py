@@ -97,6 +97,7 @@ class TelegramNotifier:
 
         safe_product_url = html.escape(p.url, quote=True)
         safe_akakce_url = html.escape(p.akakce_search_url, quote=True)
+        safe_floor_source = html.escape(analysis.market_floor_source or "Akakçe / Piyasa")
 
         lines = [
             f"🚨 {header}",
@@ -113,7 +114,7 @@ class TelegramNotifier:
             ),
             "",
             "📊 <b>Piyasa Kıyaslaması:</b>",
-            f"  • 🌐 Diğer Sitelerde En Ucuz: <code>~{market_str}</code>",
+            f"  • 🌐 Diğer Sitelerde En Ucuz: <code>~{market_str}</code> <i>({safe_floor_source})</i>",
             f"  • 🎯 <b>Önerilen Satış Fiyatımız:</b> <b><code>{sell_str}</code></b>",
             "",
             "💰 <b>Tahmini Net Kâr Tablosu:</b>",

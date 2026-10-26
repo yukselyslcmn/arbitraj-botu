@@ -28,9 +28,13 @@ class ScrapedProduct:
     campaign_name: str
     sizes: list[NormalizedSizeInfo] = field(default_factory=list)
     total_stock: Optional[int] = None
+    verified_akakce_url: Optional[str] = None
 
     @property
     def akakce_search_url(self) -> str:
+        if self.verified_akakce_url:
+            return self.verified_akakce_url
+        # Eğer başlıkta model adı varsa ve SKU Akakçe'de bulunamayan tipteyse model adını kullan
         query = f"{self.brand} {self.display_sku}".strip()
         return f"https://www.akakce.com/arama/?q={quote_plus(query)}"
 
