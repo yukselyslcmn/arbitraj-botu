@@ -1,5 +1,7 @@
 import logging
 import random
+import re
+import threading
 import time
 from typing import Any, Optional
 from urllib.parse import urlparse
@@ -34,6 +36,15 @@ except ImportError:
     HAS_HTTPX = False
 
 import requests as std_requests
+
+# Loglarda Telegram Bot Token veya API anahtarı sızıntısını önleyen maskeleme deseni
+_SENSITIVE_TOKEN_PATTERN = re.compile(r"(bot\d{6,12}:)[A-Za-z0-9_\-]{20,}", re.IGNORECASE)
+
+
+def mask_sensitive(text: Any) -> str:
+    """Public repo loglarında token veya gizli anahtarların görünmesini engeller."""
+    raw = str(text or "")
+    return _SENSITIVE_TOKEN_PATTERN.sub(r"\1***MASKED***", raw)
 
 
 class HttpResponseWrapper:
@@ -70,8 +81,8 @@ class HttpResponseWrapper:
 class StealthHttpClient:
     """
     Cloudflare, Imperva ve Akinon WAF korumalarını aşmak için tasarlanmış,
-    TLS (JA3) parmak izi taklit yetenekli, oturum (cookie) ve Exponential Backoff
-    destekli HTTP istemcisi.
+    TLS (JA3) parmak izi taklit yetenekli, alan adı (domain) bazlı rate-limit,
+    oturum (cookie) ve Exponential Backoff destekli HTTP istemcisi.
     """
 
     CHROME_USER_AGENTS = [
@@ -107,7 +118,8 @@ class StealthHttpClient:
         self.max_retries = max_retries
         self.timeout = timeout
         self.proxy = proxy or config.HTTP_PROXY or None
-        self._last_request_ts: float = 0.0
+        self._host_last_ts: dict[str, float] = {}
+        self._throttle_lock = threading.Lock()
         self._user_agent: str = self.CHROME_USER_AGENTS[0]
 
         self._curl_session: Any = None
@@ -194,14 +206,23 @@ class StealthHttpClient:
         if proxies:
             self._std_session.proxies.update(proxies)
 
-    def _throttle(self) -> None:
-        """İstekler arası rastgele bekleme (rate-limit / WAF koruma)."""
-        elapsed = time.time() - self._last_request_ts
-        target_wait = random.uniform(self.min_delay, self.max_delay)
-        if self._last_request_ts > 0 and elapsed < target_wait:
-            sleep_duration = target_wait - elapsed
+    def _throttle(self, url: str) -> None:
+        """Alan adı (domain) bazında istekler arası rastgele bekleme (rate-limit / WAF koruma)."""
+        host = urlparse(url).netloc.lower() or "default"
+        sleep_duration = 0.0
+        with self._throttle_lock:
+            now = time.time()
+            last_ts = self._host_last_ts.get(host, 0.0)
+            target_wait = random.uniform(self.min_delay, self.max_delay)
+            elapsed = now - last_ts
+            if last_ts > 0 and elapsed < target_wait:
+                sleep_duration = target_wait - elapsed
+                self._host_last_ts[host] = now + sleep_duration
+            else:
+                self._host_last_ts[host] = now
+
+        if sleep_duration > 0:
             time.sleep(sleep_duration)
-        self._last_request_ts = time.time()
 
     def _execute_single_request(
         self,
@@ -215,6 +236,9 @@ class StealthHttpClient:
         engine_preference: Optional[str] = None,
     ) -> HttpResponseWrapper:
         parsed = urlparse(url)
+        if parsed.scheme not in ("http", "https"):
+            raise ValueError(f"Desteklenmeyen veya güvensiz URL şeması: {parsed.scheme}")
+
         origin_referer = f"{parsed.scheme}://{parsed.netloc}/"
         merged_headers = self._default_headers(referer=origin_referer, is_json=is_json)
         if headers:
@@ -308,12 +332,17 @@ class StealthHttpClient:
                     )
             except Exception as exc:
                 last_exc = exc
-                logger.debug("Motor %s ile %s isteği başarısız oldu: %s", engine, url, exc)
+                logger.debug(
+                    "Motor %s ile %s isteği başarısız oldu: %s",
+                    engine,
+                    mask_sensitive(url),
+                    mask_sensitive(exc),
+                )
                 continue
 
         if last_exc:
             raise last_exc
-        raise RuntimeError(f"Hiçbir HTTP motoru isteği tamamlayamadı: {url}")
+        raise RuntimeError(f"Hiçbir HTTP motoru isteği tamamlayamadı: {mask_sensitive(url)}")
 
     def request(
         self,
@@ -331,9 +360,10 @@ class StealthHttpClient:
         403 / 429 / 503 durumlarında motor değiştirerek ve artan bekleme süreleriyle tekrar dener.
         """
         if not skip_throttle:
-            self._throttle()
+            self._throttle(url)
 
         fallback_engines = ["curl_cffi", "cloudscraper", "httpx"]
+        safe_url = mask_sensitive(url)
 
         for attempt in range(1, self.max_retries + 1):
             engine_pref = fallback_engines[(attempt - 1) % len(fallback_engines)]
@@ -349,46 +379,46 @@ class StealthHttpClient:
                     engine_preference=engine_pref if attempt > 1 else "curl_cffi",
                 )
 
-                # Başarılı yanıt
                 if response.status_code in (200, 201):
                     return response
 
-                # 404 Not Found için yeniden denemeye gerek yok
                 if response.status_code == 404:
-                    logger.debug("404 Bulunamadı: %s", url)
+                    logger.debug("404 Bulunamadı: %s", safe_url)
                     return response
 
-                # WAF / Rate Limit / Sunucu Hataları (403, 429, 500, 502, 503, 504)
                 if response.status_code in (403, 429, 500, 502, 503, 504):
-                    backoff = (2 ** attempt) + random.uniform(0.8, 2.2)
-                    logger.warning(
-                        "HTTP %d alındı (%s) [Deneme %d/%d]. %.1f sn bekleniyor...",
-                        response.status_code,
-                        url,
-                        attempt,
-                        self.max_retries,
-                        backoff,
-                    )
-                    self._user_agent = random.choice(self.CHROME_USER_AGENTS)
-                    time.sleep(backoff)
-                    continue
+                    if attempt < self.max_retries:
+                        backoff = (1.5 ** attempt) + random.uniform(0.4, 1.2)
+                        logger.warning(
+                            "HTTP %d alındı (%s) [Deneme %d/%d]. %.1f sn bekleniyor...",
+                            response.status_code,
+                            safe_url,
+                            attempt,
+                            self.max_retries,
+                            backoff,
+                        )
+                        self._user_agent = random.choice(self.CHROME_USER_AGENTS)
+                        time.sleep(backoff)
+                        continue
 
                 return response
 
             except Exception as exc:
-                backoff = (2 ** attempt) + random.uniform(0.5, 1.8)
-                logger.warning(
-                    "İstek hatası (%s) [Deneme %d/%d]: %s. %.1f sn bekleniyor...",
-                    url,
-                    attempt,
-                    self.max_retries,
-                    exc,
-                    backoff,
-                )
                 if attempt < self.max_retries:
+                    backoff = (1.5 ** attempt) + random.uniform(0.3, 1.0)
+                    logger.warning(
+                        "İstek hatası (%s) [Deneme %d/%d]: %s. %.1f sn bekleniyor...",
+                        safe_url,
+                        attempt,
+                        self.max_retries,
+                        mask_sensitive(exc),
+                        backoff,
+                    )
                     time.sleep(backoff)
+                else:
+                    logger.debug("Son deneme hatası (%s): %s", safe_url, mask_sensitive(exc))
 
-        logger.error("Maksimum deneme sayısına ulaşıldı, istek başarısız: %s", url)
+        logger.error("Maksimum deneme sayısına ulaşıldı, istek başarısız: %s", safe_url)
         return None
 
     def get(
@@ -413,14 +443,15 @@ class StealthHttpClient:
         url: str,
         params: Optional[dict[str, Any]] = None,
         headers: Optional[dict[str, str]] = None,
+        skip_throttle: bool = False,
     ) -> Optional[Any]:
-        resp = self.get(url=url, params=params, headers=headers, is_json=True)
+        resp = self.get(url=url, params=params, headers=headers, is_json=True, skip_throttle=skip_throttle)
         if resp is None or not resp.ok:
             return None
         try:
             return resp.json()
         except Exception as exc:
-            logger.debug("JSON ayrıştırma hatası (%s): %s", url, exc)
+            logger.debug("JSON ayrıştırma hatası (%s): %s", mask_sensitive(url), mask_sensitive(exc))
             return None
 
     def post(

@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import re
 from typing import Optional
 from urllib.parse import quote_plus
 
@@ -86,12 +87,15 @@ class ArbitrageEngine:
     def is_brand_allowed(brand: str, title: str = "") -> Optional[str]:
         """
         Ürün markasının izin verilen 18 orijinal markadan biri olup olmadığını kontrol eder.
+        Kelime sınırı (word boundary) kullanarak 'Gant' -> 'Elegant' gibi yanlış eşleşmeleri önler.
         Eşleşirse standart marka adını, eşleşmezse None döndürür.
         """
-        combined = f"{brand} {title}".lower()
+        brand_low = (brand or "").lower().strip()
+        title_low = (title or "").lower().strip()
+        combined = f"{brand_low} {title_low}".strip()
         for allowed in config.ALLOWED_BRANDS:
             allowed_low = allowed.lower()
-            if allowed_low in combined:
+            if brand_low == allowed_low or re.search(rf"\b{re.escape(allowed_low)}\b", combined):
                 return allowed
         return None
 

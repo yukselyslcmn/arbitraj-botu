@@ -192,12 +192,12 @@ DOLAP_WITHHOLDING_TAX_RATE: float = 0.01
 # ==============================================================================
 # 5. AĞ, KAZIYICI (SCRAPER) VE HEDEF KATEGORİ URL YAPILANDIRMASI
 # ==============================================================================
-REQUEST_TIMEOUT: int = _get_int("REQUEST_TIMEOUT", 25)
-MAX_RETRIES: int = _get_int("MAX_RETRIES", 3)
-MIN_DELAY_SECONDS: float = _get_float("MIN_DELAY_SECONDS", 1.5)
-MAX_DELAY_SECONDS: float = _get_float("MAX_DELAY_SECONDS", 3.5)
-MAX_PAGES_PER_CATEGORY: int = _get_int("MAX_PAGES_PER_CATEGORY", 6)
-MAX_WORKERS: int = _get_int("MAX_WORKERS", 4)
+REQUEST_TIMEOUT: int = _get_int("REQUEST_TIMEOUT", 20)
+MAX_RETRIES: int = _get_int("MAX_RETRIES", 2)
+MIN_DELAY_SECONDS: float = _get_float("MIN_DELAY_SECONDS", 0.35)
+MAX_DELAY_SECONDS: float = _get_float("MAX_DELAY_SECONDS", 0.85)
+MAX_PAGES_PER_CATEGORY: int = _get_int("MAX_PAGES_PER_CATEGORY", 4)
+MAX_WORKERS: int = _get_int("MAX_WORKERS", 5)
 LOOP_INTERVAL_SECONDS: int = _get_int("LOOP_INTERVAL_SECONDS", 900)
 HTTP_PROXY: str = os.getenv("HTTP_PROXY", "").strip()
 
@@ -209,8 +209,6 @@ SITE_TARGETS: dict[str, dict] = {
         "categories": [
             {"url": "https://www.occasion.com.tr/erkek-ayakkabi/", "gender": "Erkek"},
             {"url": "https://www.occasion.com.tr/kadin-ayakkabi/", "gender": "Kadın"},
-            {"url": "https://www.occasion.com.tr/erkek-sneaker/", "gender": "Erkek"},
-            {"url": "https://www.occasion.com.tr/kadin-sneaker/", "gender": "Kadın"},
         ],
     },
     "superstep": {
@@ -219,14 +217,19 @@ SITE_TARGETS: dict[str, dict] = {
         "categories": [
             {"url": "https://www.superstep.com.tr/indirim-erkek-ayakkabi/", "gender": "Erkek"},
             {"url": "https://www.superstep.com.tr/indirim-kadin-ayakkabi/", "gender": "Kadın"},
-            {"url": "https://www.superstep.com.tr/erkek-sneaker/", "gender": "Erkek"},
-            {"url": "https://www.superstep.com.tr/kadin-sneaker/", "gender": "Kadın"},
         ],
     },
     "instreet": {
         "name": "InStreet",
         "base_url": "https://www.instreet.com.tr",
         "categories": [
+            {
+                "url": (
+                    "https://www.instreet.com.tr/sneaker"
+                    "?marka=nike,adidas,puma,new-balance,skechers,vans,converse,asics,lacoste,salomon"
+                ),
+                "gender": "Unisex",
+            },
             {
                 "url": (
                     "https://www.instreet.com.tr/spor-ayakkabi"
@@ -241,31 +244,23 @@ SITE_TARGETS: dict[str, dict] = {
                 ),
                 "gender": "Kadın",
             },
-            {
-                "url": (
-                    "https://www.instreet.com.tr/sneaker"
-                    "?marka=nike,adidas,puma,new-balance,skechers,vans,converse,asics,lacoste,salomon"
-                ),
-                "gender": "Unisex",
-            },
         ],
     },
     "barcin": {
         "name": "Barçın",
         "base_url": "https://www.barcin.com",
         "categories": [
+            {"url": "https://www.barcin.com/outlet/", "gender": "Unisex"},
             {"url": "https://www.barcin.com/erkek-spor-ayakkabi", "gender": "Erkek"},
             {"url": "https://www.barcin.com/kadin-spor-ayakkabi", "gender": "Kadın"},
-            {"url": "https://www.barcin.com/outlet-ayakkabi", "gender": "Unisex"},
         ],
     },
     "korayspor": {
         "name": "Korayspor",
         "base_url": "https://www.korayspor.com",
         "categories": [
-            {"url": "https://www.korayspor.com/indirimli-erkek-ayakkabi/", "gender": "Erkek"},
-            {"url": "https://www.korayspor.com/indirimli-kadin-ayakkabi/", "gender": "Kadın"},
-            {"url": "https://www.korayspor.com/erkek-spor-ayakkabi/", "gender": "Erkek"},
+            {"url": "https://www.korayspor.com/erkek-indirimli-urunler/", "gender": "Erkek"},
+            {"url": "https://www.korayspor.com/kadin-indirimli-urunler/", "gender": "Kadın"},
         ],
     },
 }

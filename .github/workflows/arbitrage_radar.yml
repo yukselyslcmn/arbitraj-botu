@@ -24,10 +24,14 @@ concurrency:
 permissions:
   contents: write
 
+env:
+  # GitHub Actions Node.js 20 -> Node.js 24 geçiş uyarısını (deprecation warning) giderir
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   scan-and-notify:
-    runs-on: ubuntu-latest
-    timeout-minutes: 12
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
 
     steps:
       - name: Checkout Repository
@@ -55,9 +59,11 @@ jobs:
           MIN_TOTAL_DISCOUNT_RATE: ${{ vars.MIN_TOTAL_DISCOUNT_RATE || '40' }}
           MIN_NET_PROFIT_TL: ${{ vars.MIN_NET_PROFIT_TL || '550' }}
           MIN_ROI_PERCENT: ${{ vars.MIN_ROI_PERCENT || '30' }}
+          INPUT_SITES: ${{ github.event.inputs.sites }}
+          INPUT_MAX_PAGES: ${{ github.event.inputs.max_pages }}
         run: |
-          SITES="${{ github.event.inputs.sites || 'occasion,superstep,instreet,barcin,korayspor' }}"
-          MAX_PAGES="${{ github.event.inputs.max_pages || '4' }}"
+          SITES="${INPUT_SITES:-occasion,superstep,instreet,barcin,korayspor}"
+          MAX_PAGES="${INPUT_MAX_PAGES:-4}"
           python main.py --once --sites "$SITES" --max-pages "$MAX_PAGES"
 
       - name: Sync & Commit Updated Product State (data/products_state.json)

@@ -15,6 +15,7 @@ from core.notifier import TelegramNotifier
 from core.parsers import BasketPromotionParser, SizeNormalizer, SKUNormalizer
 from core.storage import StateStorage
 from scrapers.akinon_scraper import AkinonScraper
+from scrapers.barcin_koray_scraper import BarcinKorayScraper
 from scrapers.instreet_scraper import InStreetScraper
 from scrapers.market_comparator import MarketComparator
 
@@ -161,27 +162,29 @@ def main() -> None:
     verify_core_parsers()
 
     print("=" * 95)
-    print("2. CANLI E-TİCARET KAZIMA TESTİ (occasion.com.tr, superstep.com.tr, instreet.com.tr)")
+    print("2. CANLI E-TİCARET KAZIMA TESTİ (5 YETKİLİ DİSTRİBÜTÖR SİTE)")
+    print("   Siteler: Occasion, SuperStep, InStreet, Barçın, Korayspor")
     print("   Not: Telegram'a bildirim gönderilmez, tüm veriler gerçek HTTP istekleriyle çekilir.")
     print("=" * 95)
 
-    client = StealthHttpClient(min_delay=0.6, max_delay=1.4)
+    client = StealthHttpClient(min_delay=0.35, max_delay=0.75)
     storage = StateStorage()
-    # Canlı piyasa karşılaştırması (Test hızı için yerel çapraz site + referans/Akakçe)
     comparator = MarketComparator(http_client=client, storage=storage)
 
     site_scrapers = [
         ("Occasion (occasion.com.tr)", AkinonScraper(site_key="occasion", http_client=client)),
         ("SuperStep (superstep.com.tr)", AkinonScraper(site_key="superstep", http_client=client)),
         ("InStreet (instreet.com.tr)", InStreetScraper(site_key="instreet", http_client=client)),
+        ("Barçın (barcin.com)", BarcinKorayScraper(site_key="barcin", http_client=client)),
+        ("Korayspor (korayspor.com)", BarcinKorayScraper(site_key="korayspor", http_client=client)),
     ]
 
     collected_by_site: dict[str, list[ScrapedProduct]] = {}
     all_products: list[ScrapedProduct] = []
 
     for label, scraper in site_scrapers:
-        print(f"\n>>> {label} taranıyor (İlk 5 hedef markalı ve numaralı ürün çekiliyor)...")
-        items = scraper.scrape_all(max_pages_per_category=1, max_products=5)
+        print(f"\n>>> {label} taranıyor (İlk 3 hedef markalı ve numaralı ürün çekiliyor)...")
+        items = scraper.scrape_all(max_pages_per_category=1, max_products=3)
         collected_by_site[label] = items
         all_products.extend(items)
 

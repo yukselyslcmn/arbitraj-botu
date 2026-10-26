@@ -41,6 +41,8 @@ class BaseScraper(ABC):
         cleaned = str(path_or_url).strip()
         if cleaned.startswith("//"):
             return f"https:{cleaned}"
+        if cleaned.lower().startswith(("javascript:", "data:", "file:", "vbscript:")):
+            return self.base_url
         if cleaned.startswith("http://") or cleaned.startswith("https://"):
             return cleaned
         return urljoin(self.base_url + "/", cleaned.lstrip("/"))

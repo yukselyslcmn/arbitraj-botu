@@ -106,14 +106,27 @@ def run_arbitrage_cycle(
     skipped_first_run_count = 0
 
     # 2. Ön filtreleri geçen ürünler için piyasa dip fiyatını sorgula ve birim ekonomisini hesapla
-    for prod in all_scraped:
+    # En yüksek indirim oranına sahip adaylara öncelik ver
+    sorted_candidates = sorted(all_scraped, key=lambda x: x.total_discount_rate, reverse=True)
+    live_akakce_queries = 0
+    max_live_akakce_per_cycle = 15
+
+    for prod in sorted_candidates:
         passed_pre, _ = ArbitrageEngine.check_pre_filters(prod)
         if not passed_pre:
             continue
 
+        # İlk çalışma koruması veya daha önce aynı fiyattan bildirilmiş ürünlerde
+        # gereksiz canlı Akakçe HTTP trafiği oluşturma
+        should_send_preview, preview_type = storage.should_notify(prod)
+        use_live_akakce = should_send_preview and (live_akakce_queries < max_live_akakce_per_cycle)
+        if use_live_akakce:
+            live_akakce_queries += 1
+
         market_floor, floor_source = comparator.get_market_floor_price(
             product=prod,
             all_current_run_products=all_scraped,
+            allow_live_query=use_live_akakce,
         )
         analysis = ArbitrageEngine.evaluate(
             product=prod,
@@ -126,16 +139,15 @@ def run_arbitrage_cycle(
 
         profitable_opportunities.append(analysis)
 
-        should_send, notif_type = storage.should_notify(prod)
-        if not should_send:
-            if notif_type == "SKIP_FIRST_RUN":
+        if not should_send_preview:
+            if preview_type == "SKIP_FIRST_RUN":
                 skipped_first_run_count += 1
             continue
 
         if dry_run:
             logger.info(
                 "[DRY-RUN] Fırsat Yakalandı (%s): %s - %s | Alış: %.0f TL | Gardrops Net: +%.0f TL (%%%0.f ROI) | Puan: %d/100",
-                notif_type,
+                preview_type,
                 prod.site_name,
                 prod.display_sku,
                 prod.net_basket_price,
@@ -143,16 +155,16 @@ def run_arbitrage_cycle(
                 analysis.roi_gardrops,
                 analysis.arbitrage_score,
             )
-            storage.mark_notified(prod)
             notified_count += 1
         else:
-            sent_ok = notifier.send_opportunity(analysis, notification_type=notif_type)
+            sent_ok = notifier.send_opportunity(analysis, notification_type=preview_type)
             if sent_ok or not notifier.is_configured:
                 storage.mark_notified(prod)
                 notified_count += 1
 
-    # 3. Durum dosyasını (data/products_state.json) diske kaydet
-    storage.save()
+    # 3. Durum dosyasını (data/products_state.json) diske kaydet (Dry-run değilse)
+    if not dry_run:
+        storage.save()
     comparator.client.close()
 
     elapsed = time.time() - start_ts

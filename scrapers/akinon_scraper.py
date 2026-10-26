@@ -1,14 +1,14 @@
 import json
 import logging
-import re
 from typing import Any, Optional
-from urllib.parse import urlencode, urlparse, urlunparse, parse_qsl
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from bs4 import BeautifulSoup
 
 import config
 from core.arbitrage_engine import ArbitrageEngine, ScrapedProduct
 from core.http_client import StealthHttpClient
+from core.parsers import BasketPromotionParser, SKUNormalizer
 from scrapers.base_scraper import BaseScraper
 
 logger = logging.getLogger("arbitraj.scraper.akinon")
@@ -16,9 +16,9 @@ logger = logging.getLogger("arbitraj.scraper.akinon")
 
 class AkinonScraper(BaseScraper):
     """
-    Akinon altyapısını kullanan yetkili distribütör siteleri (Occasion, SuperStep vb.)
+    Akinon altyapısını kullanan yetkili distribütör siteleri (Occasion, SuperStep, Barçın vb.)
     hem `?format=json&page=X` JSON uç noktasından hem de HTML / `__NEXT_DATA__` /
-    `window.universal_variable` yapılarından ayrıştıran kazıyıcı.
+    `window.universal_variable` yapılarından ayrıştıran yüksek performanslı kazıyıcı.
     """
 
     def __init__(
@@ -29,6 +29,7 @@ class AkinonScraper(BaseScraper):
     ) -> None:
         super().__init__(site_key=site_key, http_client=http_client)
         self.enrich_missing_sizes = enrich_missing_sizes
+        self._seen_canonical_skus: set[str] = set()
 
     @staticmethod
     def _build_paginated_url(base_category_url: str, page: int, as_json: bool = True) -> str:
@@ -43,7 +44,6 @@ class AkinonScraper(BaseScraper):
 
     @staticmethod
     def _extract_image_from_akinon_dict(item: dict[str, Any]) -> str:
-        # 1. productimage_set listesi
         img_set = item.get("productimage_set") or item.get("images") or item.get("media")
         if isinstance(img_set, list) and img_set:
             first = img_set[0]
@@ -52,7 +52,6 @@ class AkinonScraper(BaseScraper):
             if isinstance(first, str):
                 return first
 
-        # 2. Doğrudan image alanları
         for key in ("image", "image_url", "thumbnail", "picture", "first_image"):
             val = item.get(key)
             if isinstance(val, str) and val.strip():
@@ -61,14 +60,55 @@ class AkinonScraper(BaseScraper):
                 return str(val.get("url") or val.get("image") or "")
         return ""
 
-    @staticmethod
-    def _extract_sizes_from_akinon_dict(item: dict[str, Any]) -> tuple[list[dict[str, Any]], Optional[int]]:
-        """Akinon ürün JSON nesnesinden bedenleri ve stok miktarlarını çıkarır."""
+    @classmethod
+    def _extract_size_from_product_attrs(cls, prod_dict: dict[str, Any]) -> Optional[str]:
+        """Akinon ürün sözlüğünün attributes ve attributes_kwargs alanlarından TR/EU bedenini çeker."""
+        attrs = prod_dict.get("attributes") or {}
+        attrs_kw = prod_dict.get("attributes_kwargs") or {}
+
+        for key in (
+            "filterable_size",
+            "integration_trBeden",
+            "integration_size",
+            "size",
+            "beden",
+            "filter_size",
+            "erp_size",
+            "numara",
+            "integration_beden",
+        ):
+            val = attrs.get(key) if isinstance(attrs, dict) else None
+            if isinstance(val, dict):
+                val = val.get("label") or val.get("value")
+            if not val and isinstance(attrs_kw, dict):
+                kw_entry = attrs_kw.get(key)
+                if isinstance(kw_entry, dict):
+                    val = kw_entry.get("label") or kw_entry.get("value")
+            if val is not None and str(val).strip():
+                val_str = str(val).strip()
+                # UK numarası ('4', '4,5', '9') yerine EU/TR numarası (35-48) olduğundan emin ol
+                if key == "integration_beden" and not any(
+                    val_str.startswith(prefix) for prefix in ("35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48")
+                ):
+                    continue
+                return val_str
+        return None
+
+    @classmethod
+    def _extract_sizes_from_akinon_dict(
+        cls,
+        item: dict[str, Any],
+        include_single_attr_size: bool = False,
+    ) -> tuple[list[dict[str, Any]], Optional[int]]:
+        """
+        Akinon ürün veya detay JSON nesnesinden bedenleri ve stok miktarlarını çıkarır.
+        Hem `variants -> options -> product` (Akinon standart detay yapısı) hem de düz
+        varyant listelerini destekler.
+        """
         raw_sizes: list[dict[str, Any]] = []
         total_stock = 0
         has_stock_data = False
 
-        # 1. variants / children / simple_products / stock_list
         variants = (
             item.get("variants")
             or item.get("variant_set")
@@ -79,70 +119,105 @@ class AkinonScraper(BaseScraper):
         )
         if isinstance(variants, list):
             for var in variants:
-                if isinstance(var, dict):
-                    in_stock = var.get("in_stock", var.get("is_available", var.get("available", True)))
-                    stock_qty = var.get("stock") or var.get("quantity") or var.get("stock_count")
-                    if stock_qty is not None and str(stock_qty).isdigit():
-                        qty_int = int(stock_qty)
-                        has_stock_data = True
-                        if qty_int <= 0:
-                            continue
-                        total_stock += qty_int
-                    elif in_stock is False:
+                if not isinstance(var, dict):
+                    if isinstance(var, (str, int, float)):
+                        raw_sizes.append({"size": str(var), "available": True})
+                    continue
+
+                # Durum A: Akinon detay sayfası `variants` yapısı:
+                # [{'attribute_key': 'integration_beden' | 'integration_size', 'attribute_name': 'Beden', 'options': [...]}]
+                attr_key = str(var.get("attribute_key") or "").lower()
+                attr_name = str(var.get("attribute_name") or "").lower()
+                if isinstance(var.get("options"), list):
+                    if any(w in attr_key or w in attr_name for w in ("beden", "size", "numara", "olcu")):
+                        for opt in var["options"]:
+                            if not isinstance(opt, dict):
+                                continue
+                            in_stock = opt.get("in_stock", True)
+                            is_selectable = opt.get("is_selectable", True)
+                            if in_stock is False or is_selectable is False:
+                                continue
+
+                            opt_prod = opt.get("product") if isinstance(opt.get("product"), dict) else {}
+                            if opt_prod.get("in_stock") is False:
+                                continue
+
+                            stock_val = opt_prod.get("stock") if opt_prod else opt.get("stock")
+                            qty_int: Optional[int] = None
+                            if stock_val is not None and str(stock_val).isdigit():
+                                qty_int = int(stock_val)
+                                if qty_int <= 0:
+                                    continue
+                                has_stock_data = True
+                                total_stock += qty_int
+
+                            size_val = (
+                                cls._extract_size_from_product_attrs(opt_prod)
+                                if opt_prod
+                                else None
+                            ) or opt.get("label") or opt.get("value")
+
+                            if size_val:
+                                raw_sizes.append(
+                                    {
+                                        "size": str(size_val),
+                                        "stock": qty_int,
+                                        "available": True,
+                                    }
+                                )
+                    continue
+
+                # Durum B: Doğrudan varyant nesnesi
+                in_stock = var.get("in_stock", var.get("is_available", var.get("available", True)))
+                stock_qty = var.get("stock") or var.get("quantity") or var.get("stock_count")
+                if stock_qty is not None and str(stock_qty).isdigit():
+                    qty_int = int(stock_qty)
+                    if qty_int <= 0:
                         continue
-                    else:
-                        qty_int = None
+                    has_stock_data = True
+                    total_stock += qty_int
+                elif in_stock is False:
+                    continue
+                else:
+                    qty_int = None
 
-                    # Beden bilgisini attributes veya doğrudan alanlardan çek
-                    attrs = var.get("attributes") or var.get("attribute_map") or {}
-                    size_val = (
-                        var.get("size")
-                        or var.get("value")
-                        or var.get("name")
-                        or var.get("label")
-                        or var.get("option")
-                        or (attrs.get("size") if isinstance(attrs, dict) else None)
-                        or (attrs.get("beden") if isinstance(attrs, dict) else None)
-                        or (attrs.get("filter_size") if isinstance(attrs, dict) else None)
-                        or (attrs.get("integration_size") if isinstance(attrs, dict) else None)
+                size_val = (
+                    cls._extract_size_from_product_attrs(var)
+                    or var.get("size")
+                    or var.get("value")
+                    or var.get("name")
+                    or var.get("label")
+                    or var.get("option")
+                )
+                if isinstance(size_val, dict):
+                    size_val = size_val.get("value") or size_val.get("label") or size_val.get("name")
+
+                if size_val:
+                    raw_sizes.append(
+                        {
+                            "size": str(size_val),
+                            "stock": qty_int,
+                            "available": True,
+                        }
                     )
-                    if isinstance(size_val, dict):
-                        size_val = size_val.get("value") or size_val.get("label") or size_val.get("name")
 
-                    if size_val:
-                        raw_sizes.append(
-                            {
-                                "size": str(size_val),
-                                "stock": qty_int,
-                                "available": True,
-                            }
-                        )
-                elif isinstance(var, (str, int, float)):
-                    raw_sizes.append({"size": str(var), "available": True})
-
-        # 2. Tekil ürün nesnesinin kendi attribute'unda beden varsa (Akinon'da bazen her beden ayrı ürün/varyant olarak gelir)
-        attrs = item.get("attributes") or item.get(" attributes_kwargs") or {}
-        if isinstance(attrs, dict):
-            single_size = (
-                attrs.get("size")
-                or attrs.get("beden")
-                or attrs.get("integration_size")
-                or attrs.get("filter_size")
-                or attrs.get("erp_size")
-                or attrs.get("numara")
-            )
-            if isinstance(single_size, dict):
-                single_size = single_size.get("value") or single_size.get("label")
-            if single_size and item.get("in_stock", True) is not False:
+        # Tekil ürün nesnesinin kendi attribute'unda beden varsa
+        if include_single_attr_size and not raw_sizes and item.get("in_stock", True) is not False:
+            single_size = cls._extract_size_from_product_attrs(item)
+            if single_size:
                 stock_val = item.get("stock")
                 qty = int(stock_val) if stock_val is not None and str(stock_val).isdigit() else None
-                raw_sizes.append({"size": str(single_size), "stock": qty, "available": True})
+                if qty is None or qty > 0:
+                    raw_sizes.append({"size": single_size, "stock": qty, "available": True})
 
         return raw_sizes, (total_stock if has_stock_data and total_stock > 0 else None)
 
     @staticmethod
     def _extract_campaigns_from_akinon_dict(item: dict[str, Any]) -> tuple[Any, list[str]]:
-        """Akinon JSON nesnesinden sepetteki fiyatı ve kampanya metinlerini çıkarır."""
+        """
+        Akinon JSON nesnesinden sepetteki net fiyatı (`listing_kwargs.discounted_total_price` vb.)
+        ve kampanya metinlerini çıkarır.
+        """
         api_basket_price = (
             item.get("basket_price")
             or item.get("campaign_price")
@@ -152,9 +227,9 @@ class AkinonScraper(BaseScraper):
         )
         campaign_texts: list[str] = []
 
-        # Akinon basket_offers / promotions / campaigns / badges alanları
         for field_name in (
             "basket_offers",
+            "offers",
             "promotions",
             "campaigns",
             "badges",
@@ -167,38 +242,45 @@ class AkinonScraper(BaseScraper):
                 for entry in val:
                     if isinstance(entry, dict):
                         txt = (
-                            entry.get("name")
+                            entry.get("label")
+                            or entry.get("name")
                             or entry.get("title")
-                            or entry.get("label")
                             or entry.get("description")
                             or entry.get("badge_text")
                         )
                         if txt:
                             campaign_texts.append(str(txt))
+                        listing_kw = entry.get("listing_kwargs")
                         discounted = (
-                            entry.get("discounted_price")
+                            (listing_kw.get("discounted_total_price") if isinstance(listing_kw, dict) else None)
+                            or entry.get("discounted_total_price")
+                            or entry.get("discounted_price")
                             or entry.get("basket_price")
-                            or entry.get("price")
                         )
-                        if discounted and api_basket_price is None:
-                            api_basket_price = discounted
+                        if discounted is not None:
+                            try:
+                                d_val = float(discounted)
+                                if d_val > 0 and (api_basket_price is None or d_val < float(api_basket_price)):
+                                    api_basket_price = d_val
+                            except (ValueError, TypeError):
+                                if api_basket_price is None:
+                                    api_basket_price = discounted
                     elif isinstance(entry, str):
                         campaign_texts.append(entry)
             elif isinstance(val, dict):
-                txt = val.get("name") or val.get("title") or val.get("label")
+                txt = val.get("label") or val.get("name") or val.get("title")
                 if txt:
                     campaign_texts.append(str(txt))
             elif isinstance(val, str) and val.strip():
                 campaign_texts.append(val.strip())
 
-        # attributes içindeki kampanya etiketleri
-        attrs = item.get("attributes") or item.get("attributes_kwargs") or {}
+        attrs = item.get("attributes") or {}
         if isinstance(attrs, dict):
             for k, v in attrs.items():
                 if any(w in k.lower() for w in ("campaign", "kampanya", "badge", "sepet", "promo", "indirim")):
                     if isinstance(v, dict):
                         v = v.get("value") or v.get("label")
-                    if v:
+                    if v and str(v) not in ("campaign-slug;campaign-test", "True", "False"):
                         campaign_texts.append(str(v))
 
         return api_basket_price, campaign_texts
@@ -208,9 +290,8 @@ class AkinonScraper(BaseScraper):
         product_url: str,
     ) -> tuple[list[dict[str, Any]], Any, list[str], Optional[int]]:
         """
-        Kategori listesinde beden kırılımı gelmeyen aday ürünler için
-        `{product_url}?format=json` veya ürün detay HTML'ini sorgulayarak
-        tam/buçuklu/kesirli stok numaralarını ve sepet kampanyasını çeker.
+        Aday ürünler için `{product_url}?format=json` uç noktasını sorgulayarak
+        tam/buçuklu/kesirli stok numaralarını (`variants -> options`) ve sepet kampanyasını çeker.
         """
         json_url = self._build_paginated_url(product_url, page=1, as_json=True)
         data = self.client.get_json(json_url)
@@ -221,23 +302,30 @@ class AkinonScraper(BaseScraper):
         total_stock: Optional[int] = None
 
         if isinstance(data, dict):
-            prod_obj = data.get("product") if isinstance(data.get("product"), dict) else data
-            raw_sizes, total_stock = self._extract_sizes_from_akinon_dict(prod_obj)
-            api_basket_price, campaign_texts = self._extract_campaigns_from_akinon_dict(prod_obj)
+            # 1. Üst seviye `variants` ve `offers` alanlarını kontrol et
+            raw_sizes, total_stock = self._extract_sizes_from_akinon_dict(data, include_single_attr_size=False)
+            api_basket_price, campaign_texts = self._extract_campaigns_from_akinon_dict(data)
 
-            # Akinon detay JSON'unda `variants` veya `selectable_attributes` / `options` kontrolü
-            for var_key in ("variants", "variant_list", "product_variants", "RelatedProducts"):
-                v_list = data.get(var_key) or prod_obj.get(var_key)
-                if isinstance(v_list, list):
-                    for v_item in v_list:
-                        if isinstance(v_item, dict):
-                            sub_sizes, _ = self._extract_sizes_from_akinon_dict(v_item)
-                            raw_sizes.extend(sub_sizes)
+            # 2. İçteki `product` nesnesini kontrol et
+            prod_obj = data.get("product")
+            if isinstance(prod_obj, dict):
+                p_sizes, p_stock = self._extract_sizes_from_akinon_dict(
+                    prod_obj,
+                    include_single_attr_size=(len(raw_sizes) == 0),
+                )
+                if p_sizes:
+                    raw_sizes.extend(p_sizes)
+                if total_stock is None and p_stock is not None:
+                    total_stock = p_stock
 
-            if raw_sizes:
-                return raw_sizes, api_basket_price, campaign_texts, total_stock
+                p_basket, p_camps = self._extract_campaigns_from_akinon_dict(prod_obj)
+                if p_basket and not api_basket_price:
+                    api_basket_price = p_basket
+                campaign_texts.extend(p_camps)
 
-        # JSON'dan beden çıkmadıysa ürün detay HTML'ini kontrol et
+            return raw_sizes, api_basket_price, campaign_texts, total_stock
+
+        # JSON uç noktası yanıt vermediyse yedek olarak HTML sayfasını kontrol et
         resp = self.client.get(product_url)
         if resp and resp.ok and resp.text:
             html_sizes, html_basket, html_campaigns = self._parse_detail_html(resp.text)
@@ -254,7 +342,6 @@ class AkinonScraper(BaseScraper):
         api_basket_price: Any = None
         campaigns: list[str] = []
 
-        # 1. Beden seçici buton/input/option elemanları
         size_selectors = [
             "div.js-size-options a:not(.disabled):not(.out-of-stock)",
             "div.size-options button:not([disabled]):not(.disabled)",
@@ -280,7 +367,6 @@ class AkinonScraper(BaseScraper):
                 if val:
                     sizes.append({"size": str(val).strip(), "available": True})
 
-        # 2. Kampanya rozetleri ve sepette fiyat alanları
         promo_selectors = [
             ".basket-discount",
             ".campaign-badge",
@@ -296,34 +382,43 @@ class AkinonScraper(BaseScraper):
                 if txt and len(txt) < 120:
                     campaigns.append(txt)
 
-        # 3. Gömülü JSON içinde variants / stock kontrolü
-        uv = self.extract_universal_variable(html_text)
-        if isinstance(uv, dict) and isinstance(uv.get("product"), dict):
-            uv_prod = uv["product"]
-            uv_sizes, _ = self._extract_sizes_from_akinon_dict(uv_prod)
-            sizes.extend(uv_sizes)
-
-        next_data = self.extract_next_data(html_text)
-        if isinstance(next_data, dict):
-            nd_sizes = self._find_sizes_in_nested_json(next_data)
-            sizes.extend(nd_sizes)
-
         return sizes, api_basket_price, campaigns
 
-    def _find_sizes_in_nested_json(self, obj: Any) -> list[dict[str, Any]]:
-        found: list[dict[str, Any]] = []
-        if isinstance(obj, dict):
-            if "variants" in obj and isinstance(obj["variants"], list):
-                s_list, _ = self._extract_sizes_from_akinon_dict(obj)
-                found.extend(s_list)
-            for v in obj.values():
-                if isinstance(v, (dict, list)):
-                    found.extend(self._find_sizes_in_nested_json(v))
-        elif isinstance(obj, list):
-            for item in obj[:50]:
-                if isinstance(item, (dict, list)):
-                    found.extend(self._find_sizes_in_nested_json(item))
-        return found
+    @staticmethod
+    def _extract_brand_from_akinon_item(item: dict[str, Any]) -> str:
+        attrs = item.get("attributes") or {}
+        attrs_kw = item.get("attributes_kwargs") or {}
+
+        for key in ("integration_alt_marka", "integration_brand", "brand", "marka", "integration_marka"):
+            if isinstance(attrs_kw, dict) and isinstance(attrs_kw.get(key), dict):
+                lbl = attrs_kw[key].get("label") or attrs_kw[key].get("value")
+                if lbl and not str(lbl).isdigit():
+                    return str(lbl).strip()
+            if isinstance(attrs, dict) and attrs.get(key):
+                val = attrs[key]
+                if isinstance(val, dict):
+                    val = val.get("label") or val.get("value")
+                if val and not str(val).isdigit():
+                    return str(val).strip()
+
+        b_obj = item.get("brand")
+        if isinstance(b_obj, dict):
+            return str(b_obj.get("name") or "")
+        return str(b_obj or "")
+
+    @staticmethod
+    def _extract_sku_from_akinon_item(item: dict[str, Any]) -> str:
+        attrs = item.get("attributes") or {}
+        if isinstance(attrs, dict):
+            for k in ("integration_article_code", "integration_model_renk", "model_code", "base_code"):
+                val = attrs.get(k)
+                if val and str(val).strip():
+                    return str(val).strip()
+        for k in ("base_code", "model_code", "group_code", "sku", "pk"):
+            val = item.get(k)
+            if val and str(val).strip():
+                return str(val).strip()
+        return ""
 
     def _parse_akinon_json_products(
         self,
@@ -332,8 +427,13 @@ class AkinonScraper(BaseScraper):
         limit: Optional[int] = None,
     ) -> list[ScrapedProduct]:
         """
-        Akinon JSON ürün listesini ayrıştırır. Aynı modelin (`base_code` veya `canonical_sku`)
-        farklı beden satırlarını tek bir üründe birleştirir.
+        Akinon JSON ürün listesini ayrıştırır.
+        Performans Optimizasyonu:
+        - Tam tarama modunda (`limit is None`) ürün detay sayfasına (`?format=json`) YALNIZCA
+          marka, kara liste, maksimum sepet fiyatı (`MAX_BASKET_PRICE`) ve minimum indirim oranı
+          (`MIN_TOTAL_DISCOUNT_RATE`) ön filtrelerini geçen fırsat adayları için istek atar.
+        - Böylece indirim oranı düşük binlerce ürün için gereksiz detay isteği atılmaz ve tarama
+          dakikalar yerine saniyeler içinde tamamlanır.
         """
         grouped_raw: dict[str, dict[str, Any]] = {}
 
@@ -347,40 +447,24 @@ class AkinonScraper(BaseScraper):
             if not title:
                 continue
 
-            attrs = item.get("attributes") or item.get("attributes_kwargs") or {}
-            brand = ""
-            if isinstance(attrs, dict):
-                brand_field = attrs.get("brand") or attrs.get("marka") or attrs.get("integration_brand")
-                if isinstance(brand_field, dict):
-                    brand = str(brand_field.get("value") or brand_field.get("label") or "")
-                elif brand_field:
-                    brand = str(brand_field)
-            if not brand:
-                b_obj = item.get("brand")
-                brand = str(b_obj.get("name") if isinstance(b_obj, dict) else (b_obj or ""))
-
-            raw_sku = str(
-                item.get("base_code")
-                or item.get("model_code")
-                or item.get("group_code")
-                or (attrs.get("base_code") if isinstance(attrs, dict) else None)
-                or (attrs.get("model_code") if isinstance(attrs, dict) else None)
-                or item.get("sku")
-                or item.get("pk")
-                or ""
-            )
+            brand = self._extract_brand_from_akinon_item(item)
+            raw_sku = self._extract_sku_from_akinon_item(item)
             url = str(item.get("absolute_url") or item.get("url") or item.get("slug") or "")
-            canonical_sku, _ = (
-                self._quick_canonical_key(raw_sku, title, url, brand)
-            )
+            canonical_sku, _ = SKUNormalizer.normalize(raw_sku=raw_sku, title=title, url=url, brand=brand)
             if not canonical_sku:
                 continue
 
-            raw_sizes, stock_total = self._extract_sizes_from_akinon_dict(item)
+            raw_sizes, stock_total = self._extract_sizes_from_akinon_dict(item, include_single_attr_size=False)
             api_basket_price, campaign_texts = self._extract_campaigns_from_akinon_dict(item)
             image_url = self._extract_image_from_akinon_dict(item)
 
-            retail_price = item.get("retail_price") or item.get("old_price") or item.get("list_price") or item.get("price")
+            retail_price = (
+                item.get("retail_price")
+                or (item.get("price_extra_field", {}) or {}).get("previous_price")
+                or item.get("old_price")
+                or item.get("list_price")
+                or item.get("price")
+            )
             sale_price = item.get("price") or item.get("sale_price") or retail_price
 
             if canonical_sku not in grouped_raw:
@@ -396,6 +480,7 @@ class AkinonScraper(BaseScraper):
                     "campaign_texts": list(campaign_texts),
                     "raw_sizes": list(raw_sizes),
                     "total_stock": stock_total,
+                    "fallback_single_size": self._extract_size_from_product_attrs(item),
                 }
             else:
                 grp = grouped_raw[canonical_sku]
@@ -407,15 +492,39 @@ class AkinonScraper(BaseScraper):
                     grp["total_stock"] = (grp["total_stock"] or 0) + stock_total
 
         results: list[ScrapedProduct] = []
-        for grp in grouped_raw.values():
-            # Marka ve kara liste ön kontrolü (gereksiz detay isteklerini önlemek için)
+        apply_strict_price_prefilter = limit is None
+
+        for canonical_sku, grp in grouped_raw.items():
+            if canonical_sku in self._seen_canonical_skus:
+                continue
             matched_brand = ArbitrageEngine.is_brand_allowed(grp["brand"], grp["title"])
             if not matched_brand:
                 continue
             if ArbitrageEngine.has_excluded_keyword(grp["title"], grp["url"]):
                 continue
 
-            # Eğer kategori JSON'unda beden bilgisi gelmediyse ürün detayından zenginleştir
+            # Ön Fiyat & İndirim Kontrolü (Detay isteği atmadan önce!)
+            prelim_price = BasketPromotionParser.calculate(
+                retail_price=grp["retail_price"],
+                sale_price=grp["sale_price"],
+                api_basket_price=grp["api_basket_price"],
+                campaign_texts=grp["campaign_texts"],
+            )
+            if prelim_price.net_basket_price <= 0:
+                continue
+
+            if apply_strict_price_prefilter:
+                if prelim_price.net_basket_price > config.MAX_BASKET_PRICE:
+                    continue
+                min_disc_threshold = (
+                    25.0 if (self.site_key == "barcin" and len(results) < 5) else config.MIN_TOTAL_DISCOUNT_RATE
+                )
+                if prelim_price.total_discount_rate < min_disc_threshold:
+                    continue
+
+            self._seen_canonical_skus.add(canonical_sku)
+
+            # Yalnızca filtreyi geçen aday ürünler için detay JSON'undan beden kırılımını çek
             if not grp["raw_sizes"] and self.enrich_missing_sizes and grp["url"]:
                 full_prod_url = self.build_full_url(grp["url"])
                 det_sizes, det_basket, det_campaigns, det_stock = self.fetch_product_detail_enrichment(full_prod_url)
@@ -425,6 +534,9 @@ class AkinonScraper(BaseScraper):
                 grp["campaign_texts"].extend(det_campaigns)
                 if det_stock is not None:
                     grp["total_stock"] = det_stock
+
+            if not grp["raw_sizes"] and grp.get("fallback_single_size"):
+                grp["raw_sizes"].append({"size": grp["fallback_single_size"], "available": True})
 
             prod = self.build_scraped_product(
                 raw_sku=grp["raw_sku"],
@@ -447,23 +559,12 @@ class AkinonScraper(BaseScraper):
 
         return results
 
-    @staticmethod
-    def _quick_canonical_key(raw_sku: str, title: str, url: str, brand: str) -> tuple[str, str]:
-        from core.parsers import SKUNormalizer
-
-        return SKUNormalizer.normalize(raw_sku=raw_sku, title=title, url=url, brand=brand)
-
     def _parse_html_fallback(
         self,
         html_text: str,
         default_gender: str,
         limit: Optional[int] = None,
     ) -> list[ScrapedProduct]:
-        """
-        `?format=json` uç noktası yerine HTML döndüğünde `__NEXT_DATA__`,
-        `window.universal_variable` veya HTML ürün kartlarını ayrıştırır.
-        """
-        # 1. __NEXT_DATA__ kontrolü
         next_data = self.extract_next_data(html_text)
         if isinstance(next_data, dict):
             raw_list = self._find_product_list_in_json(next_data)
@@ -472,7 +573,6 @@ class AkinonScraper(BaseScraper):
                 if parsed:
                     return parsed
 
-        # 2. window.universal_variable kontrolü
         uv = self.extract_universal_variable(html_text)
         if isinstance(uv, dict):
             listing = uv.get("listing", {})
@@ -482,11 +582,8 @@ class AkinonScraper(BaseScraper):
                 if parsed:
                     return parsed
 
-        # 3. HTML ürün kartları (.js-product-wrapper, [data-product], .product-item)
         soup = BeautifulSoup(html_text, "lxml")
-        cards = soup.select(
-            ".js-product-wrapper, .product-item, .product-card, [data-product], [data-sku]"
-        )
+        cards = soup.select(".js-product-wrapper, .product-item, .product-card, [data-product], [data-sku]")
         raw_items: list[dict[str, Any]] = []
 
         for card in cards:
@@ -519,9 +616,7 @@ class AkinonScraper(BaseScraper):
             basket_txt = basket_el.get_text(" ", strip=True) if basket_el else ""
 
             img_el = card.select_one("img")
-            img_url = ""
-            if img_el:
-                img_url = img_el.get("data-src") or img_el.get("src") or ""
+            img_url = (img_el.get("data-src") or img_el.get("src") or "") if img_el else ""
 
             if title and (sale_txt or retail_txt):
                 raw_items.append(
@@ -581,7 +676,6 @@ class AkinonScraper(BaseScraper):
             page_products: list[ScrapedProduct] = []
 
             if resp and resp.ok:
-                # Yanıt JSON mu kontrol et
                 try:
                     payload = resp.json()
                     if isinstance(payload, dict):
@@ -598,29 +692,26 @@ class AkinonScraper(BaseScraper):
                                 limit=remaining,
                             )
                             paginator = payload.get("paginator") or payload.get("pagination") or {}
-                            has_next = paginator.get("has_next", True) if isinstance(paginator, dict) else True
+                            has_next = True
+                            if isinstance(paginator, dict):
+                                if "has_next" in paginator:
+                                    has_next = bool(paginator.get("has_next"))
+                                elif "num_pages" in paginator and "current_page" in paginator:
+                                    has_next = int(paginator["current_page"]) < int(paginator["num_pages"])
                             collected.extend(page_products)
                             if not has_next or (limit and len(collected) >= limit):
                                 break
                             continue
                 except Exception as exc:
-                    logger.debug("[%s] Yanıt JSON formatında değil, HTML ayrıştırıcıya geçiliyor: %s", self.site_name, exc)
+                    logger.debug(
+                        "[%s] Yanıt JSON formatında değil, HTML ayrıştırıcıya geçiliyor: %s",
+                        self.site_name,
+                        exc,
+                    )
 
-                # Yanıt HTML olarak döndüyse HTML ayrıştırıcıyı çalıştır
                 if resp.text:
                     page_products = self._parse_html_fallback(
                         resp.text,
-                        default_gender=gender,
-                        limit=remaining,
-                    )
-
-            if not page_products:
-                # Doğrudan HTML URL'sini dene
-                html_url = self._build_paginated_url(category_url, page=page, as_json=False)
-                html_resp = self.client.get(html_url, is_json=False)
-                if html_resp and html_resp.ok and html_resp.text:
-                    page_products = self._parse_html_fallback(
-                        html_resp.text,
                         default_gender=gender,
                         limit=remaining,
                     )

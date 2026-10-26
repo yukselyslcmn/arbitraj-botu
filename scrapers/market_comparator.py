@@ -1,5 +1,6 @@
 import logging
 import re
+import time
 from typing import Optional
 from urllib.parse import quote_plus
 
@@ -19,7 +20,7 @@ class MarketComparator:
     Bir ürün yüksek indirim filtresini geçtiğinde:
     1. Ürünün normalize edilmiş Model Kodu (SKU) ve marka-model adıyla Akakçe (`akakce.com/arama/?q=...`)
        üzerinden Türkiye'deki güncel Piyasa Dip Fiyatını (`market_floor_price`) sorgular.
-    2. Eğer Akakçe'de eşleşme bulunamazsa veya WAF engeli olursa kendi çoklu site veritabanımızdaki
+    2. Eğer Akakçe'de eşleşme bulunamazsa veya WAF/429 engeli olursa kendi çoklu site veritabanımızdaki
        (`StateStorage`) diğer sitelerin en düşük fiyatını kontrol eder.
     3. Orada da yoksa yedek olarak `retail_price * 0.72` değerini referans alır.
     """
@@ -29,14 +30,17 @@ class MarketComparator:
         http_client: Optional[StealthHttpClient] = None,
         storage: Optional[StateStorage] = None,
     ) -> None:
-        self.client = http_client or StealthHttpClient(min_delay=1.2, max_delay=2.5)
+        self.client = http_client or StealthHttpClient(min_delay=0.6, max_delay=1.2, max_retries=1, timeout=12)
         self.storage = storage
         self._cache: dict[str, tuple[float, str]] = {}
+        self._akakce_blocked_until: float = 0.0
+        self._akakce_429_streak: int = 0
 
     def get_market_floor_price(
         self,
         product: ScrapedProduct,
         all_current_run_products: Optional[list[ScrapedProduct]] = None,
+        allow_live_query: bool = True,
     ) -> tuple[float, str]:
         """
         Ürün için `(market_floor_price, kaynak_açıklaması)` döndürür.
@@ -63,13 +67,12 @@ class MarketComparator:
                 cross_site_candidates.append(stored_cross)
 
         # 3. Akakçe Canlı Arama Sorgusu (`https://www.akakce.com/arama/?q=...`)
-        akakce_price = self._query_akakce_floor_price(product)
-        if akakce_price is not None and akakce_price > 0:
-            # Eğer Akakçe'deki en ucuz fiyat bizim sepet fiyatımızdan yüksekse doğrudan onu al,
-            # ya da çapraz site adayları varsa en anlamlı piyasa dip fiyatını seç
-            result = (round(akakce_price, 2), "Akakçe Canlı Piyasa Dip Fiyatı")
-            self._cache[cache_key] = result
-            return result
+        if allow_live_query and time.time() >= self._akakce_blocked_until:
+            akakce_price = self._query_akakce_floor_price(product)
+            if akakce_price is not None and akakce_price > 0:
+                result = (round(akakce_price, 2), "Akakçe Canlı Piyasa Dip Fiyatı")
+                self._cache[cache_key] = result
+                return result
 
         # 4. Yedek 1: Çoklu site veritabanımızdaki en düşük 2. fiyat (diğer sitedeki en ucuz fiyat)
         if cross_site_candidates:
@@ -81,22 +84,29 @@ class MarketComparator:
 
         # 5. Yedek 2: `retail_price * 0.72` referans formülü
         fallback_price = round(product.retail_price * 0.72, 2)
-        # Eğer vitrin satış fiyatı `retail_price * 0.72`'den daha yüksekse ve sepette ekstra indirim varsa,
-        # piyasa dip fiyatı en azından `max(retail_price * 0.72, sale_price * 0.92)` düzeyindedir
-        result = (fallback_price, "Piyasa Referans (Liste x 0.72)")
+        if product.basket_discount_rate > 0 and product.sale_price * 0.92 > fallback_price:
+            fallback_price = round(product.sale_price * 0.92, 2)
+            result = (fallback_price, "Piyasa Referans (Vitrin x 0.92)")
+        else:
+            result = (fallback_price, "Piyasa Referans (Liste x 0.72)")
         self._cache[cache_key] = result
         return result
 
     def _query_akakce_floor_price(self, product: ScrapedProduct) -> Optional[float]:
         """
         Akakçe arama sayfasından (`https://www.akakce.com/arama/?q=...`) ürünün fiyatlarını ayrıştırır.
-        Sahte/alakasız aksesuar fiyatlarını elemek için `product.net_basket_price * 0.60` altındaki
-        değerleri filtreler ve ürünün kendi kaynak sitesi dışındaki en düşük fiyatı alır.
+        WAF veya HTTP 429 durumunda devre kesiciyi (circuit-breaker) devreye sokarak taramanın
+        takılmasını önler.
         """
         queries = []
         if product.display_sku and len(product.display_sku) >= 5:
             queries.append(f"{product.brand} {product.display_sku}")
-        clean_model = re.sub(r"\b(?:erkek|kadın|kadin|unisex|spor|ayakkabı|ayakkabi|sneaker)\b", "", product.title, flags=re.IGNORECASE)
+        clean_model = re.sub(
+            r"\b(?:erkek|kadın|kadin|unisex|spor|ayakkabı|ayakkabi|sneaker)\b",
+            "",
+            product.title,
+            flags=re.IGNORECASE,
+        )
         clean_model = re.sub(r"\s+", " ", clean_model).strip()
         if clean_model and clean_model not in queries:
             queries.append(clean_model[:55])
@@ -104,21 +114,30 @@ class MarketComparator:
         min_plausible_price = max(650.0, product.net_basket_price * 0.65)
         max_plausible_price = max(product.retail_price * 1.35, product.net_basket_price * 2.5)
 
-        for q in queries[:2]:
+        for q in queries[:1]:
             search_url = f"https://www.akakce.com/arama/?q={quote_plus(q)}"
             try:
                 resp = self.client.get(search_url, is_json=False)
-                if not resp or not resp.ok or not resp.text:
+                if not resp:
+                    self._akakce_429_streak += 1
+                    if self._akakce_429_streak >= 2:
+                        self._akakce_blocked_until = time.time() + 180.0
+                    continue
+                if resp.status_code in (429, 403):
+                    self._akakce_429_streak += 1
+                    if self._akakce_429_streak >= 2:
+                        self._akakce_blocked_until = time.time() + 180.0
+                    continue
+                if not resp.ok or not resp.text:
                     continue
 
+                self._akakce_429_streak = 0
                 prices = self._extract_prices_from_akakce_html(
                     html_text=resp.text,
                     min_price=min_plausible_price,
                     max_price=max_plausible_price,
                 )
                 if prices:
-                    # En düşük 1. fiyat bizim taradığımız sitenin kendi vitrin fiyatı olabileceği için:
-                    # Eğer birden fazla fiyat varsa ve en düşük fiyat bizim net_basket_price'a çok yakınsa 2. en düşüğü al
                     prices.sort()
                     if len(prices) >= 2 and prices[0] <= product.sale_price * 1.03:
                         return prices[1]
