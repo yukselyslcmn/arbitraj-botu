@@ -1,0 +1,493 @@
+{
+  "meta": {
+    "first_run_completed": true,
+    "initialized_at": "2026-10-26T10:13:44.010251+00:00",
+    "last_updated_at": "2026-10-26T10:13:44.010251+00:00"
+  },
+  "products": {
+    "101909426": {
+      "brand": "Adidas",
+      "canonical_sku": "101909426",
+      "display_sku": "101909426",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/24-04/03/101909426_d2-1712142325.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2474.25,
+          "net_basket_price": 2474.25,
+          "retail_price": 3299.0,
+          "sale_price": 3299.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "38",
+            "38.5",
+            "39",
+            "40"
+          ],
+          "sizes": [
+            "38",
+            "38.5",
+            "39",
+            "40"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-vl-court-base-beyaz-kadin-sneaker-101909426"
+        }
+      },
+      "title": "VL COURT BASE Beyaz Kadın Sneaker"
+    },
+    "102256723": {
+      "brand": "Vans",
+      "canonical_sku": "102256723",
+      "display_sku": "102256723",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-01/23/102256723_d2-1737625689.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2249.25,
+          "net_basket_price": 2249.25,
+          "retail_price": 2999.0,
+          "sale_price": 2999.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37",
+            "38",
+            "39"
+          ],
+          "sizes": [
+            "37",
+            "38",
+            "39"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/vans-brooklyn-ls-siyah-kadin-sneaker-102256723"
+        }
+      },
+      "title": "Brooklyn LS Siyah Kadın Sneaker"
+    },
+    "102266181": {
+      "brand": "Puma",
+      "canonical_sku": "102266181",
+      "display_sku": "102266181",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-10/20/102266181_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3399.0,
+          "net_basket_price": 3399.0,
+          "retail_price": 3399.0,
+          "sale_price": 3399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "41",
+            "42",
+            "42.5 [Son 3!]",
+            "43",
+            "44",
+            "45"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "42.5",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/puma-court-classic-clean-beyaz-erkek-sneaker-102266181"
+        }
+      },
+      "title": "Court Classic Clean Beyaz Erkek Sneaker"
+    },
+    "102683574": {
+      "brand": "Nike",
+      "canonical_sku": "102683574",
+      "display_sku": "102683574",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-11/07/102683574_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3599.25,
+          "net_basket_price": 3599.25,
+          "retail_price": 4799.0,
+          "sale_price": 4799.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "42",
+            "42.5 [Son 2!]",
+            "43 [Son 3!]",
+            "44 [Son 2!]"
+          ],
+          "sizes": [
+            "42",
+            "42.5",
+            "43",
+            "44"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/nike-nike-court-vision-low-beyaz-erkek-sneaker-102683574"
+        }
+      },
+      "title": "Court Vision Low Beyaz Erkek Sneaker"
+    },
+    "102725346": {
+      "brand": "Vans",
+      "canonical_sku": "102725346",
+      "display_sku": "102725346",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/26-09/01/102725346_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2549.25,
+          "net_basket_price": 2549.25,
+          "retail_price": 3399.0,
+          "sale_price": 3399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37",
+            "38",
+            "39"
+          ],
+          "sizes": [
+            "37",
+            "38",
+            "39"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/vans-brooklyn-ls-siyah-kadin-sneaker-102725346"
+        }
+      },
+      "title": "Brooklyn LS Siyah Kadın Sneaker"
+    },
+    "749SMA0200": {
+      "brand": "Lacoste",
+      "canonical_sku": "749SMA0200",
+      "display_sku": "749SMA0200",
+      "sites": {
+        "superstep": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/05/04/77625631/81135dc6-6e4c-4ec1-b79f-609a51d2865b.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3743.0,
+          "net_basket_price": 3743.0,
+          "retail_price": 4990.0,
+          "sale_price": 3743.0,
+          "site_name": "SuperStep",
+          "size_labels": [
+            "42.5",
+            "44",
+            "45"
+          ],
+          "sizes": [
+            "42.5",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.superstep.com.tr/urun/lacoste-lacoste-neo-run-base-erkek-siyah-spor-ayakkabi/749sma0200-7/"
+        }
+      },
+      "title": "Lacoste Lacoste Neo Run Base Erkek Siyah Spor Ayakkabı"
+    },
+    "751SMA0058T": {
+      "brand": "Lacoste",
+      "canonical_sku": "751SMA0058T",
+      "display_sku": "751SMA0058T",
+      "sites": {
+        "superstep": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/10/77588956/32e5f428-7d8f-4ae4-ba11-4deebe94bd52.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 5618.0,
+          "net_basket_price": 5618.0,
+          "retail_price": 7490.0,
+          "sale_price": 5618.0,
+          "site_name": "SuperStep",
+          "size_labels": [
+            "42",
+            "43",
+            "44"
+          ],
+          "sizes": [
+            "42",
+            "43",
+            "44"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.superstep.com.tr/urun/lacoste-storm-96-2k-erkek-siyah-spor-ayakkabi/751sma0058t/"
+        }
+      },
+      "title": "Lacoste Storm 96 2K Erkek Siyah Spor Ayakkabı"
+    },
+    "751SMA0064": {
+      "brand": "Lacoste",
+      "canonical_sku": "751SMA0064",
+      "display_sku": "751SMA0064",
+      "sites": {
+        "superstep": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/09/77569883/2719eb25-ac97-465e-b4ee-fc50582b1fd7.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 5618.0,
+          "net_basket_price": 5618.0,
+          "retail_price": 7490.0,
+          "sale_price": 5618.0,
+          "site_name": "SuperStep",
+          "size_labels": [
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "sizes": [
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.superstep.com.tr/urun/lacoste-l003-neo-shot-erkek-siyah-spor-ayakkabi/751sma0064-3/"
+        }
+      },
+      "title": "Lacoste L003 Neo Shot Erkek Siyah Spor Ayakkabı"
+    },
+    "751SMA0130": {
+      "brand": "Lacoste",
+      "canonical_sku": "751SMA0130",
+      "display_sku": "751SMA0130",
+      "sites": {
+        "superstep": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/06/77528753/45e6cfef-de72-427b-b0b0-1eaba3081136.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 5992.0,
+          "net_basket_price": 5992.0,
+          "retail_price": 7990.0,
+          "sale_price": 5992.0,
+          "site_name": "SuperStep",
+          "size_labels": [
+            "41",
+            "43",
+            "44",
+            "45"
+          ],
+          "sizes": [
+            "41",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.superstep.com.tr/urun/lacoste-l001-ace-erkek-gri-spor-ayakkabi/751sma0130-2/"
+        }
+      },
+      "title": "Lacoste L001 Ace Erkek Gri Spor Ayakkabı"
+    },
+    "NT600T": {
+      "brand": "Nautica",
+      "canonical_sku": "NT600T",
+      "display_sku": "NT600T",
+      "sites": {
+        "occasion": {
+          "campaign_name": "Sepette %50 İndirim",
+          "image_url": "https://6c422a-occasion.akinoncloudcdn.com/products/2025/12/22/15648758/e2059816-9976-4bc6-81ef-17e728029417.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 1199.7,
+          "net_basket_price": 1199.7,
+          "retail_price": 3999.0,
+          "sale_price": 2399.4,
+          "site_name": "Occasion",
+          "size_labels": [
+            "41",
+            "42"
+          ],
+          "sizes": [
+            "41",
+            "42"
+          ],
+          "total_discount_rate": 70.0,
+          "url": "https://www.occasion.com.tr/nautica-erkek-beyaz-sneaker-nt600t-3/"
+        }
+      },
+      "title": "Nautica Erkek Beyaz Sneaker"
+    },
+    "NT604T": {
+      "brand": "Nautica",
+      "canonical_sku": "NT604T",
+      "display_sku": "NT604T",
+      "sites": {
+        "occasion": {
+          "campaign_name": "Sepette %50 İndirim",
+          "image_url": "https://6c422a-occasion.akinoncloudcdn.com/products/2025/12/22/17156938/c0df57fd-fe29-42f7-a5ba-cd04dadc88e8.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 1199.7,
+          "net_basket_price": 1199.7,
+          "retail_price": 3999.0,
+          "sale_price": 2399.4,
+          "site_name": "Occasion",
+          "size_labels": [
+            "41"
+          ],
+          "sizes": [
+            "41"
+          ],
+          "total_discount_rate": 70.0,
+          "url": "https://www.occasion.com.tr/nautica-erkek-gri-sneaker-nt604t-1/"
+        }
+      },
+      "title": "Nautica Erkek Gri Sneaker"
+    },
+    "NT605T": {
+      "brand": "Nautica",
+      "canonical_sku": "NT605T",
+      "display_sku": "NT605T",
+      "sites": {
+        "occasion": {
+          "campaign_name": "Sepette %40 İndirim",
+          "image_url": "https://6c422a-occasion.akinoncloudcdn.com/products/2026/02/17/15648913/25893e5c-98cf-4d8c-b4a4-00d8e76eaa06.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 1439.64,
+          "net_basket_price": 1439.64,
+          "retail_price": 3999.0,
+          "sale_price": 2399.4,
+          "site_name": "Occasion",
+          "size_labels": [
+            "41",
+            "42",
+            "43",
+            "44"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "43",
+            "44"
+          ],
+          "total_discount_rate": 64.0,
+          "url": "https://www.occasion.com.tr/nautica-erkek-krem-sneaker-nt605t-1/"
+        }
+      },
+      "title": "Nautica Erkek Krem Sneaker"
+    },
+    "NT606T": {
+      "brand": "Nautica",
+      "canonical_sku": "NT606T",
+      "display_sku": "NT606T",
+      "sites": {
+        "occasion": {
+          "campaign_name": "Sepette %50 İndirim",
+          "image_url": "https://6c422a-occasion.akinoncloudcdn.com/products/2025/12/22/15648894/8811a714-e216-4654-b0d5-8c7a3b5817c2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 1349.7,
+          "net_basket_price": 1349.7,
+          "retail_price": 4499.0,
+          "sale_price": 2699.4,
+          "site_name": "Occasion",
+          "size_labels": [
+            "41",
+            "42"
+          ],
+          "sizes": [
+            "41",
+            "42"
+          ],
+          "total_discount_rate": 70.0,
+          "url": "https://www.occasion.com.tr/nautica-erkek-gri-sneaker-nt606t/"
+        }
+      },
+      "title": "Nautica Erkek Gri Sneaker"
+    },
+    "NT608T": {
+      "brand": "Nautica",
+      "canonical_sku": "NT608T",
+      "display_sku": "NT608T",
+      "sites": {
+        "occasion": {
+          "campaign_name": "Sepette %40 İndirim",
+          "image_url": "https://6c422a-occasion.akinoncloudcdn.com/products/2026/02/18/15648568/02fdb5f4-b54d-421e-9b57-6729e0e159da.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.507217+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 1619.64,
+          "net_basket_price": 1619.64,
+          "retail_price": 4499.0,
+          "sale_price": 2699.4,
+          "site_name": "Occasion",
+          "size_labels": [
+            "41",
+            "42"
+          ],
+          "sizes": [
+            "41",
+            "42"
+          ],
+          "total_discount_rate": 64.0,
+          "url": "https://www.occasion.com.tr/nautica-erkek-bej-sneaker-nt608t-1/"
+        }
+      },
+      "title": "Nautica Erkek Bej Sneaker"
+    },
+    "VN000Y0RFDB1": {
+      "brand": "Vans",
+      "canonical_sku": "VN000Y0RFDB1",
+      "display_sku": "VN000Y0RFDB1",
+      "sites": {
+        "superstep": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329678/bef18428-6386-4c9c-8087-1bc670461780.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3499.0,
+          "net_basket_price": 3499.0,
+          "retail_price": 6999.0,
+          "sale_price": 3499.0,
+          "site_name": "SuperStep",
+          "size_labels": [
+            "37",
+            "38"
+          ],
+          "sizes": [
+            "37",
+            "38"
+          ],
+          "total_discount_rate": 50.0,
+          "url": "https://www.superstep.com.tr/urun/vans-lx-authentic-44-shell-knit-unisex-siyah-sneaker/vn000y0rfdb1-2/"
+        }
+      },
+      "title": "Vans Lx Authentic 44 Shell Knit Unisex Siyah Sneaker"
+    }
+  }
+}
