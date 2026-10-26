@@ -3,10 +3,9 @@ import logging
 import time
 from typing import Optional
 
-import requests
-
 import config
 from core.arbitrage_engine import ArbitrageAnalysis
+from core.http_client import StealthHttpClient
 
 logger = logging.getLogger("arbitraj.notifier")
 
@@ -16,6 +15,7 @@ class TelegramNotifier:
     Görselli Telegram Bildirim İstemcisi.
     Öncelikle `sendPhoto` uç noktasını dener; görsel URL'si geçersizse veya
     Telegram tarafından indirilemezse otomatik olarak `sendMessage` uç noktasına düşer.
+    Ağ isteklerinde TLS engellerini aşmak için `StealthHttpClient` (`curl_cffi`) kullanır.
     """
 
     def __init__(
@@ -23,11 +23,13 @@ class TelegramNotifier:
         bot_token: str = config.TELEGRAM_BOT_TOKEN,
         chat_id: str = config.TELEGRAM_CHAT_ID,
         flood_sleep: float = config.TELEGRAM_FLOOD_SLEEP_SECONDS,
+        http_client: Optional[StealthHttpClient] = None,
     ) -> None:
         self.bot_token = bot_token
         self.chat_id = chat_id
         self.flood_sleep = flood_sleep
         self._last_sent_ts: float = 0.0
+        self.client = http_client or StealthHttpClient(min_delay=0.2, max_delay=0.5, max_retries=3, timeout=20)
 
     @property
     def is_configured(self) -> bool:
@@ -165,8 +167,8 @@ class TelegramNotifier:
                     "caption": caption[:1024],
                     "parse_mode": "HTML",
                 }
-                resp = requests.post(f"{base_api}/sendPhoto", data=photo_payload, timeout=20)
-                if resp.status_code == 200 and resp.json().get("ok"):
+                resp = self.client.post(f"{base_api}/sendPhoto", data=photo_payload, skip_throttle=True)
+                if resp and resp.status_code == 200 and resp.json().get("ok"):
                     logger.info(
                         "Telegram fotoğraflı bildirim gönderildi: %s (%s)",
                         analysis.product.display_sku,
@@ -174,9 +176,9 @@ class TelegramNotifier:
                     )
                     return True
                 logger.warning(
-                    "sendPhoto başarısız oldu (HTTP %d: %s), sendMessage'a düşülüyor...",
-                    resp.status_code,
-                    resp.text[:160],
+                    "sendPhoto başarısız oldu (HTTP %s: %s), sendMessage'a düşülüyor...",
+                    resp.status_code if resp else "None",
+                    resp.text[:160] if resp else "No response",
                 )
             except Exception as exc:
                 logger.warning("sendPhoto isteği sırasında hata (%s), sendMessage'a düşülüyor...", exc)
@@ -187,17 +189,21 @@ class TelegramNotifier:
                 "chat_id": self.chat_id,
                 "text": caption,
                 "parse_mode": "HTML",
-                "disable_web_page_preview": False,
+                "disable_web_page_preview": "false",
             }
-            resp = requests.post(f"{base_api}/sendMessage", data=msg_payload, timeout=20)
-            if resp.status_code == 200 and resp.json().get("ok"):
+            resp = self.client.post(f"{base_api}/sendMessage", data=msg_payload, skip_throttle=True)
+            if resp and resp.status_code == 200 and resp.json().get("ok"):
                 logger.info(
                     "Telegram metin bildirimi gönderildi: %s (%s)",
                     analysis.product.display_sku,
                     analysis.product.site_name,
                 )
                 return True
-            logger.error("Telegram sendMessage hatası (HTTP %d): %s", resp.status_code, resp.text[:250])
+            logger.error(
+                "Telegram sendMessage hatası (HTTP %s): %s",
+                resp.status_code if resp else "None",
+                resp.text[:250] if resp else "No response",
+            )
         except Exception as exc:
             logger.error("Telegram sendMessage bağlantı hatası: %s", exc)
 
