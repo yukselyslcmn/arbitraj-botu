@@ -164,10 +164,10 @@ class TelegramNotifier:
                 photo_payload = {
                     "chat_id": self.chat_id,
                     "photo": image_url,
-                    "caption": caption[:1024],
+                    "caption": caption,
                     "parse_mode": "HTML",
                 }
-                resp = self.client.post(f"{base_api}/sendPhoto", data=photo_payload, skip_throttle=True)
+                resp = self.client.post(f"{base_api}/sendPhoto", json_payload=photo_payload, skip_throttle=True)
                 if resp and resp.status_code == 200 and resp.json().get("ok"):
                     logger.info(
                         "Telegram fotoğraflı bildirim gönderildi: %s (%s)",
@@ -189,9 +189,9 @@ class TelegramNotifier:
                 "chat_id": self.chat_id,
                 "text": caption,
                 "parse_mode": "HTML",
-                "disable_web_page_preview": "false",
+                "disable_web_page_preview": False,
             }
-            resp = self.client.post(f"{base_api}/sendMessage", data=msg_payload, skip_throttle=True)
+            resp = self.client.post(f"{base_api}/sendMessage", json_payload=msg_payload, skip_throttle=True)
             if resp and resp.status_code == 200 and resp.json().get("ok"):
                 logger.info(
                     "Telegram metin bildirimi gönderildi: %s (%s)",
