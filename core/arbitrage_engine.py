@@ -139,10 +139,34 @@ class ArbitrageEngine:
         return None
 
     @classmethod
+    def is_footwear(cls, title: str, url: str = "") -> bool:
+        """
+        Ürünün kesin olarak ayakkabı / sneaker / bot kategorisinde olup olmadığını doğrular.
+        Tekstil, jean, pantolon, mont vb. giyim ve aksesuar ürünlerini kesin olarak engeller.
+        """
+        comb = f"{title} {url}".lower()
+        # 1. Kara listede giyim/pantolon/aksesuar kelimesi varsa elenir
+        for kw in config.EXCLUDE_KEYWORDS:
+            if re.search(rf"\b{re.escape(kw.lower())}\b", comb):
+                return False
+
+        # 2. Pozitif ayakkabı göstergelerinden biri başlıkta veya URL'de geçiyor mu?
+        indicators = getattr(config, "FOOTWEAR_INDICATORS", [])
+        if any(ind in comb for ind in indicators):
+            return True
+
+        # 3. URL doğrudan ayakkabı/sneaker kategorisiyse
+        url_low = url.lower()
+        if any(term in url_low for term in ("/ayakkabi", "-ayakkabi", "/sneaker", "-sneaker", "spor-ayakkabi")):
+            return True
+
+        return False
+
+    @classmethod
     def check_pre_filters(cls, product: ScrapedProduct) -> tuple[bool, str]:
         """
-        Akakçe çapraz fiyat sorgusuna gitmeden önce temel marka, kara liste, beden,
-        maksimum sepet fiyatı ve minimum indirim oranı filtrelerini kontrol eder.
+        Akakçe çapraz fiyat sorgusuna gitmeden önce temel marka, ayakkabı doğrulaması,
+        kara liste, beden, maksimum sepet fiyatı ve minimum indirim oranı filtrelerini kontrol eder.
         """
         matched_brand = cls.is_brand_allowed(product.brand, product.title)
         if not matched_brand:
@@ -152,6 +176,9 @@ class ArbitrageEngine:
         excluded_kw = cls.has_excluded_keyword(product.title, product.url)
         if excluded_kw:
             return False, f"Kara liste kelime tespit edildi ('{excluded_kw}')"
+
+        if not cls.is_footwear(product.title, product.url):
+            return False, "Ürün ayakkabı kategorisinde değil (Giyim/Pantolon/Aksesuar elendi)"
 
         if not product.sizes:
             return False, "Hedef numaralarda (Erkek 41-46 / Kadın 37-40.5) stok yok"
@@ -286,20 +313,39 @@ class ArbitrageEngine:
         rejection_reason = pre_reason
 
         # Çoklu Resmi Satıcı / Pazaryeri Fiyat Koruması:
-        # Eğer bu ürün Amazon, idefix, Hepsiburada gibi yerlerde başka bir resmi satıcıda
-        # taranan sitemizden daha ucuza satılıyorsa, bu mağazadan almak zarar ettirir!
+        # Eğer bu ürün Amazon, idefix, Hepsiburada, Trendyol vb. yerlerde başka bir resmi satıcıda
+        # taranan sitemizden daha ucuza veya eşit fiyata satılıyorsa, bu mağazadan almak zarar ettirir!
         is_buy_source_cheapest = True
         cheaper_source_alert: Optional[str] = None
         if best_official_price is not None and best_official_price > 0:
-            if buy_cost > best_official_price + 20.0:
+            if buy_cost >= best_official_price:
                 is_buy_source_cheapest = False
                 cheaper_source_alert = (
                     f"⚠️ Piyasada daha ucuz resmi satıcı var: {best_official_platform or 'Pazaryeri'} "
-                    f"({best_official_seller or 'Resmi Satıcı'}) {best_official_price:,.0f} TL < {buy_cost:,.0f} TL"
+                    f"({best_official_seller or 'Resmi Satıcı'}) {best_official_price:,.0f} TL <= {buy_cost:,.0f} TL"
                 ).replace(",", ".")
                 if is_profitable:
                     is_profitable = False
                     rejection_reason = cheaper_source_alert
+
+        # Bağımsız resmi piyasa doğrulaması kontrolü:
+        # Eğer piyasada en az bir bağımsız rakip mağaza veya pazaryeri teklifi yoksa (yani sadece Liste x 0.72 kaldıysa),
+        # fırsat teyitsiz kabul edilir ve körü körüne arbitraj fırsatı ilan edilmez.
+        has_independent_competitor = bool(
+            comparison_details is not None
+            and getattr(comparison_details, "all_official_offers", None)
+            and any(
+                product.site_name.lower().strip() not in off.platform.lower()
+                and product.site_name.lower().strip() not in off.seller_name.lower()
+                for off in comparison_details.all_official_offers
+            )
+        )
+
+        if getattr(config, "REQUIRE_VERIFIED_MARKET_FLOOR", True) and not has_independent_competitor:
+            is_buy_source_cheapest = False
+            if is_profitable:
+                is_profitable = False
+                rejection_reason = "Piyasada bağımsız resmi satıcı / pazaryeri fiyat doğrulaması bulunamadı (Teyitsiz fırsat bildirilmez)"
 
         if is_profitable:
             if net_profit_gardrops < config.MIN_NET_PROFIT_TL:

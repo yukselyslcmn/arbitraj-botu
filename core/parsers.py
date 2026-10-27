@@ -70,8 +70,8 @@ class SKUNormalizer:
         # New Balance: MR530SG, U9060ECA, M2002RDM, BB550WT1, U327WGC
         re.compile(r"\b([MUW]{1,2}\d{3,4}[A-Z0-9]{2,4})\b", re.IGNORECASE),
         re.compile(r"\b(BB\d{3}[A-Z0-9]{2,4})\b", re.IGNORECASE),
-        # Puma: 392290-01, 389289.02, 374915-01
-        re.compile(r"\b(3\d{5}[\s\-_\.]\d{2})\b"),
+        # Puma: 392290-01, 389289.02, 374915-01, 40036701, 400367-01
+        re.compile(r"\b([34]\d{5}[\s\-_\.]?\d{2})\b"),
         # Vans: VN000D3HY281, VN0A38G1P0S1
         re.compile(r"\b(VN0[A-Z0-9]{7,10})\b", re.IGNORECASE),
         # Converse: M9160C, 162050C, A06558C (En az 4 rakam içermeli, CLASSIC gibi kelimelerle karışmamalı)

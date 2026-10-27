@@ -133,8 +133,8 @@ class TelegramNotifier:
 
         if analysis.cheaper_source_alert:
             lines.append(f"  • {html.escape(analysis.cheaper_source_alert)}")
-        elif analysis.is_buy_source_cheapest:
-            lines.append("  • ✅ <b>En Uygun Resmi Satıcı Fiyatı Doğrulandı!</b>")
+        elif analysis.is_buy_source_cheapest and analysis.official_sellers_breakdown:
+            lines.append("  • ✅ <b>Piyasadaki En Uygun Resmi Satıcı Fiyatı Doğrulandı!</b>")
 
         lines.extend([
             f"  • 🎯 <b>Önerilen Satış Fiyatımız:</b> <b><code>{sell_str}</code></b>",

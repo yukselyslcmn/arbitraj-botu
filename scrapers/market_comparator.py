@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 from core.arbitrage_engine import ScrapedProduct
 from core.http_client import StealthHttpClient
-from core.parsers import BasketPromotionParser
+from core.parsers import BasketPromotionParser, SKUNormalizer
 from core.storage import StateStorage
 
 logger = logging.getLogger("arbitraj.market_comparator")
@@ -48,6 +48,23 @@ class MarketComparator:
     """
 
     AUTHORIZED_OFFICIAL_SELLERS = {
+        # Pazaryerleri (Platformun kendisi veya yetkili mağazaları)
+        "amazon",
+        "amazon türkiye",
+        "amazon.com.tr",
+        "hepsiburada",
+        "hepsiburada.com",
+        "trendyol",
+        "trendyol.com",
+        "idefix",
+        "idefix.com",
+        "pazarama",
+        "pazarama.com",
+        "n11",
+        "n11.com",
+        "pttavm",
+        "pttavm.com",
+        # Yetkili Zincir ve Distribütör Mağazalar
         "korayspor",
         "koray spor",
         "sportive",
@@ -61,14 +78,28 @@ class MarketComparator:
         "flo",
         "fashfed",
         "fash fed",
-        "amazon",
-        "amazon türkiye",
-        "amazon.com.tr",
-        "hepsiburada",
         "boyner",
+        "beymen",
         "yalı spor",
         "yalispor",
-        "beymen",
+        "sneaks up",
+        "sneaksup",
+        "sporthink",
+        "intersport",
+        "finspor",
+        "sportinn",
+        "dalkılıç spor",
+        "dalkilic",
+        "şampiyon spor",
+        "sampiyon spor",
+        "maratonsport",
+        "morhipo",
+        "etiler spor",
+        "sportime",
+        "sporset",
+        "çukurova spor",
+        "cukurova spor",
+        # Orijinal Marka Mağazaları
         "puma",
         "nike",
         "adidas",
@@ -82,6 +113,12 @@ class MarketComparator:
         "converse",
         "vans",
         "timberland",
+        "tommy hilfiger",
+        "tommy",
+        "gant",
+        "nautica",
+        "helly hansen",
+        "new balance",
     }
 
     GENERIC_SHOE_AND_COLOR_WORDS = re.compile(
@@ -219,6 +256,10 @@ class MarketComparator:
 
         # 1. ÖNCELİK: Marka + Üretici SKU (Akakçe ve pazaryerlerinde %100 kesin eşleşme)
         is_internal_numeric_sku = sku.isdigit() and len(sku) >= 8 and sku.startswith("10")
+        title_sku = SKUNormalizer.extract_sku_from_text(product.title)
+        if title_sku and title_sku != sku:
+            queries.append((f"{brand_clean} {title_sku}".strip(), True))
+
         if sku and len(sku) >= 5 and not is_internal_numeric_sku:
             queries.append((f"{brand_clean} {sku}".strip(), True))
             base_sku = re.sub(r"(?:[\-_]\d{1,3}|[A-Z])$", "", sku)
