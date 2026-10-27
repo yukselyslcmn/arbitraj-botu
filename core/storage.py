@@ -187,3 +187,37 @@ class StateStorage:
 
             other_prices.sort(key=lambda x: x[0])
             return other_prices[0]
+
+    def save_verified_market_floor(
+        self,
+        canonical_sku: str,
+        floor_price: float,
+        floor_source: str,
+        akakce_url: Optional[str] = None,
+    ) -> None:
+        """
+        Akakçe'den doğrulanan piyasa dip fiyatını `data/products_state.json` içine kaydeder.
+        Böylece GitHub Actions (ABD/Avrupa veri merkezi IP'si) üzerinde Akakçe geo-block
+        uygulasa bile doğrulanmış piyasa fiyatı ve Akakçe linki korunur.
+        """
+        with self._lock:
+            sku_entry = self.state["products"].get(canonical_sku)
+            if not sku_entry:
+                return
+            sku_entry["verified_market_floor_price"] = round(float(floor_price), 2)
+            sku_entry["verified_market_floor_source"] = floor_source
+            if akakce_url:
+                sku_entry["verified_akakce_url"] = akakce_url
+
+    def get_verified_market_floor(self, canonical_sku: str) -> Optional[tuple[float, str, Optional[str]]]:
+        """Daha önce doğrulanıp kaydedilmiş Akakçe piyasa dip fiyatını döndürür."""
+        with self._lock:
+            sku_entry = self.state["products"].get(canonical_sku)
+            if not sku_entry:
+                return None
+            price = sku_entry.get("verified_market_floor_price")
+            source = sku_entry.get("verified_market_floor_source")
+            url = sku_entry.get("verified_akakce_url")
+            if isinstance(price, (int, float)) and price > 0 and source:
+                return float(price), str(source), (str(url) if url else None)
+            return None

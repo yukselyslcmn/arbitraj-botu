@@ -2,8 +2,7 @@ name: E-Commerce Arbitrage Radar (24/7 Free Public Runner)
 
 on:
   schedule:
-    # Her 15 dakikada bir çalışır (Public repolarda GitHub Actions dakikaları ücretsiz ve sınırsızdır;
-    # 15 dakikalık aralık hem yeni indirimleri anında yakalar hem de WAF/IP engellerini önler)
+    # Her 15 dakikada bir çalışır
     - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
@@ -24,31 +23,29 @@ concurrency:
 permissions:
   contents: write
 
-env:
-  # GitHub Actions Node.js 20 -> Node.js 24 geçiş uyarısını (deprecation warning) giderir
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-
 jobs:
   scan-and-notify:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-
-      - name: Install Dependencies
+      # Node.js 20 tabanlı eski JavaScript aksiyonlarını (actions/checkout@v4, actions/setup-python@v5)
+      # kullanmak yerine doğrudan Ubuntu 24.04'ün yerleşik Git ve Python 3.12 araçlarını kullanarak
+      # "Node.js 20 is deprecated" uyarısını %100 ortadan kaldırır ve başlatma süresini hızlandırır.
+      - name: Checkout Repository (Native Git)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          git init .
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin "${GITHUB_REF_NAME:-main}"
+          git checkout -B "${GITHUB_REF_NAME:-main}" "origin/${GITHUB_REF_NAME:-main}"
+
+      - name: Set up Python 3.12 Virtual Environment & Install Dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install --upgrade pip -q
+          .venv/bin/pip install -r requirements.txt -q
 
       - name: Run Arbitrage Radar (--once)
         env:
@@ -64,7 +61,7 @@ jobs:
         run: |
           SITES="${INPUT_SITES:-occasion,superstep,instreet,barcin,korayspor}"
           MAX_PAGES="${INPUT_MAX_PAGES:-4}"
-          python main.py --once --sites "$SITES" --max-pages "$MAX_PAGES"
+          .venv/bin/python main.py --once --sites "$SITES" --max-pages "$MAX_PAGES"
 
       - name: Sync & Commit Updated Product State (data/products_state.json)
         run: |

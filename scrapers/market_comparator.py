@@ -18,21 +18,21 @@ class MarketComparator:
     """
     Çapraz Piyasa & Akakçe Kesin Fiyat Doğrulayıcı (`market_comparator.py`).
 
-    Çalışma Prensibi (%100 Doğrulanmış Piyasa Analizi):
+    Çalışma Prensibi (%100 Doğrulanmış Piyasa Analizi + GitHub Actions US IP Koruması):
     1. Öncelikle ürünün spesifik Model Serisi + Cinsiyet (Örn: 'Lacoste T-Clip Kadın Sneaker',
        'Converse Run Star Trainer Sneaker', 'Puma RX 737 Mesh Kadın') ve Marka + SKU ('Puma 401392')
        sorgularıyla Akakçe'de canlı arama yapar.
     2. Akakçe'de Trendyol Plus, Hepsiburada, Amazon, Pazarama, Boyner gibi tüm satıcıların
        listelendiği kartları (`span.pt_v9`, `span.pt_v8`) ayrıştırır; kart başlığında modelin
        veya SKU'nun birebir geçtiğini doğrular ve **en ucuz satıcı fiyatını** (`lowest_price`) baz alır.
-    3. Eşleşen gerçek Akakçe arama/ürün sayfasının adresini `product.verified_akakce_url` içine kaydeder;
-       böylece Telegram mesajındaki 'Akakçe'de Piyasa Fiyatını Gör' butonu hiçbir zaman 'ürün bulunamadı'
-       sayfasına gitmez, doğrudan satıcıların olduğu sayfayı açar.
-    4. Eğer ürün Akakçe'de bulunamazsa kendi çoklu site veritabanımızdaki (`StateStorage`) diğer
-       yetkili satıcıların fiyatını kontrol eder.
-    5. Eğer ürün ne Akakçe'de ne de diğer sitelerde doğrulanabiliyorsa (`UNVERIFIED`), şişirilmiş liste
-       fiyatlarıyla yanıltıcı bildirim atmamak için `sale_price` (kendi vitrin fiyatı) değerini döndürür
-       ve sahte arbitraj sinyali üretilmesini engeller.
+    3. Eşleşen gerçek Akakçe arama/ürün sayfasının adresini `product.verified_akakce_url` ve
+       `StateStorage` (`data/products_state.json`) içine kaydeder.
+    4. Eğer GitHub Actions (ABD veri merkezi IP'si) üzerinde Akakçe geo-block / 403 uygularsa:
+       a) Önce diğer distribütör sitelerdeki çapraz fiyatı (`StateStorage`) kontrol eder.
+       b) Ardından `StateStorage` içinde daha önce kaydedilmiş doğrulanmış Akakçe fiyatını kontrol eder.
+       c) Son olarak, yalnızca vitrin fiyatına (`sale_price`) göre sepette ekstra en az %25 indirimi
+          (`basket_discount_rate >= 25%`) ve spesifik model adı olan ürünlerde şişirilmiş liste
+          fiyatlarına aldanmayan `min(retail_price * 0.72, sale_price * 0.88)` formülünü uygular.
     """
 
     GENERIC_SHOE_AND_COLOR_WORDS = re.compile(
@@ -143,15 +143,6 @@ class MarketComparator:
 
     @classmethod
     def build_search_queries(cls, product: ScrapedProduct) -> list[tuple[str, bool]]:
-        """
-        Akakçe'de en az HTTP isteğiyle en kesin sonucu bulmak için önceliklendirilmiş
-        `(sorgu_metni, sku_sorgusu_mu)` listesi üretir:
-        - Model serisi belli olan ürünlerde (Örn: 'Lacoste T-Clip', 'Converse Run Star Hike', 'Puma RX 737')
-          ilk sırada renk/slash karmaşasından arındırılmış Model + Cinsiyet sorgusu yer alır; çünkü
-          Trendyol ve Hepsiburada satıcılarının tamamı bu model sayfasında toplanır.
-        - SKU indeksleyen markalarda (Nike, Adidas, Puma, New Balance, Asics, Salomon, Skechers)
-          Kök SKU sorgusu da eklenir.
-        """
         queries: list[tuple[str, bool]] = []
         sku = (product.display_sku or "").strip()
         brand_low = (product.brand or "").lower().strip()
@@ -164,14 +155,14 @@ class MarketComparator:
         elif "erkek" in g_low:
             gender_word = "Erkek"
 
-        # 1. Saf Model Serisi + Cinsiyet + Sneaker Sorgusu (En yüksek isabet oranı, tüm satıcıları kapsar)
+        # 1. Saf Model Serisi + Cinsiyet + Sneaker Sorgusu
         if model_tokens:
             core_model_str = " ".join(model_tokens[:4])
             core_q = f"{product.brand} {core_model_str} {gender_word} Sneaker"
             core_q = re.sub(r"\s+", " ", core_q).strip()
             queries.append((core_q, False))
 
-        # 2. Marka + SKU Sorgusu (Sadece SKU indeksleyen markalar veya model adı çıkarılamayanlar için)
+        # 2. Marka + SKU Sorgusu
         is_internal_numeric_sku = sku.isdigit() and len(sku) >= 8 and sku.startswith("10")
         if sku and len(sku) >= 5 and not is_internal_numeric_sku:
             base_sku = re.sub(r"(?:[\-_]\d{1,3}|[A-Z])$", "", sku)
@@ -223,6 +214,13 @@ class MarketComparator:
                 akakce_price, matched_url, match_label = akakce_res
                 if matched_url:
                     product.verified_akakce_url = matched_url
+                if self.storage is not None:
+                    self.storage.save_verified_market_floor(
+                        canonical_sku=product.canonical_sku,
+                        floor_price=akakce_price,
+                        floor_source=match_label,
+                        akakce_url=matched_url,
+                    )
 
                 if cross_site_candidates:
                     cross_site_candidates.sort(key=lambda x: x[0])
@@ -244,25 +242,38 @@ class MarketComparator:
             self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
             return result
 
-        # 5. Doğrulanamayan Ürün Koruması (Kesin Analiz Kuralı):
-        # Eğer ürün ne Akakçe'de ne de diğer sitelerde doğrulanabildiyse, sahte/tahmini
-        # yüksek piyasa fiyatı üretmemek için ürünün kendi indirimli fiyatını baz al.
+        # 5. Yedek 2: StateStorage içinde daha önce doğrulanmış Akakçe fiyatı (GitHub Actions US IP koruması)
+        if self.storage is not None:
+            saved_verified = self.storage.get_verified_market_floor(product.canonical_sku)
+            if saved_verified is not None:
+                sv_price, sv_source, sv_url = saved_verified
+                if sv_url:
+                    product.verified_akakce_url = sv_url
+                result = (round(sv_price, 2), sv_source)
+                self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
+                return result
+
+        # 6. Yedek 3: GitHub Actions (Yurt Dışı IP) Sepet Kampanyası Korumalı Referans Formülü
+        model_tokens = self.extract_model_tokens(product.title, product.brand, product.display_sku)
+        if model_tokens and product.basket_discount_rate >= 25.0 and product.sale_price > product.net_basket_price:
+            queries = self.build_search_queries(product)
+            if queries and not product.verified_akakce_url:
+                product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
+            protected_floor = round(min(product.retail_price * 0.72, product.sale_price * 0.88), 2)
+            result = (protected_floor, "Vitrin & Sepet Korumalı Dip Fiyat (Min Liste x0.72 / Vitrin x0.88)")
+            self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
+            return result
+
+        # 7. Doğrulanamayan / Sepet İndirimsiz Standart Ürün Koruması (Sahte Sinyal Önleyici)
         unverified_floor = round(min(product.retail_price * 0.72, product.net_basket_price), 2)
         result = (unverified_floor, "Doğrulanamadı (Akakçe/Çapraz Eşleşme Yok)")
         self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
         return result
 
     def _query_akakce_floor_price(self, product: ScrapedProduct) -> Optional[tuple[float, str, str]]:
-        """
-        Akakçe arama sayfasından ürünle gerçekten eşleşen kartların en düşük fiyatını
-        (Trendyol Plus, Hepsiburada, Amazon, Pazarama vb. dahil) döndürür.
-        """
         model_tokens = self.extract_model_tokens(product.title, product.brand, product.display_sku)
-        sku_clean = (product.display_sku or "").strip()
         brand_low = (product.brand or "").lower().strip()
 
-        # Eğer ürünün başlığında hiçbir spesifik model adı yoksa (Örn: sadece 'Nautica Erkek Beyaz Sneaker')
-        # ve markası SKU indeksleyen bir marka değilse Akakçe'de rastgele ürünlerle eşleşmemesi için atla
         if not model_tokens and brand_low not in self.SKU_INDEXED_BRANDS:
             return None
 
@@ -270,7 +281,6 @@ class MarketComparator:
         if not queries:
             return None
 
-        # Varsayılan olarak ilk anlamlı sorguyu Telegram linki olarak ata
         product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
 
         min_plausible_price = max(650.0, product.net_basket_price * 0.55)
@@ -296,7 +306,6 @@ class MarketComparator:
                 self._akakce_429_streak = 0
                 html_lower = resp.text.lower()
 
-                # Akakçe 'için herhangi bir ürün bulunamadı. Aşağıdaki ürünler ilginizi çekebilir.' kontrolü
                 if "herhangi bir ürün bulunamadı" in html_lower or "ürün bulunamadı" in html_lower:
                     continue
 
@@ -310,8 +319,6 @@ class MarketComparator:
                 if matched_cards:
                     matched_cards.sort(key=lambda x: x[0])
                     lowest_price, best_card_title, best_card_url = matched_cards[0]
-                    # Kullanıcının tüm satıcı ve renk/numara seçeneklerini görmesi için çalışan arama sayfasını
-                    # veya doğrudan ürün kartı sayfasını bağla
                     product.verified_akakce_url = search_url
                     source_label = (
                         "Akakçe SKU Doğrulamalı En Ucuz"
@@ -351,17 +358,14 @@ class MarketComparator:
 
             card_norm = cls._normalize_tr_ascii(card_title)
 
-            # 1. Alakasız kategori ve çocuk/bebek filtresi
             if any(bad in card_norm for bad in cls.EXCLUDED_CARD_WORDS):
                 continue
 
-            # 2. Marka kontrolü
             if brand_norm and brand_norm not in card_norm:
                 data_mk = cls._normalize_tr_ascii(str(li.get("data-mk") or ""))
                 if brand_norm not in data_mk:
                     continue
 
-            # 3. Cinsiyet çelişkisi kontrolü
             if "erkek" in prod_gender_norm and "kadin" not in prod_gender_norm:
                 if "kadin" in card_norm and "erkek" not in card_norm and "unisex" not in card_norm:
                     continue
@@ -374,7 +378,6 @@ class MarketComparator:
             full_href = f"https://www.akakce.com{raw_href}" if raw_href.startswith("/") else raw_href
             href_norm = cls._normalize_tr_ascii(raw_href)
 
-            # 4. SKU veya Model Serisi Doğrulaması
             sku_matched = False
             if len(sku_norm) >= 5 and not (sku_norm.isdigit() and sku_norm.startswith("10")):
                 if sku_norm in card_norm or sku_norm in href_norm:
@@ -394,7 +397,6 @@ class MarketComparator:
             if not (sku_matched or model_matched):
                 continue
 
-            # 5. Fiyat Çıkarımı (`span.pt_v9, span.pt_v8`)
             price_val = cls._parse_card_price(li)
             if min_price <= price_val <= max_price:
                 verified.append((round(price_val, 2), card_title, full_href))
