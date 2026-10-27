@@ -4,6 +4,15 @@ on:
   schedule:
     # Her 15 dakikada bir çalışır
     - cron: '*/15 * * * *'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'data/products_state.json'
+      - 'docs/**'
+      - 'README.md'
+      - '.gitignore'
+      - 'GEMINI.md'
   workflow_dispatch:
     inputs:
       sites:
@@ -51,7 +60,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          NOTIFY_ON_FIRST_RUN: ${{ vars.NOTIFY_ON_FIRST_RUN || 'False' }}
+          NOTIFY_ON_FIRST_RUN: ${{ vars.NOTIFY_ON_FIRST_RUN || 'True' }}
           MAX_BASKET_PRICE: ${{ vars.MAX_BASKET_PRICE || '5500' }}
           MIN_TOTAL_DISCOUNT_RATE: ${{ vars.MIN_TOTAL_DISCOUNT_RATE || '40' }}
           MIN_NET_PROFIT_TL: ${{ vars.MIN_NET_PROFIT_TL || '550' }}
@@ -75,7 +84,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "Durum dosyasında ve bulut panelinde değişiklik yok, commit atlanıyor."
           else
-            git commit -m "chore(state): sync arbitrage product state and cloud dashboard"
+            git commit -m "chore(state): sync arbitrage product state and cloud dashboard [skip ci]"
             git fetch --depth=25 origin "${GITHUB_REF_NAME:-main}"
             git pull --rebase -X theirs origin "${GITHUB_REF_NAME:-main}"
             git push origin "HEAD:${GITHUB_REF_NAME:-main}"

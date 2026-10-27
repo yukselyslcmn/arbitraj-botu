@@ -180,8 +180,9 @@ class TelegramNotifier:
             return False
 
         self._respect_flood_limit()
+        p = analysis.product
         base_api = f"https://api.telegram.org/bot{self.bot_token}"
-        image_url: Optional[str] = analysis.product.image_url
+        image_url: Optional[str] = p.image_url
 
         public_dash_url = config.PUBLIC_DASHBOARD_URL or "https://yukselyslcmn.github.io/arbitraj-botu/"
         reply_markup = {
