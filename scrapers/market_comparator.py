@@ -16,23 +16,20 @@ logger = logging.getLogger("arbitraj.market_comparator")
 
 class MarketComparator:
     """
-    Çapraz Piyasa & Akakçe Kesin Fiyat Doğrulayıcı (`market_comparator.py`).
+    5 Yetkili Orijinal Mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor) Çapraz Fiyat
+    ve Akakçe Kesin Piyasa Doğrulayıcı (`market_comparator.py`).
 
     Çalışma Prensibi (%100 Doğrulanmış Piyasa Analizi + GitHub Actions US IP Koruması):
-    1. Öncelikle ürünün spesifik Model Serisi + Cinsiyet (Örn: 'Lacoste T-Clip Kadın Sneaker',
-       'Converse Run Star Trainer Sneaker', 'Puma RX 737 Mesh Kadın') ve Marka + SKU ('Puma 401392')
-       sorgularıyla Akakçe'de canlı arama yapar.
-    2. Akakçe'de Trendyol Plus, Hepsiburada, Amazon, Pazarama, Boyner gibi tüm satıcıların
-       listelendiği kartları (`span.pt_v9`, `span.pt_v8`) ayrıştırır; kart başlığında modelin
-       veya SKU'nun birebir geçtiğini doğrular ve **en ucuz satıcı fiyatını** (`lowest_price`) baz alır.
+    1. Öncelikle 5 yetkili orijinal mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor)
+       arasında hem SKU / baz model kodu hem de Marka + Cinsiyet + Model Serisi bazında
+       çapraz fiyat karşılaştırması yapar.
+    2. Aynı zamanda ürünün spesifik Model Serisi + Cinsiyet ve Marka + SKU sorgularıyla
+       Akakçe'de canlı arama yapar; Trendyol Plus, Hepsiburada, Amazon, Boyner vb. tüm satıcıların
+       listelendiği kartları (`span.pt_v9`, `span.pt_v8`) ayrıştırarak en ucuz doğrulanmış fiyatı bulur.
     3. Eşleşen gerçek Akakçe arama/ürün sayfasının adresini `product.verified_akakce_url` ve
        `StateStorage` (`data/products_state.json`) içine kaydeder.
-    4. Eğer GitHub Actions (ABD veri merkezi IP'si) üzerinde Akakçe geo-block / 403 uygularsa:
-       a) Önce diğer distribütör sitelerdeki çapraz fiyatı (`StateStorage`) kontrol eder.
-       b) Ardından `StateStorage` içinde daha önce kaydedilmiş doğrulanmış Akakçe fiyatını kontrol eder.
-       c) Son olarak, yalnızca vitrin fiyatına (`sale_price`) göre sepette ekstra en az %25 indirimi
-          (`basket_discount_rate >= 25%`) ve spesifik model adı olan ürünlerde şişirilmiş liste
-          fiyatlarına aldanmayan `min(retail_price * 0.72, sale_price * 0.88)` formülünü uygular.
+    4. Hem 5 yetkili mağaza çapraz kıyaslaması hem de Akakçe fiyatı mevcutsa ikisinden daha düşük
+       (daha muhafazakâr) olan dip fiyatı baz alır ve kaynağı şeffafça raporlar.
     """
 
     GENERIC_SHOE_AND_COLOR_WORDS = re.compile(
@@ -190,7 +187,9 @@ class MarketComparator:
                 product.verified_akakce_url = cached_url
             return cached_price, cached_src
 
-        # 1. Mevcut çalışma sırasındaki diğer sitelerde aynı canonical_sku var mı kontrol et
+        model_tokens = self.extract_model_tokens(product.title, product.brand, product.display_sku)
+
+        # 1. Mevcut çalışma sırasındaki diğer yetkili mağazalarda aynı canonical_sku var mı kontrol et
         cross_site_candidates: list[tuple[float, str]] = []
         if all_current_run_products:
             for other in all_current_run_products:
@@ -198,11 +197,15 @@ class MarketComparator:
                     if other.net_basket_price > 0:
                         cross_site_candidates.append((other.net_basket_price, other.site_name))
 
-        # 2. StateStorage veritabanında diğer sitelerdeki fiyatları kontrol et
+        # 2. StateStorage veritabanında 5 yetkili mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor)
+        #    arasında SKU, baz model kodu ve Marka + Model Serisi eşleşmesiyle fiyatları kontrol et
         if self.storage is not None:
             stored_cross = self.storage.get_cross_site_floor_price(
                 canonical_sku=product.canonical_sku,
                 exclude_site_key=product.site_key,
+                brand=product.brand,
+                gender=product.gender,
+                model_tokens=model_tokens,
             )
             if stored_cross is not None:
                 cross_site_candidates.append(stored_cross)
@@ -224,21 +227,33 @@ class MarketComparator:
 
                 if cross_site_candidates:
                     cross_site_candidates.sort(key=lambda x: x[0])
-                    if cross_site_candidates[0][0] < akakce_price:
-                        best_cp, best_cs = cross_site_candidates[0]
-                        res_tuple = (round(best_cp, 2), f"Çapraz Site ({best_cs})")
+                    best_cp, best_cs = cross_site_candidates[0]
+                    if best_cp < akakce_price:
+                        res_tuple = (
+                            round(best_cp, 2),
+                            f"Yetkili Mağaza Kıyaslaması ({best_cs}) [Akakçe: {akakce_price:.0f} TL]",
+                        )
                         self._cache[cache_key] = (res_tuple[0], res_tuple[1], matched_url)
                         return res_tuple
+                    res_tuple = (
+                        round(akakce_price, 2),
+                        f"{match_label} [Yetkili Mağaza {best_cs}: {best_cp:.0f} TL]",
+                    )
+                    self._cache[cache_key] = (res_tuple[0], res_tuple[1], matched_url)
+                    return res_tuple
 
                 res_tuple = (round(akakce_price, 2), match_label)
                 self._cache[cache_key] = (res_tuple[0], res_tuple[1], matched_url)
                 return res_tuple
 
-        # 4. Yedek 1: Çoklu site veritabanımızdaki en düşük fiyat (diğer sitedeki en ucuz fiyat)
+        # 4. Yedek 1: 5 Yetkili Orijinal Mağaza veritabanımızdaki en düşük fiyat (diğer mağazadaki en ucuz fiyat)
         if cross_site_candidates:
             cross_site_candidates.sort(key=lambda x: x[0])
             best_cross_price, best_cross_site = cross_site_candidates[0]
-            result = (round(best_cross_price, 2), f"Çapraz Site ({best_cross_site})")
+            queries = self.build_search_queries(product)
+            if queries and not product.verified_akakce_url:
+                product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
+            result = (round(best_cross_price, 2), f"Yetkili Mağaza Kıyaslaması ({best_cross_site})")
             self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
             return result
 
@@ -254,7 +269,6 @@ class MarketComparator:
                 return result
 
         # 6. Yedek 3: GitHub Actions (Yurt Dışı IP) Sepet Kampanyası Korumalı Referans Formülü
-        model_tokens = self.extract_model_tokens(product.title, product.brand, product.display_sku)
         if model_tokens and product.basket_discount_rate >= 25.0 and product.sale_price > product.net_basket_price:
             queries = self.build_search_queries(product)
             if queries and not product.verified_akakce_url:

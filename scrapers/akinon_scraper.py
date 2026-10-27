@@ -493,6 +493,7 @@ class AkinonScraper(BaseScraper):
 
         results: list[ScrapedProduct] = []
         apply_strict_price_prefilter = limit is None
+        enriched_candidate_count = 0
 
         for canonical_sku, grp in grouped_raw.items():
             if canonical_sku in self._seen_canonical_skus:
@@ -513,19 +514,18 @@ class AkinonScraper(BaseScraper):
             if prelim_price.net_basket_price <= 0:
                 continue
 
-            if apply_strict_price_prefilter:
-                if prelim_price.net_basket_price > config.MAX_BASKET_PRICE:
-                    continue
-                min_disc_threshold = (
-                    25.0 if (self.site_key == "barcin" and len(results) < 5) else config.MIN_TOTAL_DISCOUNT_RATE
-                )
-                if prelim_price.total_discount_rate < min_disc_threshold:
-                    continue
+            min_disc_threshold = (
+                25.0 if (self.site_key == "barcin" and enriched_candidate_count < 5) else config.MIN_TOTAL_DISCOUNT_RATE
+            )
+            is_enrichment_candidate = (not apply_strict_price_prefilter) or (
+                prelim_price.net_basket_price <= config.MAX_BASKET_PRICE
+                and prelim_price.total_discount_rate >= min_disc_threshold
+            )
 
             self._seen_canonical_skus.add(canonical_sku)
 
             # Yalnızca filtreyi geçen aday ürünler için detay JSON'undan beden kırılımını çek
-            if not grp["raw_sizes"] and self.enrich_missing_sizes and grp["url"]:
+            if is_enrichment_candidate and not grp["raw_sizes"] and self.enrich_missing_sizes and grp["url"]:
                 full_prod_url = self.build_full_url(grp["url"])
                 det_sizes, det_basket, det_campaigns, det_stock = self.fetch_product_detail_enrichment(full_prod_url)
                 grp["raw_sizes"].extend(det_sizes)
@@ -552,7 +552,9 @@ class AkinonScraper(BaseScraper):
                 raw_sizes=grp["raw_sizes"],
                 total_stock=grp["total_stock"],
             )
-            if prod and prod.sizes:
+            if prod and (prod.sizes or (limit is None and not is_enrichment_candidate)):
+                if prod.sizes:
+                    enriched_candidate_count += 1
                 results.append(prod)
                 if limit and len(results) >= limit:
                     break

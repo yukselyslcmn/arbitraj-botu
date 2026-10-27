@@ -217,6 +217,8 @@ SITE_TARGETS: dict[str, dict] = {
         "categories": [
             {"url": "https://www.superstep.com.tr/indirim-erkek-ayakkabi/", "gender": "Erkek"},
             {"url": "https://www.superstep.com.tr/indirim-kadin-ayakkabi/", "gender": "Kadın"},
+            {"url": "https://www.superstep.com.tr/erkek-sneaker/", "gender": "Erkek"},
+            {"url": "https://www.superstep.com.tr/kadin-sneaker/", "gender": "Kadın"},
         ],
     },
     "instreet": {
@@ -261,6 +263,8 @@ SITE_TARGETS: dict[str, dict] = {
         "categories": [
             {"url": "https://www.korayspor.com/erkek-indirimli-urunler/", "gender": "Erkek"},
             {"url": "https://www.korayspor.com/kadin-indirimli-urunler/", "gender": "Kadın"},
+            {"url": "https://www.korayspor.com/erkek-spor-ayakkabi/", "gender": "Erkek"},
+            {"url": "https://www.korayspor.com/kadin-spor-ayakkabi/", "gender": "Kadın"},
         ],
     },
 }

@@ -179,12 +179,12 @@ class BarcinKorayScraper(AkinonScraper):
             if prelim_price.net_basket_price <= 0:
                 continue
 
-            if apply_strict_price_prefilter:
-                if prelim_price.net_basket_price > config.MAX_BASKET_PRICE:
-                    continue
-                min_disc_threshold = 25.0 if len(results) < 5 else config.MIN_TOTAL_DISCOUNT_RATE
-                if prelim_price.total_discount_rate < min_disc_threshold:
-                    continue
+            enriched_count = sum(1 for r in results if r.sizes)
+            min_disc_threshold = 25.0 if enriched_count < 5 else config.MIN_TOTAL_DISCOUNT_RATE
+            is_enrichment_candidate = (not apply_strict_price_prefilter) or (
+                prelim_price.net_basket_price <= config.MAX_BASKET_PRICE
+                and prelim_price.total_discount_rate >= min_disc_threshold
+            )
 
             raw_sku = str(item.get("sku") or item.get("code") or item.get("id") or "").strip()
             docs = item.get("documents") or []
@@ -198,7 +198,7 @@ class BarcinKorayScraper(AkinonScraper):
             raw_sizes: list[dict[str, Any]] = []
             total_stock: Optional[int] = None
 
-            if self.enrich_missing_sizes:
+            if is_enrichment_candidate and self.enrich_missing_sizes:
                 raw_sizes, total_stock = self._fetch_korayspor_detail_sizes(full_prod_url)
 
             prod = self.build_scraped_product(
@@ -214,7 +214,7 @@ class BarcinKorayScraper(AkinonScraper):
                 raw_sizes=raw_sizes,
                 total_stock=total_stock,
             )
-            if prod and prod.sizes:
+            if prod and (prod.sizes or (limit is None and not is_enrichment_candidate)):
                 results.append(prod)
                 if limit and len(results) >= limit:
                     break

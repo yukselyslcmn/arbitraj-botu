@@ -14,7 +14,9 @@ logger = logging.getLogger("arbitraj.storage")
 class StateStorage:
     """
     `data/products_state.json` üzerinde ürün durumlarını `canonical_sku` ve `site_key`
-    bazında saklayan, ilk çalışma spam korumasını ve %5 ekstra fiyat düşüş kuralını yöneten sınıf.
+    bazında saklayan, ilk çalışma spam korumasını, 5 yetkili orijinal mağaza (Occasion,
+    SuperStep, InStreet, Barçın, Korayspor) arası çapraz fiyat kıyaslamasını ve
+    %5 ekstra fiyat düşüş kuralını yöneten sınıf.
     """
 
     def __init__(self, state_file: Path = config.STATE_FILE_PATH) -> None:
@@ -86,15 +88,21 @@ class StateStorage:
                     "display_sku": product.display_sku,
                     "brand": product.brand,
                     "title": product.title,
+                    "gender": product.gender,
                     "sites": {},
                 },
             )
+            if not sku_map.get("gender") and product.gender:
+                sku_map["gender"] = product.gender
             sites_map = sku_map.setdefault("sites", {})
             existing_site = sites_map.get(product.site_key, {})
 
             lowest_seen = existing_site.get("lowest_seen_price")
             if lowest_seen is None or product.net_basket_price < lowest_seen:
                 lowest_seen = product.net_basket_price
+
+            new_sizes = [s.normalized_size for s in product.sizes] if product.sizes else existing_site.get("sizes", [])
+            new_labels = [s.display_label for s in product.sizes] if product.sizes else existing_site.get("size_labels", [])
 
             sites_map[product.site_key] = {
                 "site_name": product.site_name,
@@ -105,8 +113,8 @@ class StateStorage:
                 "net_basket_price": product.net_basket_price,
                 "total_discount_rate": product.total_discount_rate,
                 "campaign_name": product.campaign_name,
-                "sizes": [s.normalized_size for s in product.sizes],
-                "size_labels": [s.display_label for s in product.sizes],
+                "sizes": new_sizes,
+                "size_labels": new_labels,
                 "lowest_seen_price": lowest_seen,
                 "lowest_notified_price": existing_site.get("lowest_notified_price"),
                 "last_notified_at": existing_site.get("last_notified_at"),
@@ -162,31 +170,86 @@ class StateStorage:
                 site_entry["lowest_notified_price"] = product.net_basket_price
             site_entry["last_notified_at"] = now_iso
 
-    def get_cross_site_floor_price(self, canonical_sku: str, exclude_site_key: str) -> Optional[tuple[float, str]]:
+    def get_cross_site_floor_price(
+        self,
+        canonical_sku: str,
+        exclude_site_key: str,
+        brand: Optional[str] = None,
+        gender: Optional[str] = None,
+        model_tokens: Optional[list[str]] = None,
+    ) -> Optional[tuple[float, str]]:
         """
-        Veritabanımızda aynı `canonical_sku` koduna sahip diğer sitelerdeki en düşük
-        satış/sepet fiyatını döndürür (Akakçe yedeği ve çapraz site doğrulaması için).
+        5 yetkili orijinal mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor) arasında:
+        1. Birebir `canonical_sku` veya baz model kodu (ör. `747CFA0002` <-> `747CFA000221G`) eşleşmesi,
+        2. Aynı Marka + Cinsiyet + Model Serisi (`model_tokens`) eşleşmesi
+        yaparak diğer yetkili mağazalardaki en düşük satış/sepet fiyatını döndürür.
         """
         with self._lock:
-            sku_entry = self.state["products"].get(canonical_sku)
-            if not sku_entry:
-                return None
+            products_dict = self.state.get("products", {})
+            sku_clean = (canonical_sku or "").upper().strip()
+            is_internal_num = sku_clean.isdigit() and len(sku_clean) >= 8 and sku_clean.startswith("10")
+            base_prefix = sku_clean[:10] if (len(sku_clean) >= 7 and not is_internal_num) else ""
 
-            sites_map = sku_entry.get("sites", {})
-            other_prices: list[tuple[float, str]] = []
-            for s_key, s_data in sites_map.items():
-                if s_key == exclude_site_key:
+            sku_matches: list[tuple[float, str]] = []
+            model_matches: list[tuple[float, str]] = []
+
+            brand_low = (brand or "").lower().strip()
+            gender_low = (gender or "").lower().strip()
+            sig_tokens = [t.lower() for t in (model_tokens or []) if len(t) >= 2]
+
+            for other_sku, sku_entry in products_dict.items():
+                if not isinstance(sku_entry, dict):
                     continue
-                price = s_data.get("net_basket_price") or s_data.get("sale_price")
-                s_name = s_data.get("site_name", s_key)
-                if isinstance(price, (int, float)) and price > 0:
-                    other_prices.append((float(price), s_name))
+                sites_map = sku_entry.get("sites", {})
+                if not isinstance(sites_map, dict):
+                    continue
 
-            if not other_prices:
-                return None
+                other_sku_clean = str(other_sku).upper().strip()
+                is_sku_match = False
+                if other_sku_clean == sku_clean:
+                    is_sku_match = True
+                elif base_prefix and len(other_sku_clean) >= 7 and not other_sku_clean.isdigit():
+                    if other_sku_clean.startswith(base_prefix) or sku_clean.startswith(other_sku_clean[:10]):
+                        is_sku_match = True
 
-            other_prices.sort(key=lambda x: x[0])
-            return other_prices[0]
+                is_model_match = False
+                if not is_sku_match and brand_low and sig_tokens:
+                    entry_brand = str(sku_entry.get("brand") or "").lower().strip()
+                    if entry_brand == brand_low:
+                        entry_title = str(sku_entry.get("title") or "").lower()
+                        entry_gender = str(sku_entry.get("gender") or "").lower()
+                        gender_ok = True
+                        if "erkek" in gender_low and ("kadın" in entry_gender or "kadin" in entry_title):
+                            if "erkek" not in entry_title and "unisex" not in entry_title:
+                                gender_ok = False
+                        elif ("kadın" in gender_low or "kadin" in gender_low) and "erkek" in entry_title:
+                            if "kadın" not in entry_title and "kadin" not in entry_title and "unisex" not in entry_title:
+                                gender_ok = False
+
+                        if gender_ok and all(tok in entry_title for tok in sig_tokens[:2]):
+                            is_model_match = True
+
+                if not (is_sku_match or is_model_match):
+                    continue
+
+                for s_key, s_data in sites_map.items():
+                    if s_key == exclude_site_key or not isinstance(s_data, dict):
+                        continue
+                    price = s_data.get("net_basket_price") or s_data.get("sale_price")
+                    s_name = str(s_data.get("site_name") or s_key)
+                    if isinstance(price, (int, float)) and price > 0:
+                        if is_sku_match:
+                            sku_matches.append((float(price), s_name))
+                        else:
+                            model_matches.append((float(price), f"{s_name} Model Eşleşmesi"))
+
+            if sku_matches:
+                sku_matches.sort(key=lambda x: x[0])
+                return sku_matches[0]
+            if model_matches:
+                model_matches.sort(key=lambda x: x[0])
+                return model_matches[0]
+            return None
 
     def save_verified_market_floor(
         self,
