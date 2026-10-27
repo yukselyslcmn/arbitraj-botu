@@ -1,5 +1,6 @@
 import html
 import logging
+import socket
 from typing import Optional
 
 import config
@@ -13,17 +14,23 @@ from scrapers.market_comparator import MarketComparator
 logger = logging.getLogger("arbitraj.telegram_commands")
 
 
+def get_local_network_ip() -> str:
+    """Yerel ağ (Wi-Fi / LAN) IP adresini tespit eder (Telefondan web paneline erişim için)."""
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return str(ip)
+    except Exception:
+        return "127.0.0.1"
+
+
 class TelegramCommandHandler:
     """
-    İki yönlü İnteraktif Telegram Komut İstemcisi (`getUpdates`).
-    Herhangi bir ücretli webhook sunucusuna ihtiyaç duymadan hem yerel döngüde
-    hem de GitHub Actions cron çalışmalarında bekleyen kullanıcı komutlarını okur ve yanıtlar:
-      - `/yardim` veya `/start` : Komut rehberini gösterir.
-      - `/durum`                : Taranan mağaza/ürün istatistiklerini ve aktif filtre eşiklerini gösterir.
-      - `/firsatlar`            : Veritabanındaki en yüksek ROI'li ilk 5 arbitraj fırsatını listeler.
-      - `/ara <model veya SKU>` : 6+ yetkili mağaza veritabanında ve canlı Akakçe'de ürün arar, kâr simülasyonu yapar.
-      - `/filtre <kar> <roi>`   : Minimum net kâr (TL) ve ROI (%) eşiklerini kalıcı olarak günceller.
-      - `/takip <sku> <fiyat>`  : Belirtilen ürün kodunu hedef fiyat alarm listesine (`watchlist`) ekler.
+    İki yönlü İnteraktif Telegram Komut ve Mesaj İstemcisi (`getUpdates`).
+    Kullanıcı sohbetten ne yazarsa yazsın hem komutları (/durum, /ara, /filtre, /takip)
+    çalıştırır hem de tek tıkla tarayıcıda açılacak Web Paneli linklerini iletir.
     """
 
     def __init__(
@@ -44,19 +51,22 @@ class TelegramCommandHandler:
     def is_configured(self) -> bool:
         return bool(self.bot_token and self.chat_id and "ornek_bot_token" not in self.bot_token)
 
-    def send_reply(self, text: str) -> bool:
+    def send_reply(self, text: str, reply_markup: Optional[dict] = None) -> bool:
         if not self.is_configured:
             return False
         base_api = f"https://api.telegram.org/bot{self.bot_token}"
+        payload = {
+            "chat_id": self.chat_id,
+            "text": text,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": False,
+        }
+        if reply_markup:
+            payload["reply_markup"] = reply_markup
         try:
             resp = self.client.post(
                 f"{base_api}/sendMessage",
-                json_payload={
-                    "chat_id": self.chat_id,
-                    "text": text,
-                    "parse_mode": "HTML",
-                    "disable_web_page_preview": True,
-                },
+                json_payload=payload,
                 skip_throttle=True,
             )
             return bool(resp and resp.status_code == 200 and resp.json().get("ok"))
@@ -65,7 +75,7 @@ class TelegramCommandHandler:
             return False
 
     def process_pending_commands(self) -> int:
-        """Bekleyen Telegram komutlarını (`getUpdates`) çeker, çalıştırır ve offset'i kaydeder."""
+        """Bekleyen Telegram mesajlarını ve komutlarını (`getUpdates`) çeker, çalıştırır."""
         if not self.is_configured:
             return 0
 
@@ -102,54 +112,125 @@ class TelegramCommandHandler:
             msg = upd.get("message") or upd.get("edited_message") or {}
             chat_obj = msg.get("chat") or {}
             sender_chat_id = str(chat_obj.get("id") or "").strip()
-            # Güvenlik: Sadece yetkili TELEGRAM_CHAT_ID'den gelen komutları kabul et
+            # Güvenlik: Sadece yetkili TELEGRAM_CHAT_ID'den gelen mesajları kabul et
             if sender_chat_id != self.chat_id:
                 continue
 
             raw_text = str(msg.get("text") or "").strip()
-            if not raw_text.startswith("/"):
+            if not raw_text:
                 continue
 
-            self._dispatch_command(raw_text)
+            self._dispatch_message(raw_text)
             processed += 1
 
         return processed
 
-    def _dispatch_command(self, raw_text: str) -> None:
+    def _dispatch_message(self, raw_text: str) -> None:
         parts = raw_text.split()
-        cmd = parts[0].lower().split("@")[0]
+        first_token = parts[0].lower().split("@")[0]
         args = parts[1:]
+        text_lower = raw_text.lower()
 
-        if cmd in ("/start", "/yardim", "/help"):
-            self.send_reply(self._build_help_message())
-        elif cmd in ("/durum", "/status"):
+        # 1. Doğrudan Web Panel Talebi veya Panel Anahtar Kelimeleri
+        panel_keywords = ("panel", "link", "web", "site", "dashboard", "göster", "veriler", "aç", "ac", "arayüz", "ekran")
+        if first_token in ("/panel", "/web", "/link", "/dashboard") or any(kw in text_lower for kw in panel_keywords):
+            self._send_web_panel_link()
+            return
+
+        # 2. Belirli Komutlar
+        if first_token in ("/start", "/yardim", "/help"):
+            self._send_help_and_panel()
+        elif first_token in ("/durum", "/status"):
             self.send_reply(self._build_status_message())
-        elif cmd in ("/firsatlar", "/top"):
+        elif first_token in ("/firsatlar", "/top"):
             self.send_reply(self._build_top_opportunities_message())
-        elif cmd in ("/ara", "/search"):
+        elif first_token in ("/ara", "/search"):
             self.send_reply(self._handle_search_command(" ".join(args)))
-        elif cmd in ("/filtre", "/filter"):
+        elif first_token in ("/filtre", "/filter"):
             self.send_reply(self._handle_filter_command(args))
-        elif cmd in ("/takip", "/watch"):
+        elif first_token in ("/takip", "/watch"):
             self.send_reply(self._handle_watch_command(args))
         else:
-            self.send_reply(
-                "ℹ️ Bilinmeyen komut. Kullanılabilir komutları görmek için <code>/yardim</code> yazabilirsiniz."
-            )
+            # Kullanıcı herhangi serbest bir metin yazdığında hem panel linkini hem komutları ver
+            self._send_friendly_default_reply(raw_text)
 
-    @staticmethod
-    def _build_help_message() -> str:
-        return "\n".join(
+    def _get_panel_urls(self) -> tuple[str, str]:
+        local_url = "http://localhost:8080"
+        lan_ip = get_local_network_ip()
+        lan_url = f"http://{lan_ip}:8080"
+        return local_url, lan_url
+
+    def _send_web_panel_link(self) -> None:
+        local_url, lan_url = self._get_panel_urls()
+        products = self.storage.state.get("products", {})
+        total_skus = len(products)
+
+        text = "\n".join(
             [
-                "🤖 <b>Türkiye E-Ticaret Arbitraj &amp; Flipping Radarı — Komut Paneli</b>",
+                "🌐 <b>E-TİCARET ARBİTRAJ WEB KONTROL PANELİ</b>",
                 "",
-                "📊 <code>/durum</code> — Taranan yetkili mağaza istatistiklerini ve aktif eşikleri gösterir.",
-                "🔥 <code>/firsatlar</code> — Veritabanındaki en yüksek kârlı ilk 5 fırsatı listeler.",
-                "🔍 <code>/ara &lt;model veya SKU&gt;</code> — Tüm yetkili mağazalarda ve Akakçe'de fiyat/kâr analizi yapar (Örn: <code>/ara IF6491</code> veya <code>/ara Handball Spezial</code>).",
-                "⚙️ <code>/filtre &lt;min_kar_tl&gt; &lt;min_roi_yuzde&gt;</code> — Bildirim eşiklerini günceller (Örn: <code>/filtre 600 30</code>).",
-                "🎯 <code>/takip &lt;SKU&gt; &lt;hedef_fiyat&gt;</code> — Ürünü özel fiyat alarm listesine ekler (Örn: <code>/takip IF6491 3200</code>).",
+                "Verileri grafikler, kâr simülatörü, beden filtreleri ve hazır ilan şablonlarıyla tarayıcınızda açmak için aşağıdaki linkleri kullanabilirsiniz:",
+                "",
+                f"🖥️ <b>Bilgisayarınız İçin:</b>\n👉 <a href=\"{local_url}\">{local_url}</a>",
+                "",
+                f"📱 <b>Telefonunuz İçin (Aynı Wi-Fi):</b>\n👉 <a href=\"{lan_url}\">{lan_url}</a>",
+                "",
+                f"📊 <b>Veritabanı Durumu:</b> <code>{total_skus} benzersiz model</code> hazır!",
+                "💡 <i>Eğer panel bilgisayarınızda henüz açık değilse <code>5_WEB_PANELINI_AC.bat</code> dosyasına çift tıklayarak başlatabilirsiniz.</i>",
             ]
         )
+        reply_markup = {
+            "inline_keyboard": [
+                [{"text": "🌐 Web Panelini Aç (Bilgisayar)", "url": local_url}],
+                [{"text": "📱 Web Panelini Aç (Telefon / Wi-Fi)", "url": lan_url}],
+            ]
+        }
+        self.send_reply(text, reply_markup=reply_markup)
+
+    def _send_help_and_panel(self) -> None:
+        local_url, lan_url = self._get_panel_urls()
+        text = "\n".join(
+            [
+                "🤖 <b>Türkiye E-Ticaret Arbitraj &amp; Flipping Radarı</b>",
+                "",
+                "🌐 <b>Web Paneli:</b> Tarayıcıda açmak için <code>/panel</code> yazabilir veya aşağıdaki butonlara tıklayabilirsiniz.",
+                "",
+                "<b>Kullanabileceğiniz Komutlar:</b>",
+                "📊 <code>/durum</code> — 7 yetkili mağaza istatistikleri ve aktif eşikler",
+                "🔥 <code>/firsatlar</code> — En yüksek kârlı ilk 5 fırsat",
+                "🔍 <code>/ara &lt;model/SKU&gt;</code> — Canlı arama ve anında ilan şablonu (Örn: <code>/ara IF6491</code>)",
+                "⚙️ <code>/filtre &lt;kar&gt; &lt;roi&gt;</code> — Eşikleri güncelle (Örn: <code>/filtre 600 30</code>)",
+                "🎯 <code>/takip &lt;SKU&gt; &lt;fiyat&gt;</code> — Özel fiyat alarmı kur (Örn: <code>/takip IF6491 3200</code>)",
+            ]
+        )
+        reply_markup = {
+            "inline_keyboard": [
+                [{"text": "🌐 Web Kontrol Panelini Aç", "url": local_url}],
+            ]
+        }
+        self.send_reply(text, reply_markup=reply_markup)
+
+    def _send_friendly_default_reply(self, user_msg: str) -> None:
+        local_url, lan_url = self._get_panel_urls()
+        safe_msg = html.escape(user_msg[:60])
+        text = "\n".join(
+            [
+                f"👋 <i>'{safe_msg}'</i> mesajınızı aldım!",
+                "",
+                "Tüm fırsatları, filtreleri ve grafikleri incelemek için <b>Web Kontrol Panelini</b> açabilirsiniz:",
+                f"👉 <b>Bilgisayarınızda:</b> <a href=\"{local_url}\">{local_url}</a>",
+                f"👉 <b>Telefonunuzda (Wi-Fi):</b> <a href=\"{lan_url}\">{lan_url}</a>",
+                "",
+                "🔍 Ayrıca doğrudan bir model aramak isterseniz: <code>/ara IF6491</code>",
+                "📋 Tüm komutları görmek için: <code>/yardim</code>",
+            ]
+        )
+        reply_markup = {
+            "inline_keyboard": [
+                [{"text": "🌐 Web Panelini Aç", "url": local_url}],
+            ]
+        }
+        self.send_reply(text, reply_markup=reply_markup)
 
     def _build_status_message(self) -> str:
         products = self.storage.state.get("products", {})
@@ -164,6 +245,7 @@ class TelegramCommandHandler:
 
         stores_str = ", ".join(f"<b>{html.escape(k)}:</b> {v}" for k, v in sorted(store_counts.items())) or "Henüz yok"
         watchlist = self.storage.get_watchlist()
+        local_url, _ = self._get_panel_urls()
 
         return "\n".join(
             [
@@ -178,6 +260,8 @@ class TelegramCommandHandler:
                 f"  • Minimum Toplam İndirim: <code>%{config.MIN_TOTAL_DISCOUNT_RATE:.0f}</code>",
                 f"  • Minimum Gardrops Net Kâr: <code>{config.MIN_NET_PROFIT_TL:.0f} TL</code>",
                 f"  • Minimum ROI: <code>%{config.MIN_ROI_PERCENT:.0f}</code>",
+                "",
+                f"🌐 <b>Web Paneli:</b> <a href=\"{local_url}\">{local_url}</a>",
             ]
         )
 
@@ -196,6 +280,8 @@ class TelegramCommandHandler:
                 f'<a href="{html.escape(p.url, quote=True)}">Mağazaya Git</a>'.replace(",", ".")
             )
             lines.append("")
+        local_url, _ = self._get_panel_urls()
+        lines.append(f"🌐 <b>Tüm 50+ fırsatı Web Panelinde Gör:</b> <a href=\"{local_url}\">{local_url}</a>")
         return "\n".join(lines)
 
     def _handle_search_command(self, query: str) -> str:
