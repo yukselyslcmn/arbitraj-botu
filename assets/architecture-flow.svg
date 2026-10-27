@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="100%" height="100%">
+  <defs>
+    <linearGradient id="flowBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="320" rx="16" fill="url(#flowBg)" stroke="#334155" stroke-width="1.5"/>
+  <text x="600" y="38" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#f8fafc">
+    UÇTAN UCA ÇAPRAZ MAĞAZA &amp; PİYASA ARBİTRAJ MİMARİSİ
+  </text>
+
+  <!-- Step 1 -->
+  <g transform="translate(35, 65)">
+    <rect width="250" height="215" rx="12" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+    <rect x="16" y="16" width="80" height="24" rx="6" fill="#1d4ed8"/>
+    <text x="56" y="32" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">1. KAZIMA</text>
+    <text x="16" y="64" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#f8fafc">5 Yetkili Orijinal Mağaza</text>
+    <text x="16" y="90" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Occasion &amp; SuperStep (Akinon)</text>
+    <text x="16" y="112" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• InStreet (Next.js App State)</text>
+    <text x="16" y="134" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Barçın &amp; Korayspor (JSON/SSR)</text>
+    <rect x="16" y="156" width="218" height="42" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="125" y="175" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#60a5fa">StealthHttpClient</text>
+    <text x="125" y="191" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="10" fill="#94a3b8">curl_cffi → cloudscraper → httpx</text>
+  </g>
+
+  <line x1="285" y1="172" x2="322" y2="172" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 2 -->
+  <g transform="translate(330, 65)">
+    <rect width="250" height="215" rx="12" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+    <rect x="16" y="16" width="110" height="24" rx="6" fill="#0e7490"/>
+    <text x="71" y="32" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">2. AYRIŞTIRMA</text>
+    <text x="16" y="64" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#f8fafc">Beden &amp; Sepet Kampanyası</text>
+    <text x="16" y="90" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Kesirli Beden: 42 2/3 → 42.5</text>
+    <text x="16" y="112" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Erkek: 41–46 | Kadın: 37–40.5</text>
+    <text x="16" y="134" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Sepette Ekstra % / TL İndirim</text>
+    <rect x="16" y="156" width="218" height="42" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="125" y="175" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#22d3ee">SizeNormalizer &amp; BasketParser</text>
+    <text x="125" y="191" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="10" fill="#94a3b8">Kanonic SKU + Net Sepet Maliyeti</text>
+  </g>
+
+  <line x1="580" y1="172" x2="617" y2="172" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 3 -->
+  <g transform="translate(625, 65)">
+    <rect width="250" height="215" rx="12" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
+    <rect x="16" y="16" width="125" height="24" rx="6" fill="#6d28d9"/>
+    <text x="78.5" y="32" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">3. DOĞRULAMA</text>
+    <text x="16" y="64" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#f8fafc">5 Mağaza + Akakçe Kıyas</text>
+    <text x="16" y="90" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• 5 Mağaza Çapraz Fiyat İndeksi</text>
+    <text x="16" y="112" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Akakçe En Ucuz Satıcı Kontrolü</text>
+    <text x="16" y="134" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Model + Cinsiyet + SKU Filtresi</text>
+    <rect x="16" y="156" width="218" height="42" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="125" y="175" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#c4b5fd">MarketComparator &amp; Storage</text>
+    <text x="125" y="191" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="10" fill="#94a3b8">Minimum Muhafazakâr Dip Fiyat</text>
+  </g>
+
+  <line x1="875" y1="172" x2="912" y2="172" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Step 4 -->
+  <g transform="translate(920, 65)">
+    <rect width="245" height="215" rx="12" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+    <rect x="16" y="16" width="120" height="24" rx="6" fill="#047857"/>
+    <text x="76" y="32" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">4. BİLDİRİM</text>
+    <text x="16" y="64" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="15" font-weight="800" fill="#f8fafc">Net Kâr &amp; Telegram Alarmı</text>
+    <text x="16" y="90" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Gardrops/Sahibinden (%6 + 95₺)</text>
+    <text x="16" y="112" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• Dolap (%15 + 95₺ Kargo)</text>
+    <text x="16" y="134" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="12" fill="#cbd5e1">• ≥ 500 TL Kâr &amp; ≥ %25 ROI Eşiği</text>
+    <rect x="16" y="156" width="213" height="42" rx="8" fill="#0f172a" stroke="#334155"/>
+    <text x="122.5" y="175" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="700" fill="#34d399">TelegramNotifier (sendPhoto)</text>
+    <text x="122.5" y="191" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="10" fill="#94a3b8">Inline Butonlar + Spam Koruması</text>
+  </g>
+</svg>

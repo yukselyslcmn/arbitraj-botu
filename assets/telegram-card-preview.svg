@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="tgBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="shoeBg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Frame -->
+  <rect width="560" height="520" rx="20" fill="url(#tgBg)" stroke="#334155" stroke-width="2"/>
+
+  <!-- Message Bubble -->
+  <rect x="28" y="22" width="504" height="412" rx="16" fill="#17212b" stroke="#2b5278" stroke-width="1.2"/>
+
+  <!-- Product Photo Header inside Bubble -->
+  <rect x="38" y="32" width="484" height="125" rx="12" fill="url(#shoeBg)"/>
+  <g transform="translate(175, 48)">
+    <!-- Stylized Sneaker Graphic -->
+    <path d="M15,62 C25,62 42,40 62,22 C74,34 95,42 128,45 C158,48 188,52 195,66 C198,72 195,78 185,78 L12,78 C5,78 4,62 15,62 Z" fill="#111827"/>
+    <path d="M10,74 L192,74 C196,74 198,82 190,84 L12,84 C6,84 6,74 10,74 Z" fill="#10b981"/>
+    <circle cx="45" cy="64" r="5" fill="#38bdf8"/>
+    <circle cx="65" cy="64" r="5" fill="#38bdf8"/>
+  </g>
+  <rect x="52" y="44" width="138" height="24" rx="6" fill="#111827"/>
+  <text x="121" y="60" text-anchor="middle" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="11" font-weight="800" fill="#34d399">SUPERSTEP ORİJİNAL</text>
+
+  <!-- Telegram Text Content -->
+  <g transform="translate(46, 178)" font-family="Segoe UI, Inter, Arial, sans-serif">
+    <text x="0" y="0" font-size="14" font-weight="800" fill="#fbbf24">🔥 YENİ ARBİTRAJ FIRSATI | ⭐ Puan: 84/100</text>
+    <text x="0" y="24" font-size="14" font-weight="700" fill="#ffffff">🏷 Adidas Handball Spezial Unisex Sneaker (IF6491)</text>
+    <text x="0" y="46" font-size="12.5" fill="#93c5fd">🏪 Mağaza: SuperStep  |  🎯 Kampanya: Sepette %30 İndirim</text>
+
+    <line x1="0" y1="58" x2="468" y2="58" stroke="#2b5278" stroke-width="1"/>
+
+    <text x="0" y="80" font-size="12.5" fill="#cbd5e1">💳 Liste Fiyatı: <tspan text-decoration="line-through" fill="#94a3b8">6.599 TL</tspan>  •  Vitrin: 4.619 TL</text>
+    <text x="0" y="102" font-size="13.5" font-weight="800" fill="#34d399">🛒 Sepette Net Alış: 3.233 TL (%51.0 Toplam İndirim)</text>
+    <text x="0" y="124" font-size="12.5" font-weight="600" fill="#f8fafc">📊 Piyasa En Ucuz: 5.499 TL (Akakçe &amp; Yetkili Mağaza Kıyas)</text>
+    <text x="0" y="146" font-size="12.5" font-weight="700" fill="#38bdf8">🏷 Önerilen Hızlı Satış Fiyatı (%12 İskonto): 4.839 TL</text>
+
+    <line x1="0" y1="158" x2="468" y2="158" stroke="#2b5278" stroke-width="1"/>
+
+    <text x="0" y="180" font-size="13" font-weight="800" fill="#6ee7b7">💰 Gardrops / Sahibinden Net Kâr: +1.221 TL (%37.8 ROI)</text>
+    <text x="0" y="200" font-size="12.5" font-weight="700" fill="#a7f3d0">📦 Dolap (%15 Komisyon + Kargo) Net: +785 TL (%24.3 ROI)</text>
+    <text x="0" y="222" font-size="12.5" font-weight="700" fill="#fde68a">👟 Stoktaki Hedef Bedenler: 41, 42, 42.5, 43, 44</text>
+    <text x="0" y="242" font-size="11.5" fill="#f87171">🚨 Stok Uyarısı: Kritik Stok (Son 4 Adet!) — Hızlı Tükenebilir</text>
+  </g>
+
+  <!-- Inline Keyboard Buttons -->
+  <g transform="translate(28, 442)" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="13" font-weight="700">
+    <rect x="0" y="0" width="248" height="44" rx="10" fill="#2b5278"/>
+    <text x="124" y="27" text-anchor="middle" fill="#ffffff">🛒 Ürünü Sepete Ekle</text>
+
+    <rect x="256" y="0" width="248" height="44" rx="10" fill="#2b5278"/>
+    <text x="380" y="27" text-anchor="middle" fill="#ffffff">📊 Akakçe Piyasa Kontrolü</text>
+  </g>
+</svg>
