@@ -2,7 +2,7 @@
   "meta": {
     "first_run_completed": true,
     "initialized_at": "2026-10-26T10:13:44.010251+00:00",
-    "last_updated_at": "2026-10-27T07:43:38.154288+00:00"
+    "last_updated_at": "2026-10-27T08:05:22.106248+00:00"
   },
   "products": {
     "100343347": {
@@ -13,9 +13,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/20-08/28/100343347_1.JPG",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-26T13:04:07.487062+00:00",
-          "lowest_notified_price": 4499.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4499.0,
           "net_basket_price": 4499.0,
           "retail_price": 4499.0,
@@ -23,19 +23,11 @@
           "site_name": "InStreet",
           "size_labels": [
             "41",
-            "42",
-            "42.5",
-            "43",
-            "44 [Son 2!]",
-            "45 [Son 2!]"
+            "42"
           ],
           "sizes": [
             "41",
-            "42",
-            "42.5",
-            "43",
-            "44",
-            "45"
+            "42"
           ],
           "total_discount_rate": 0.0,
           "url": "https://www.instreet.com.tr/urun/nike-air-monarch-iv-beyaz-erkek-sneaker-100343347"
@@ -52,7 +44,7 @@
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/25-02/21/100395717_f2.JPG",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.670113+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.493947+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3524.25,
           "net_basket_price": 3524.25,
@@ -85,9 +77,9 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/1/8/5/100480285.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3749.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3749.25,
           "net_basket_price": 3749.25,
           "retail_price": 4999.0,
@@ -121,9 +113,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/21-09/23/101118438_1-1632427431.JPG",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 4799.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4799.0,
           "net_basket_price": 4799.0,
           "retail_price": 4799.0,
@@ -179,9 +171,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/22-06/16/101203973_d2.JPG",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3699.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3699.0,
           "net_basket_price": 3699.0,
           "retail_price": 3699.0,
@@ -217,9 +209,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2025/05/13/2283724/c653d0bc-4fa1-496d-ad3c-ebc86b3473ec.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116015+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272163+00:00",
-          "lowest_notified_price": 4479.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116015+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4479.9,
           "net_basket_price": 4479.9,
           "retail_price": 6899.0,
@@ -237,6 +229,44 @@
       },
       "title": "Asics Gt 2000 13 Kadın Koşu Ayakkabı"
     },
+    "101508671": {
+      "brand": "Adidas",
+      "canonical_sku": "101508671",
+      "display_sku": "101508671",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/23-08/02/101508671_d2.jpeg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3186.75,
+          "net_basket_price": 3186.75,
+          "retail_price": 4249.0,
+          "sale_price": 4249.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "41",
+            "42 [Son 3!]",
+            "42.5",
+            "43 [Son 1!]",
+            "44 [Son 2!]",
+            "45"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "42.5",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-vs-pace-20-beyaz-erkek-sneaker-101508671"
+        }
+      },
+      "title": "VS PACE 2.0 Beyaz Erkek Sneaker"
+    },
     "101792825": {
       "brand": "Nike",
       "canonical_sku": "101792825",
@@ -245,9 +275,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/23-10/27/101792825_d2-1698423352.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3699.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3699.0,
           "net_basket_price": 3699.0,
           "retail_price": 3699.0,
@@ -267,6 +297,42 @@
       },
       "title": "COURT BOROUGH LOW RECRAFT Beyaz Unisex Sneaker"
     },
+    "101905225": {
+      "brand": "Puma",
+      "canonical_sku": "101905225",
+      "display_sku": "101905225",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/23-12/28/101905225_d2-1703791695.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2999.25,
+          "net_basket_price": 2999.25,
+          "retail_price": 3999.0,
+          "sale_price": 3999.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/puma-puma-smash-30-buck-gri-erkek-sneaker-101905225"
+        }
+      },
+      "title": "Smash 3.0 Buck GRI Erkek Sneaker"
+    },
     "101909426": {
       "brand": "Adidas",
       "canonical_sku": "101909426",
@@ -275,16 +341,16 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/24-04/03/101909426_d2-1712142325.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 2474.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2474.25,
           "net_basket_price": 2474.25,
           "retail_price": 3299.0,
           "sale_price": 3299.0,
           "site_name": "InStreet",
           "size_labels": [
-            "37 [Son 1!]",
+            "37 [Son 2!]",
             "38",
             "38.5",
             "39",
@@ -311,9 +377,9 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/24-05/02/101993090_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3599.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3599.25,
           "net_basket_price": 3599.25,
           "retail_price": 4799.0,
@@ -339,6 +405,176 @@
       },
       "title": "W COURT VISION LO NN Siyah Kadın Sneaker"
     },
+    "102017287": {
+      "brand": "Puma",
+      "canonical_sku": "102017287",
+      "display_sku": "102017287",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/24-12/29/102017287_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3999.0,
+          "net_basket_price": 3999.0,
+          "retail_price": 3999.0,
+          "sale_price": 3999.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "41 [Son 2!]",
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/puma-puma-rickie-classic-beyaz-erkek-sneaker-102017287"
+        }
+      },
+      "title": "Rickie Classic Beyaz Erkek Sneaker"
+    },
+    "102232452": {
+      "brand": "Adidas",
+      "canonical_sku": "102232452",
+      "display_sku": "102232452",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-01/03/102232452_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2999.25,
+          "net_basket_price": 2999.25,
+          "retail_price": 3999.0,
+          "sale_price": 3999.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "39",
+            "40"
+          ],
+          "sizes": [
+            "39",
+            "40"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-eclyptix-2000-beyaz-kadin-sneaker-102232452"
+        }
+      },
+      "title": "ECLYPTIX 2000 Beyaz Kadın Sneaker"
+    },
+    "102236344": {
+      "brand": "Puma",
+      "canonical_sku": "102236344",
+      "display_sku": "102236344",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-04/21/102236344_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2999.25,
+          "net_basket_price": 2999.25,
+          "retail_price": 3999.0,
+          "sale_price": 3999.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "43 [Son 2!]",
+            "44",
+            "45 [Son 3!]"
+          ],
+          "sizes": [
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/puma-puma-9-t-beyaz-erkek-sneaker-102236344"
+        }
+      },
+      "title": "9-T Beyaz Erkek Sneaker"
+    },
+    "102237118": {
+      "brand": "Adidas",
+      "canonical_sku": "102237118",
+      "display_sku": "102237118",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-01/03/102237118_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3049.0,
+          "net_basket_price": 3049.0,
+          "retail_price": 3049.0,
+          "sale_price": 3049.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "41",
+            "42",
+            "42.5",
+            "43",
+            "44 [Son 3!]",
+            "45"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "42.5",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-urban-court-siyah-erkek-sneaker-102237118"
+        }
+      },
+      "title": "URBAN COURT Siyah Erkek Sneaker"
+    },
+    "102237361": {
+      "brand": "Puma",
+      "canonical_sku": "102237361",
+      "display_sku": "102237361",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-02/05/102237361_f2.JPG",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3999.0,
+          "net_basket_price": 3999.0,
+          "retail_price": 3999.0,
+          "sale_price": 3999.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "42",
+            "43 [Son 3!]",
+            "44",
+            "45 [Son 3!]"
+          ],
+          "sizes": [
+            "42",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/puma-puma-rickie-classic-beyaz-erkek-sneaker-102237361"
+        }
+      },
+      "title": "Rickie Classic Beyaz Erkek Sneaker"
+    },
     "102237368": {
       "brand": "Nike",
       "canonical_sku": "102237368",
@@ -347,16 +583,16 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/25-09/18/102237368_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 5299.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5299.0,
           "net_basket_price": 5299.0,
           "retail_price": 5299.0,
           "sale_price": 5299.0,
           "site_name": "InStreet",
           "size_labels": [
-            "37.5",
+            "37.5 [Son 3!]",
             "38",
             "38.5",
             "39",
@@ -375,6 +611,38 @@
       },
       "title": "WMNS INITIATOR Bej Kadın Sneaker"
     },
+    "102237450": {
+      "brand": "Puma",
+      "canonical_sku": "102237450",
+      "display_sku": "102237450",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-02/05/102237450_f2.JPG",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 4399.0,
+          "net_basket_price": 4399.0,
+          "retail_price": 4399.0,
+          "sale_price": 4399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "42 [Son 1!]",
+            "44",
+            "45 [Son 2!]"
+          ],
+          "sizes": [
+            "42",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/puma-carter-l-siyah-erkek-sneaker-102237450"
+        }
+      },
+      "title": "Carter L Siyah Erkek Sneaker"
+    },
     "102256723": {
       "brand": "Vans",
       "canonical_sku": "102256723",
@@ -383,9 +651,9 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/25-01/23/102256723_d2-1737625689.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670113+00:00",
-          "lowest_notified_price": 2249.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.493947+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2249.25,
           "net_basket_price": 2249.25,
           "retail_price": 2999.0,
@@ -407,6 +675,78 @@
       },
       "title": "Brooklyn LS Siyah Kadın Sneaker"
     },
+    "102264109": {
+      "brand": "Adidas",
+      "canonical_sku": "102264109",
+      "display_sku": "102264109",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-07/22/102264109_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3074.25,
+          "net_basket_price": 3074.25,
+          "retail_price": 4099.0,
+          "sale_price": 4099.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37 [Son 3!]",
+            "38 [Son 3!]",
+            "38.5 [Son 2!]",
+            "39",
+            "40 [Son 3!]"
+          ],
+          "sizes": [
+            "37",
+            "38",
+            "38.5",
+            "39",
+            "40"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-rapid-court-low-w-beyaz-kadin-sneaker-102264109"
+        }
+      },
+      "title": "RAPID COURT LOW W Beyaz Kadın Sneaker"
+    },
+    "102264134": {
+      "brand": "Adidas",
+      "canonical_sku": "102264134",
+      "display_sku": "102264134",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-10/08/102264134_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 4449.0,
+          "net_basket_price": 4449.0,
+          "retail_price": 4449.0,
+          "sale_price": 4449.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37 [Son 1!]",
+            "38 [Son 2!]",
+            "38.5 [Son 1!]",
+            "39",
+            "40 [Son 3!]"
+          ],
+          "sizes": [
+            "37",
+            "38",
+            "38.5",
+            "39",
+            "40"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-streettalk-beyaz-kadin-sneaker-102264134"
+        }
+      },
+      "title": "STREETTALK Beyaz Kadın Sneaker"
+    },
     "102266181": {
       "brand": "Puma",
       "canonical_sku": "102266181",
@@ -415,9 +755,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/25-10/20/102266181_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3399.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3399.0,
           "net_basket_price": 3399.0,
           "retail_price": 3399.0,
@@ -445,9 +785,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/25-10/20/102266511_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-26T13:04:07.487062+00:00",
-          "lowest_notified_price": 3399.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3399.0,
           "net_basket_price": 3399.0,
           "retail_price": 3399.0,
@@ -456,17 +796,13 @@
           "size_labels": [
             "41",
             "42",
-            "42.5 [Son 2!]",
-            "43",
-            "44",
+            "43 [Son 1!]",
             "45"
           ],
           "sizes": [
             "41",
             "42",
-            "42.5",
             "43",
-            "44",
             "45"
           ],
           "total_discount_rate": 0.0,
@@ -483,27 +819,85 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/25-11/07/102683574_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3599.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3599.25,
           "net_basket_price": 3599.25,
           "retail_price": 4799.0,
           "sale_price": 4799.0,
           "site_name": "InStreet",
           "size_labels": [
-            "42 [Son 2!]",
-            "42.5 [Son 1!]"
+            "42 [Son 2!]"
           ],
           "sizes": [
-            "42",
-            "42.5"
+            "42"
           ],
           "total_discount_rate": 25.0,
           "url": "https://www.instreet.com.tr/urun/nike-nike-court-vision-low-beyaz-erkek-sneaker-102683574"
         }
       },
       "title": "Court Vision Low Beyaz Erkek Sneaker"
+    },
+    "102684716": {
+      "brand": "Adidas",
+      "canonical_sku": "102684716",
+      "display_sku": "102684716",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-11/06/102684716_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2811.75,
+          "net_basket_price": 2811.75,
+          "retail_price": 3749.0,
+          "sale_price": 3749.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37",
+            "38 [Son 1!]",
+            "39"
+          ],
+          "sizes": [
+            "37",
+            "38",
+            "39"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-grand-court-base-30-siyah-kadin-sneaker-102684716"
+        }
+      },
+      "title": "GRAND COURT BASE 3.0 Siyah Kadın Sneaker"
+    },
+    "102688134": {
+      "brand": "Adidas",
+      "canonical_sku": "102688134",
+      "display_sku": "102688134",
+      "sites": {
+        "instreet": {
+          "campaign_name": "2500 TL Üzerine %25 İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/25-11/06/102688134_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2811.75,
+          "net_basket_price": 2811.75,
+          "retail_price": 3749.0,
+          "sale_price": 3749.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "39"
+          ],
+          "sizes": [
+            "39"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.instreet.com.tr/urun/adidas-grand-court-base-30-beyaz-kadin-sneaker-102688134"
+        }
+      },
+      "title": "GRAND COURT BASE 3.0 Beyaz Kadın Sneaker"
     },
     "102688143": {
       "brand": "Adidas",
@@ -513,9 +907,9 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/25-11/06/102688143_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670113+00:00",
-          "lowest_notified_price": 2324.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.493947+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2324.25,
           "net_basket_price": 2324.25,
           "retail_price": 3099.0,
@@ -541,6 +935,70 @@
       },
       "title": "CLOUDFOAM FLEX - LACES Beyaz Kadın Sneaker"
     },
+    "102690206": {
+      "brand": "Nike",
+      "canonical_sku": "102690206",
+      "display_sku": "102690206",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/26-03/17/102690206_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 5399.0,
+          "net_basket_price": 5399.0,
+          "retail_price": 5399.0,
+          "sale_price": 5399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37.5 [Son 2!]",
+            "38 [Son 3!]",
+            "40 [Son 1!]"
+          ],
+          "sizes": [
+            "37.5",
+            "38",
+            "40"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/nike-nike-v5-rnr-bej-kadin-sneaker-102690206"
+        }
+      },
+      "title": "V5 RNR Bej Kadın Sneaker"
+    },
+    "102703375": {
+      "brand": "Puma",
+      "canonical_sku": "102703375",
+      "display_sku": "102703375",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/26-07/09/102703375_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 5399.0,
+          "net_basket_price": 5399.0,
+          "retail_price": 5399.0,
+          "sale_price": 5399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37",
+            "38",
+            "39"
+          ],
+          "sizes": [
+            "37",
+            "38",
+            "39"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/puma-puma-evolve-20-boot-pur-siyah-kadin-outdoor-bot-102703375"
+        }
+      },
+      "title": "Evolve 2.0 Boot Pur Siyah Kadın Outdoor Bot"
+    },
     "102714198": {
       "brand": "Puma",
       "canonical_sku": "102714198",
@@ -550,7 +1008,7 @@
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/26-07/09/102714198_d2.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2549.25,
           "net_basket_price": 2549.25,
@@ -560,14 +1018,12 @@
           "size_labels": [
             "41",
             "42",
-            "43 [Son 1!]",
             "44",
             "45"
           ],
           "sizes": [
             "41",
             "42",
-            "43",
             "44",
             "45"
           ],
@@ -585,9 +1041,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/26-08/13/102714379_d1.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3999.0,
           "net_basket_price": 3999.0,
           "retail_price": 3999.0,
@@ -607,6 +1063,82 @@
       },
       "title": "Club LT Beyaz Kadın Sneaker"
     },
+    "102714384": {
+      "brand": "Puma",
+      "canonical_sku": "102714384",
+      "display_sku": "102714384",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/26-07/09/102714384_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 4399.0,
+          "net_basket_price": 4399.0,
+          "retail_price": 4399.0,
+          "sale_price": 4399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "41 [Son 2!]",
+            "42",
+            "42.5 [Son 1!]",
+            "43 [Son 3!]",
+            "44",
+            "45 [Son 2!]"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "42.5",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/puma-court-ever-siyah-erkek-sneaker-102714384"
+        }
+      },
+      "title": "Court Ever Siyah Erkek Sneaker"
+    },
+    "102714385": {
+      "brand": "Puma",
+      "canonical_sku": "102714385",
+      "display_sku": "102714385",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/26-07/09/102714385_d2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 4399.0,
+          "net_basket_price": 4399.0,
+          "retail_price": 4399.0,
+          "sale_price": 4399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "41 [Son 3!]",
+            "42",
+            "42.5 [Son 1!]",
+            "43 [Son 3!]",
+            "44 [Son 1!]",
+            "45 [Son 2!]"
+          ],
+          "sizes": [
+            "41",
+            "42",
+            "42.5",
+            "43",
+            "44",
+            "45"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/puma-court-ever-beyaz-erkek-sneaker-102714385"
+        }
+      },
+      "title": "Court Ever Beyaz Erkek Sneaker"
+    },
     "102714430": {
       "brand": "Nike",
       "canonical_sku": "102714430",
@@ -615,9 +1147,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/26-07/24/102714430_d1.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T13:04:07.487062+00:00",
-          "lowest_notified_price": 2699.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 2699.0,
           "net_basket_price": 2699.0,
           "retail_price": 2699.0,
@@ -643,6 +1175,42 @@
       },
       "title": "TENNIS ESSENTIAL (GS Beyaz Unisex Sneaker"
     },
+    "102715525": {
+      "brand": "Nike",
+      "canonical_sku": "102715525",
+      "display_sku": "102715525",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/26-07/24/102715525_d1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 4799.0,
+          "net_basket_price": 4799.0,
+          "retail_price": 4799.0,
+          "sale_price": 4799.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37.5 [Son 3!]",
+            "38",
+            "38.5",
+            "39",
+            "40 [Son 2!]"
+          ],
+          "sizes": [
+            "37.5",
+            "38",
+            "38.5",
+            "39",
+            "40"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/nike-court-vision-low-next-nat-vizon-kadin-sneaker-102715525"
+        }
+      },
+      "title": "Court Vision Low Next Nat Vizon Kadın Sneaker"
+    },
     "102715537": {
       "brand": "Puma",
       "canonical_sku": "102715537",
@@ -651,9 +1219,9 @@
         "instreet": {
           "campaign_name": "7000 TL'ye 1000 TL İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/26-09/24/102715537_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 3399.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3399.0,
           "net_basket_price": 3399.0,
           "retail_price": 3399.0,
@@ -689,9 +1257,9 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/26-04/17/102721637_f2.JPG",
-          "last_notified_at": "2026-10-26T13:04:07.487062+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 2999.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2999.25,
           "net_basket_price": 2999.25,
           "retail_price": 3999.0,
@@ -725,9 +1293,9 @@
         "instreet": {
           "campaign_name": "2500 TL Üzerine %25 İndirim",
           "image_url": "https://floimages.mncdn.com/media/catalog/product/26-09/01/102725346_d2.jpg",
-          "last_notified_at": "2026-10-26T13:04:07.486484+00:00",
-          "last_seen_at": "2026-10-27T07:16:07.670671+00:00",
-          "lowest_notified_price": 2549.25,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494498+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2549.25,
           "net_basket_price": 2549.25,
           "retail_price": 3399.0,
@@ -749,6 +1317,40 @@
       },
       "title": "Brooklyn LS Siyah Kadın Sneaker"
     },
+    "102731681": {
+      "brand": "Nike",
+      "canonical_sku": "102731681",
+      "display_sku": "102731681",
+      "sites": {
+        "instreet": {
+          "campaign_name": "7000 TL'ye 1000 TL İndirim",
+          "image_url": "https://floimages.mncdn.com/media/catalog/product/26-10/16/102731681_f2.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 5399.0,
+          "net_basket_price": 5399.0,
+          "retail_price": 5399.0,
+          "sale_price": 5399.0,
+          "site_name": "InStreet",
+          "size_labels": [
+            "37.5 [Son 3!]",
+            "38",
+            "39",
+            "40"
+          ],
+          "sizes": [
+            "37.5",
+            "38",
+            "39",
+            "40"
+          ],
+          "total_discount_rate": 0.0,
+          "url": "https://www.instreet.com.tr/urun/nike-v5-rnr-suede-2-beyaz-kadin-sneaker-102731681"
+        }
+      },
+      "title": "V5 RNR Suede 2 Beyaz Kadın Sneaker"
+    },
     "10768901": {
       "brand": "Puma",
       "canonical_sku": "10768901",
@@ -758,7 +1360,7 @@
           "campaign_name": "Outlet",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/10768901_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2999.0,
           "net_basket_price": 2999.0,
@@ -781,7 +1383,10 @@
           "url": "https://www.korayspor.com/puma-futbol-ayakkabi-kramponlar-ultra-5-play-fgag-10768901"
         }
       },
-      "title": "Ultra 5 Play Fg/Ag Erkek Çim Zemin Kramponu"
+      "title": "Ultra 5 Play Fg/Ag Erkek Çim Zemin Kramponu",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Puma+ultra+play+fg+ag+Erkek+Sneaker",
+      "verified_market_floor_price": 1785.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Puma Ultra Play FG/AG 107224 Erkek)"
     },
     "128606TKGYLV": {
       "brand": "Skechers",
@@ -792,7 +1397,7 @@
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/128606TK-GYLV_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 4270.25,
           "net_basket_price": 4270.25,
@@ -824,7 +1429,7 @@
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/150625TK-BKLD_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3745.25,
           "net_basket_price": 3745.25,
@@ -988,7 +1593,7 @@
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/185393-SIL_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 4420.25,
           "net_basket_price": 4420.25,
@@ -1119,9 +1724,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/10/30/32170463/b55d366c-d03a-486f-a137-201dc71a76eb.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116222+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272424+00:00",
-          "lowest_notified_price": 4549.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3639.2,
           "net_basket_price": 3639.2,
           "retail_price": 9099.0,
@@ -1155,7 +1760,10 @@
           "url": "https://www.superstep.com.tr/urun/under-armour-slipspeed-unisex-beyaz-spor-ayakkabi/3027049-1/"
         }
       },
-      "title": "Under Armour Slipspeed Unisex Beyaz Spor Ayakkabı"
+      "title": "Under Armour Slipspeed Unisex Beyaz Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Under+Armour+slipspeed+Sneaker",
+      "verified_market_floor_price": 3995.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Under Armour Flow Slipspeed Traine)"
     },
     "3027189002": {
       "brand": "Under Armour",
@@ -1391,9 +1999,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/08/22/22291032/7e9e59b1-2d31-4eed-9dba-580192263497.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116298+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272548+00:00",
-          "lowest_notified_price": 3954.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116298+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3954.0,
           "net_basket_price": 3954.0,
           "retail_price": 7909.0,
@@ -1545,9 +2153,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/09/30/32170243/35ce3ad5-91d1-4947-9a63-fb3f60afed4d.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116232+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272434+00:00",
-          "lowest_notified_price": 3954.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3163.2,
           "net_basket_price": 3163.2,
           "retail_price": 7909.0,
@@ -1577,7 +2185,10 @@
           "url": "https://www.superstep.com.tr/urun/under-armour-forge-unisex-mavi-spor-ayakkabi/3028247-1/"
         }
       },
-      "title": "Under Armour Forge Unisex Mavi Spor Ayakkabı"
+      "title": "Under Armour Forge Unisex Mavi Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Under+Armour+forge+Sneaker",
+      "verified_market_floor_price": 3861.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Under Armour Forge 96 Reissue Leat)"
     },
     "30831202": {
       "brand": "Puma",
@@ -1615,11 +2226,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/10/17/32221003/f528950a-cc1c-4a06-9c95-392e72c3c65e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116293+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272543+00:00",
-          "lowest_notified_price": 3599.0,
-          "lowest_seen_price": 2879.2,
-          "net_basket_price": 2879.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116293+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3599.0,
+          "net_basket_price": 3599.0,
           "retail_price": 7199.0,
           "sale_price": 3599.0,
           "site_name": "SuperStep",
@@ -1637,6 +2248,38 @@
       },
       "title": "Puma Rs-X Reinvention Unisex Pembe Beyaz Spor Ayakkabı"
     },
+    "37701209": {
+      "brand": "Puma",
+      "canonical_sku": "37701209",
+      "display_sku": "37701209",
+      "sites": {
+        "korayspor": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/37701209_1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3599.0,
+          "net_basket_price": 3599.0,
+          "retail_price": 5999.0,
+          "sale_price": 3599.0,
+          "site_name": "Korayspor",
+          "size_labels": [
+            "41 [Son 1!]",
+            "44 [Son 1!]",
+            "44.5 [Son 1!]"
+          ],
+          "sizes": [
+            "41",
+            "44",
+            "44.5"
+          ],
+          "total_discount_rate": 40.0,
+          "url": "https://www.korayspor.com/puma-basketbol-ayakkabi-rise-nitro-37701209"
+        }
+      },
+      "title": "Rise Nitro Erkek Basketbol Ayakkabısı"
+    },
     "37797101": {
       "brand": "Puma",
       "canonical_sku": "37797101",
@@ -1646,7 +2289,7 @@
           "campaign_name": "Outlet",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/37797101_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3710.0,
           "net_basket_price": 3710.0,
@@ -1787,11 +2430,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/02/08/21894278/56dda115-8acf-4267-8129-068f5705af6c.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116316+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272587+00:00",
-          "lowest_notified_price": 3700.0,
-          "lowest_seen_price": 2960.0,
-          "net_basket_price": 2960.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116316+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3700.0,
+          "net_basket_price": 3700.0,
           "retail_price": 7399.0,
           "sale_price": 3700.0,
           "site_name": "SuperStep",
@@ -1819,9 +2462,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2023/09/19/343303/126507fb-11d0-4832-90df-89c9dd4d6540.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116398+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272674+00:00",
-          "lowest_notified_price": 3700.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3700.0,
           "net_basket_price": 3700.0,
           "retail_price": 7399.0,
@@ -1850,7 +2493,7 @@
           "campaign_name": "Outlet",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/38461401_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3419.0,
           "net_basket_price": 3419.0,
@@ -1867,7 +2510,10 @@
           "url": "https://www.korayspor.com/puma-ayakkabi-gunluk-karmen-38461401"
         }
       },
-      "title": "Karmen Kadın Günlük Ayakkabı"
+      "title": "Karmen Kadın Günlük Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Puma+karmen+Kad%C4%B1n+Sneaker",
+      "verified_market_floor_price": 2059.29,
+      "verified_market_floor_source": "Akakçe En Ucuz (Puma Kadın Bej Karmen Ii Crafted F)"
     },
     "38660701": {
       "brand": "Puma",
@@ -1985,11 +2631,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/04/15/21896326/5888f434-cadb-4e08-aaca-531ffbd12a43.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116306+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272556+00:00",
-          "lowest_notified_price": 3500.0,
-          "lowest_seen_price": 2800.0,
-          "net_basket_price": 2800.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116306+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3500.0,
+          "net_basket_price": 3500.0,
           "retail_price": 6999.0,
           "sale_price": 3500.0,
           "site_name": "SuperStep",
@@ -2053,11 +2699,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/02/26/21896888/1cb37b2f-76eb-45e1-830c-28303031f65c.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116521+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272882+00:00",
-          "lowest_notified_price": 3700.0,
-          "lowest_seen_price": 2960.0,
-          "net_basket_price": 2960.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116521+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3700.0,
+          "net_basket_price": 3700.0,
           "retail_price": 7399.0,
           "sale_price": 3700.0,
           "site_name": "SuperStep",
@@ -2087,11 +2733,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/06/06/21896936/9f77de15-748a-4bba-803b-0517cc9c5917.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116511+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272868+00:00",
-          "lowest_notified_price": 3700.0,
-          "lowest_seen_price": 2960.0,
-          "net_basket_price": 2960.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116511+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3700.0,
+          "net_basket_price": 3700.0,
           "retail_price": 7399.0,
           "sale_price": 3700.0,
           "site_name": "SuperStep",
@@ -2123,9 +2769,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/27/77492804/d0bf5e03-551e-4d6d-bdc4-e0f4df2a375c.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116432+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272720+00:00",
-          "lowest_notified_price": 3700.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2960.0,
           "net_basket_price": 2960.0,
           "retail_price": 7399.0,
@@ -2149,7 +2795,10 @@
           "url": "https://www.superstep.com.tr/urun/puma-mayze-crashed-kadin-siyah-spor-ayakkabi/392495-1/"
         }
       },
-      "title": "Puma Mayze Crashed Kadın Siyah Spor Ayakkabı"
+      "title": "Puma Mayze Crashed Kadın Siyah Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Puma+mayze+crashed+Kad%C4%B1n+Sneaker",
+      "verified_market_floor_price": 2999.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Puma Mayze Crashed Wns Puma White-)"
     },
     "39272413": {
       "brand": "Puma",
@@ -2159,11 +2808,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/02/15/21896876/3f33a3a3-f4a6-49b1-85a7-3f06bdbc8356.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116311+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272579+00:00",
-          "lowest_notified_price": 3700.0,
-          "lowest_seen_price": 2960.0,
-          "net_basket_price": 2960.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116311+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3700.0,
+          "net_basket_price": 3700.0,
           "retail_price": 7399.0,
           "sale_price": 3700.0,
           "site_name": "SuperStep",
@@ -2227,9 +2876,9 @@
         "superstep": {
           "campaign_name": "Sepette %15 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/08/05/70829543/19842bb2-47fa-4b8b-9c07-8a9b98d1269e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116089+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272225+00:00",
-          "lowest_notified_price": 4439.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3773.15,
           "net_basket_price": 3773.15,
           "retail_price": 7399.0,
@@ -2264,9 +2913,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/02/15/21896945/2ff23e1d-1691-489d-a0f2-6c5304e46e75.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116526+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T13:24:11.116526+00:00",
-          "lowest_notified_price": 3700.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 3700.0,
           "net_basket_price": 3700.0,
           "retail_price": 7399.0,
@@ -2334,9 +2983,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/05/13/21896047/a03e3f08-9a7e-4169-9962-438b9a64076c.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116425+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272714+00:00",
-          "lowest_notified_price": 3500.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2800.0,
           "net_basket_price": 2800.0,
           "retail_price": 6999.0,
@@ -2362,7 +3011,10 @@
           "url": "https://www.superstep.com.tr/urun/puma-cali-dream-dalmatian-kadin-beyaz-spor-ayakkabi/395516-4/"
         }
       },
-      "title": "Puma Cali Dream Dalmatian Kadın Beyaz Spor Ayakkabı"
+      "title": "Puma Cali Dream Dalmatian Kadın Beyaz Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Puma+cali+dream+dalmatian+Kad%C4%B1n+Sneaker",
+      "verified_market_floor_price": 1680.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Puma Cali Dream Be A Poem Kadın Sp)"
     },
     "39592601": {
       "brand": "Puma",
@@ -2372,11 +3024,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/05/13/21896782/3ff1302b-0de3-44fe-8e42-9189e3035cdc.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116420+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272708+00:00",
-          "lowest_notified_price": 3700.0,
-          "lowest_seen_price": 2960.0,
-          "net_basket_price": 2960.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116420+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3700.0,
+          "net_basket_price": 3700.0,
           "retail_price": 7399.0,
           "sale_price": 3700.0,
           "site_name": "SuperStep",
@@ -2432,9 +3084,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/31/75081711/70a2b7ab-6151-4655-acff-6c2d4d762196.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116356+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T13:24:11.116356+00:00",
-          "lowest_notified_price": 4439.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 4439.0,
           "net_basket_price": 4439.0,
           "retail_price": 7399.0,
@@ -2464,9 +3116,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/31/75081660/eb1d4fc4-4ee4-46ca-92e3-9f4780eae802.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116351+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T13:24:11.116351+00:00",
-          "lowest_notified_price": 4439.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 4439.0,
           "net_basket_price": 4439.0,
           "retail_price": 7399.0,
@@ -2554,9 +3206,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/11/29/32222323/b0e65cb2-ed91-47c3-aaed-939c2947f805.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116374+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272635+00:00",
-          "lowest_notified_price": 4199.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3359.2,
           "net_basket_price": 3359.2,
           "retail_price": 8399.0,
@@ -2585,9 +3237,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/11/29/32222345/97f59663-bce7-48df-97b9-7a586bbb3a5e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116414+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272704+00:00",
-          "lowest_notified_price": 4199.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3359.2,
           "net_basket_price": 3359.2,
           "retail_price": 8399.0,
@@ -2607,7 +3259,10 @@
           "url": "https://www.superstep.com.tr/urun/puma-rs-x-efekt-prm-wns-kadin-siyah-spor-ayakkabi/398500/"
         }
       },
-      "title": "Puma Rs-X Efekt Prm Wns Kadın Siyah Spor Ayakkabı"
+      "title": "Puma Rs-X Efekt Prm Wns Kadın Siyah Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Puma+rs-x+efekt+prm+wns+Kad%C4%B1n+Sneaker",
+      "verified_market_floor_price": 3999.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Puma Rs-X Efekt Prm Wns Kadın Snea)"
     },
     "39851301": {
       "brand": "Puma",
@@ -2617,11 +3272,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/11/21/32222407/16ea51aa-0bce-483d-bce8-e3f8f766d13a.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116489+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272847+00:00",
-          "lowest_notified_price": 3599.0,
-          "lowest_seen_price": 2879.2,
-          "net_basket_price": 2879.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116489+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3599.0,
+          "net_basket_price": 3599.0,
           "retail_price": 7199.0,
           "sale_price": 3599.0,
           "site_name": "SuperStep",
@@ -2665,6 +3320,52 @@
       },
       "title": "Puma Palermo Moda Xtra Wns Kadın Yeşil Deri Spor Ayakkabı"
     },
+    "39860904": {
+      "brand": "Puma",
+      "canonical_sku": "39860904",
+      "display_sku": "39860904",
+      "sites": {
+        "korayspor": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/39860904_1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 4799.25,
+          "net_basket_price": 4799.25,
+          "retail_price": 6399.0,
+          "sale_price": 4799.25,
+          "site_name": "Korayspor",
+          "size_labels": [
+            "37 [Son 1!]",
+            "37.5 [Son 1!]",
+            "38 [Son 1!]",
+            "38.5 [Son 1!]",
+            "39 [Son 1!]",
+            "40 [Son 1!]",
+            "40.5 [Son 1!]",
+            "41 [Son 1!]",
+            "42 [Son 1!]",
+            "42.5 [Son 1!]"
+          ],
+          "sizes": [
+            "37",
+            "37.5",
+            "38",
+            "38.5",
+            "39",
+            "40",
+            "40.5",
+            "41",
+            "42",
+            "42.5"
+          ],
+          "total_discount_rate": 25.0,
+          "url": "https://www.korayspor.com/puma-ayakkabi-gunluk-roma-feminine-wns-39860904"
+        }
+      },
+      "title": "ROMA FEMININE WNS Unisex Günlük Ayakkabı"
+    },
     "39902506": {
       "brand": "Puma",
       "canonical_sku": "39902506",
@@ -2673,11 +3374,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/03/28/49402821/87e2aa17-8ed5-4ad9-a636-4df23beb2764.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116286+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272526+00:00",
-          "lowest_notified_price": 3700.0,
-          "lowest_seen_price": 2960.0,
-          "net_basket_price": 2960.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116286+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3700.0,
+          "net_basket_price": 3700.0,
           "retail_price": 7399.0,
           "sale_price": 3700.0,
           "site_name": "SuperStep",
@@ -2717,9 +3418,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/21/75084082/6f8d753e-c843-4734-8ed1-2ab7d5c79719.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116347+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T13:24:11.116347+00:00",
-          "lowest_notified_price": 3199.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 3199.0,
           "net_basket_price": 3199.0,
           "retail_price": 6399.0,
@@ -2745,11 +3446,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/01/15/49401593/98020b22-3d62-4c4f-9dc2-6ada629e0210.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116479+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272818+00:00",
-          "lowest_notified_price": 3809.0,
-          "lowest_seen_price": 3047.2,
-          "net_basket_price": 3047.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116479+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3809.0,
+          "net_basket_price": 3809.0,
           "retail_price": 7600.0,
           "sale_price": 3809.0,
           "site_name": "SuperStep",
@@ -2881,9 +3582,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/10/13/75465132/69e427bd-0add-4714-9c29-eb9e8853323a.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116241+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272448+00:00",
-          "lowest_notified_price": 3849.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3079.2,
           "net_basket_price": 3079.2,
           "retail_price": 7699.0,
@@ -2899,7 +3600,10 @@
           "url": "https://www.superstep.com.tr/urun/puma-inhale-unisex-siyah-spor-ayakkabi/401560-3/"
         }
       },
-      "title": "Puma Inhale Unisex Siyah Spor Ayakkabı"
+      "title": "Puma Inhale Unisex Siyah Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Puma+inhale+Sneaker",
+      "verified_market_floor_price": 3849.5,
+      "verified_market_floor_source": "Akakçe En Ucuz (Puma Inhale Essentials Sneaker 403)"
     },
     "40167902": {
       "brand": "Puma",
@@ -2910,7 +3614,7 @@
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/01/15/49402523/6d60838c-540e-40b8-9cc6-7f50f570660a.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272669+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3119.35,
           "net_basket_price": 3119.35,
@@ -2948,9 +3652,9 @@
         "superstep": {
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/01/15/49403135/31842e93-1eeb-420c-a64a-13ca51b2454d.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116173+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272318+00:00",
-          "lowest_notified_price": 3599.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2339.35,
           "net_basket_price": 2339.35,
           "retail_price": 5999.0,
@@ -2988,7 +3692,7 @@
           "campaign_name": "Sepette %50 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/01/15/49403235/e8b2ce7a-8a50-4990-955d-eec04a1578a7.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272327+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2399.5,
           "net_basket_price": 2399.5,
@@ -3048,9 +3752,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/21/75082987/c2863475-1a74-4646-859a-6466ff7b0de2.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116202+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272356+00:00",
-          "lowest_notified_price": 3699.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3699.0,
           "net_basket_price": 3699.0,
           "retail_price": 7399.0,
@@ -3088,11 +3792,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/21/75082824/4596360d-dbb9-42ae-85b3-dc237d3759bc.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116336+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272610+00:00",
-          "lowest_notified_price": 3699.0,
-          "lowest_seen_price": 2959.2,
-          "net_basket_price": 2959.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116336+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3699.0,
+          "net_basket_price": 3699.0,
           "retail_price": 7399.0,
           "sale_price": 3699.0,
           "site_name": "SuperStep",
@@ -4506,9 +5210,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/11/58473915/7cb134ea-b378-473c-8ec5-41ec273d0beb.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116361+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272630+00:00",
-          "lowest_notified_price": 4194.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4194.0,
           "net_basket_price": 4194.0,
           "retail_price": 6990.0,
@@ -4722,9 +5426,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/04/25/65177803/162bce54-004c-464e-bfb2-3191a25f2d56.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116075+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272215+00:00",
-          "lowest_notified_price": 4194.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4194.0,
           "net_basket_price": 4194.0,
           "retail_price": 6990.0,
@@ -5238,9 +5942,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/05/04/77625631/81135dc6-6e4c-4ec1-b79f-609a51d2865b.jpg",
-          "last_notified_at": "2026-10-26T10:13:33.506218+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
-          "lowest_notified_price": 3743.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 3743.0,
           "net_basket_price": 3743.0,
           "retail_price": 4990.0,
@@ -6414,9 +7118,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/10/77588956/32e5f428-7d8f-4ae4-ba11-4deebe94bd52.jpg",
-          "last_notified_at": "2026-10-26T10:13:33.506218+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
-          "lowest_notified_price": 5618.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 5618.0,
           "net_basket_price": 5618.0,
           "retail_price": 7490.0,
@@ -6446,9 +7150,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/09/77569883/2719eb25-ac97-465e-b4ee-fc50582b1fd7.jpg",
-          "last_notified_at": "2026-10-26T10:13:33.506218+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
-          "lowest_notified_price": 5618.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 5618.0,
           "net_basket_price": 5618.0,
           "retail_price": 7490.0,
@@ -6518,9 +7222,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/06/77528753/45e6cfef-de72-427b-b0b0-1eaba3081136.jpg",
-          "last_notified_at": "2026-10-26T10:13:33.506218+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T10:13:33.506218+00:00",
-          "lowest_notified_price": 5992.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 5992.0,
           "net_basket_price": 5992.0,
           "retail_price": 7990.0,
@@ -6626,9 +7330,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2024/01/08/1182131/2ca71e61-ce7a-484e-b4d8-53a9fab955c4.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116054+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272199+00:00",
-          "lowest_notified_price": 3379.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116054+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3379.9,
           "net_basket_price": 3379.9,
           "retail_price": 5199.0,
@@ -8541,9 +9245,9 @@
         "superstep": {
           "campaign_name": "Her 10.000 TL'ye 1.500 TL İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/11/04/75994150/e2c81b3a-c1d3-411c-8b40-818682902cf2.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116129+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272265+00:00",
-          "lowest_notified_price": 3179.4,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3179.4,
           "net_basket_price": 3179.4,
           "retail_price": 5299.0,
@@ -9893,9 +10597,9 @@
         "superstep": {
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/18/75009621/b3d2ff7e-55e2-49ec-8226-d289204c8de8.jpg",
-          "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272688+00:00",
-          "lowest_notified_price": null,
+          "last_notified_at": "2026-10-27T08:05:22.074699+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": 3899.35,
           "lowest_seen_price": 3899.35,
           "net_basket_price": 3899.35,
           "retail_price": 7999.0,
@@ -9913,7 +10617,10 @@
           "url": "https://www.superstep.com.tr/urun/nike-shox-kadin-siyah-spor-ayakkabi/ar3565-2/"
         }
       },
-      "title": "Nike Shox Kadın Siyah Spor Ayakkabı"
+      "title": "Nike Shox Kadın Siyah Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Nike+AR3565",
+      "verified_market_floor_price": 6359.0,
+      "verified_market_floor_source": "Akakçe SKU Doğrulamalı En Ucuz"
     },
     "AV3042100": {
       "brand": "Nike",
@@ -9923,9 +10630,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/640266/b0aac606-4b57-49b3-88ec-726c11b324d1.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115774+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.271949+00:00",
-          "lowest_notified_price": 5459.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5459.9,
           "net_basket_price": 5459.9,
           "retail_price": 7799.9,
@@ -10103,6 +10810,36 @@
       },
       "title": "Nautica Kadın Mor Sneaker"
     },
+    "DA1190810": {
+      "brand": "Nike",
+      "canonical_sku": "DA1190810",
+      "display_sku": "DA1190-810",
+      "sites": {
+        "korayspor": {
+          "campaign_name": "Outlet",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/DA1190-810_1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2799.93,
+          "net_basket_price": 2799.93,
+          "retail_price": 3999.9,
+          "sale_price": 2799.93,
+          "site_name": "Korayspor",
+          "size_labels": [
+            "44.5 [Son 1!]",
+            "45 [Son 1!]"
+          ],
+          "sizes": [
+            "44.5",
+            "45"
+          ],
+          "total_discount_rate": 30.0,
+          "url": "https://www.korayspor.com/nike-ayakkabi-futbol-ayakkabilari-legend-9-academy-ic-da1190-810"
+        }
+      },
+      "title": "LEGEND 9 ACADEMY IC Erkek Kapalı Saha / Salon Ayakkabısı"
+    },
     "DD1391100": {
       "brand": "Nike",
       "canonical_sku": "DD1391100",
@@ -10111,9 +10848,9 @@
         "barcin": {
           "campaign_name": "campaign-slug",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/870631/5300c412-a04b-483e-b70a-39b82ff451da.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115734+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.271910+00:00",
-          "lowest_notified_price": 4869.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4869.9,
           "net_basket_price": 4869.9,
           "retail_price": 7499.9,
@@ -10152,7 +10889,7 @@
           "campaign_name": "Outlet",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/DD9473-040_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2799.93,
           "net_basket_price": 2799.93,
@@ -10188,7 +10925,7 @@
           "campaign_name": "Outlet",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/DD9473-705_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2999.92,
           "net_basket_price": 2999.92,
@@ -10382,7 +11119,7 @@
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/DR7882-300_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3749.25,
           "net_basket_price": 3749.25,
@@ -10417,9 +11154,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2025/07/18/2356401/6f99c7a3-0f77-428c-a262-27722d92d3f1.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115995+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272145+00:00",
-          "lowest_notified_price": 4419.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4419.9,
           "net_basket_price": 4419.9,
           "retail_price": 6799.9,
@@ -10445,9 +11182,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2025/04/15/2285692/389d7e94-b48c-496f-b37e-55fec965d979.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115789+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.271961+00:00",
-          "lowest_notified_price": 4159.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4159.9,
           "net_basket_price": 4159.9,
           "retail_price": 6399.9,
@@ -10509,11 +11246,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/11/20/21885707/68a6681f-9997-4331-92d7-4c6b9e9fc482.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116517+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272878+00:00",
-          "lowest_notified_price": 3239.0,
-          "lowest_seen_price": 2591.2,
-          "net_basket_price": 2591.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116517+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3239.0,
+          "net_basket_price": 3239.0,
           "retail_price": 6479.0,
           "sale_price": 3239.0,
           "site_name": "SuperStep",
@@ -10607,11 +11344,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/08/07/29271536/cb7f342d-a4de-4b57-95dd-31e66dcf0da7.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116448+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272746+00:00",
-          "lowest_notified_price": 3539.0,
-          "lowest_seen_price": 2831.2,
-          "net_basket_price": 2831.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116448+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3539.0,
+          "net_basket_price": 3539.0,
           "retail_price": 7079.0,
           "sale_price": 3539.0,
           "site_name": "SuperStep",
@@ -10645,11 +11382,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/09/25/32594804/adf8e32a-a25e-4fc5-b9a2-6eeeba80db71.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116500+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272855+00:00",
-          "lowest_notified_price": 3539.0,
-          "lowest_seen_price": 2831.2,
-          "net_basket_price": 2831.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116500+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3539.0,
+          "net_basket_price": 3539.0,
           "retail_price": 7079.0,
           "sale_price": 3539.0,
           "site_name": "SuperStep",
@@ -10681,11 +11418,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/09/25/32594763/37bdd72c-6cca-4f1a-9c98-78b5f67af788.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116442+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272739+00:00",
-          "lowest_notified_price": 3539.0,
-          "lowest_seen_price": 2831.2,
-          "net_basket_price": 2831.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116442+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3539.0,
+          "net_basket_price": 3539.0,
           "retail_price": 7079.0,
           "sale_price": 3539.0,
           "site_name": "SuperStep",
@@ -10749,11 +11486,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/11/14/42435444/9bbfc2ec-aa58-4f47-ba47-7aeff62d797b.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116494+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272850+00:00",
-          "lowest_notified_price": 3839.0,
-          "lowest_seen_price": 3071.2,
-          "net_basket_price": 3071.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116494+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3839.0,
+          "net_basket_price": 3839.0,
           "retail_price": 7679.0,
           "sale_price": 3839.0,
           "site_name": "SuperStep",
@@ -10786,7 +11523,7 @@
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/03/05/28950694/af6c5155-ad04-4a64-8d0f-5767944bfbca.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272382+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2875.6,
           "net_basket_price": 2875.6,
@@ -10817,9 +11554,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/08/18/75312620/e4c693a2-a2f5-4322-8ef1-caa41a0e7b75.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116217+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272415+00:00",
-          "lowest_notified_price": 2474.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2474.0,
           "net_basket_price": 2474.0,
           "retail_price": 4949.0,
@@ -10876,7 +11613,7 @@
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/04/11/61731221/2575f4cb-7148-4f9d-ab4d-da4e55d586c7.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272665+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2079.35,
           "net_basket_price": 2079.35,
@@ -10904,41 +11641,11 @@
       "display_sku": "EN0EN02592-P06",
       "sites": {
         "superstep": {
-          "campaign_name": "Sepette %35 İndirim",
-          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/11/22/32172112/77b36725-3dff-4d89-bda9-151b0798fabc.jpg",
-          "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272843+00:00",
-          "lowest_notified_price": null,
-          "lowest_seen_price": 2495.35,
-          "net_basket_price": 2495.35,
-          "retail_price": 4799.0,
-          "sale_price": 3839.0,
-          "site_name": "SuperStep",
-          "size_labels": [
-            "39",
-            "40"
-          ],
-          "sizes": [
-            "39",
-            "40"
-          ],
-          "total_discount_rate": 48.0,
-          "url": "https://www.superstep.com.tr/urun/tommy-jeans-the-brooklyn-flatform-kadin-gri-sneaker/en0en02592/"
-        }
-      },
-      "title": "Tommy Jeans The Brooklyn Flatform Kadın Gri Sneaker"
-    },
-    "EN0EN02606AB9": {
-      "brand": "Tommy Hilfiger",
-      "canonical_sku": "EN0EN02606AB9",
-      "display_sku": "EN0EN02606-AB9",
-      "sites": {
-        "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/11/22/32172410/aa0884c9-82ed-4248-b755-e182a7ca84f7.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116404+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272679+00:00",
-          "lowest_notified_price": 2639.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2111.2,
           "net_basket_price": 2111.2,
           "retail_price": 5279.0,
@@ -10958,7 +11665,10 @@
           "url": "https://www.superstep.com.tr/urun/tommy-jeans-retro-basket-tonal-deri-kadin-bej-spor-ayakkabi/en0en02606/"
         }
       },
-      "title": "Tommy Jeans Retro Basket Tonal Deri Kadın Bej Spor Ayakkabı"
+      "title": "Tommy Jeans Retro Basket Tonal Deri Kadın Bej Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Tommy+Hilfiger+tommy+jeans+retro+basket+Kad%C4%B1n+Sneaker",
+      "verified_market_floor_price": 2553.69,
+      "verified_market_floor_source": "Akakçe En Ucuz (Tommy Hilfiger Tommy Jeans Retro B)"
     },
     "EN0EN02730ACG": {
       "brand": "Tommy Hilfiger",
@@ -11028,9 +11738,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/05/08/66004933/2496eb56-6f08-474e-9c32-ca4bfc9cd75e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116409+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272699+00:00",
-          "lowest_notified_price": 2699.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2159.2,
           "net_basket_price": 2159.2,
           "retail_price": 5399.0,
@@ -11048,7 +11758,10 @@
           "url": "https://www.superstep.com.tr/urun/tommy-hilfiger-archieve-97-kadin-bej-spor-ayakkabi/en0en02795-1/"
         }
       },
-      "title": "Tommy Hilfiger Archieve 97 Kadın Bej Spor Ayakkabı"
+      "title": "Tommy Hilfiger Archieve 97 Kadın Bej Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Tommy+Hilfiger+archieve+97+Kad%C4%B1n+Sneaker",
+      "verified_market_floor_price": 2564.05,
+      "verified_market_floor_source": "Akakçe En Ucuz (Tommy Hilfiger Archieve 97 Kadın B)"
     },
     "EN0EN02796ACG": {
       "brand": "Tommy Hilfiger",
@@ -11082,9 +11795,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/05/07/66005027/aca70307-e1ae-457b-a22b-7f25f0eee616.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116392+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272661+00:00",
-          "lowest_notified_price": 2924.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2924.0,
           "net_basket_price": 2924.0,
           "retail_price": 5849.0,
@@ -11140,9 +11853,9 @@
         "superstep": {
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/08/29/75312695/fa0917f8-8ff7-46f0-adb7-1fac780b62ff.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116469+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272684+00:00",
-          "lowest_notified_price": 2699.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 1754.35,
           "net_basket_price": 1754.35,
           "retail_price": 4499.0,
@@ -11162,7 +11875,10 @@
           "url": "https://www.superstep.com.tr/urun/tommy-jeans-retro-basket-kadin-beyaz-mavi-spor-ayakkabi/en0en02818/"
         }
       },
-      "title": "Tommy Jeans Retro Basket Kadın Beyaz/Mavi Spor Ayakkabı"
+      "title": "Tommy Jeans Retro Basket Kadın Beyaz/Mavi Spor Ayakkabı",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Tommy+Hilfiger+tommy+jeans+retro+basket+Kad%C4%B1n+Sneaker",
+      "verified_market_floor_price": 2553.69,
+      "verified_market_floor_source": "Akakçe En Ucuz (Tommy Hilfiger Tommy Jeans Retro B)"
     },
     "EN0EN02933YBS": {
       "brand": "Tommy Hilfiger",
@@ -11173,7 +11889,7 @@
           "campaign_name": "Sepette %25 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/24/77684412/c3573584-64e0-4d9e-9fea-9b685d3e161c.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272644+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3449.25,
           "net_basket_price": 3449.25,
@@ -11264,9 +11980,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/08/26/66004959/6f8e9d08-9215-48fe-9cd1-6ed1fe41e9a9.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116141+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272279+00:00",
-          "lowest_notified_price": 2249.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 1799.2,
           "net_basket_price": 1799.2,
           "retail_price": 4499.0,
@@ -11295,9 +12011,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/09/24/66005110/81ed63c7-7277-44b6-bd67-8fbb1778e1d3.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116150+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272306+00:00",
-          "lowest_notified_price": 2699.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2159.2,
           "net_basket_price": 2159.2,
           "retail_price": 5399.0,
@@ -11327,7 +12043,7 @@
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/08/28/75312732/0abfdce5-beaa-47cf-8dc1-6f07cbb938c2.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272409+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3041.35,
           "net_basket_price": 3041.35,
@@ -11352,6 +12068,36 @@
       },
       "title": "Tommy Jeans Leather Logo Basketball Erkek Siyah Sneaker"
     },
+    "FN7812001": {
+      "brand": "Nike",
+      "canonical_sku": "FN7812001",
+      "display_sku": "FN7812-001",
+      "sites": {
+        "korayspor": {
+          "campaign_name": "Outlet",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/FN7812-001_1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 5389.3,
+          "net_basket_price": 5389.3,
+          "retail_price": 7699.0,
+          "sale_price": 5389.3,
+          "site_name": "Korayspor",
+          "size_labels": [
+            "42 [Son 1!]",
+            "45.5 [Son 1!]"
+          ],
+          "sizes": [
+            "42",
+            "45.5"
+          ],
+          "total_discount_rate": 30.0,
+          "url": "https://www.korayspor.com/nike-ayakkabi-gunluk-react-vision-fn7812-001"
+        }
+      },
+      "title": "React Vision Erkek Günlük Ayakkabı"
+    },
     "FQ1833107": {
       "brand": "Nike",
       "canonical_sku": "FQ1833107",
@@ -11360,9 +12106,9 @@
         "barcin": {
           "campaign_name": "campaign-slug;campaign-garanti",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/2390406/de85fcfd-4516-465f-aefc-a5b640c1e553.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115873+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272030+00:00",
-          "lowest_notified_price": 4199.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115873+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4199.9,
           "net_basket_price": 4199.9,
           "retail_price": 5599.9,
@@ -11404,9 +12150,9 @@
         "barcin": {
           "campaign_name": "2 ve Üzerine Sepette Ek %10 İndirim",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/2373857/abb5ae8b-86b7-4f94-9f7d-8fc8e4271535.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115914+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272076+00:00",
-          "lowest_notified_price": 3919.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3919.9,
           "net_basket_price": 3919.9,
           "retail_price": 5599.9,
@@ -11500,11 +12246,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/05/08/67149422/cb3ec79e-3ee5-4f73-9d44-533d36f20021.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116484+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272823+00:00",
-          "lowest_notified_price": 2699.0,
-          "lowest_seen_price": 2159.2,
-          "net_basket_price": 2159.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116484+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2699.0,
+          "net_basket_price": 2699.0,
           "retail_price": 5399.0,
           "sale_price": 2699.0,
           "site_name": "SuperStep",
@@ -11534,11 +12280,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/05/20/66004909/1966c510-007b-43c6-be88-efac2cf24cfa.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116474+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272808+00:00",
-          "lowest_notified_price": 2699.0,
-          "lowest_seen_price": 2159.2,
-          "net_basket_price": 2159.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116474+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2699.0,
+          "net_basket_price": 2699.0,
           "retail_price": 5399.0,
           "sale_price": 2699.0,
           "site_name": "SuperStep",
@@ -11676,37 +12422,33 @@
       },
       "title": "Tommy Hilfiger Heritage Kadın Beyaz Sneaker"
     },
-    "FZ5808016": {
-      "brand": "Nike",
-      "canonical_sku": "FZ5808016",
-      "display_sku": "FZ5808-016",
+    "GW3019": {
+      "brand": "Adidas",
+      "canonical_sku": "GW3019",
+      "display_sku": "GW3019",
       "sites": {
-        "superstep": {
-          "campaign_name": "Sepette %35 İndirim",
-          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/08/11/75009694/7d9263ac-e32e-45e1-97d7-e5a3b1b8de42.jpg",
+        "korayspor": {
+          "campaign_name": "Outlet",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/GW3019_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272516+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
-          "lowest_seen_price": 3899.35,
-          "net_basket_price": 3899.35,
-          "retail_price": 7999.0,
-          "sale_price": 5999.0,
-          "site_name": "SuperStep",
+          "lowest_seen_price": 2484.3,
+          "net_basket_price": 2484.3,
+          "retail_price": 3549.0,
+          "sale_price": 2484.3,
+          "site_name": "Korayspor",
           "size_labels": [
-            "41 [Son 2!]",
-            "43",
-            "45 [Son 2!]"
+            "45.5 [Son 1!]"
           ],
           "sizes": [
-            "41",
-            "43",
-            "45"
+            "45.5"
           ],
-          "total_discount_rate": 51.3,
-          "url": "https://www.superstep.com.tr/urun/nike-air-max-1-essentials-erkek-gri-yesil-spor-ayakkabi/fz5808-1/"
+          "total_discount_rate": 30.0,
+          "url": "https://www.korayspor.com/adidas-ayakkabi-gunluk-hoops-3-0-mid-gw3019"
         }
       },
-      "title": "Nike Air Max 1 Essentials Erkek Gri/Yeşil Spor Ayakkabı"
+      "title": "Hoops 3.0 Mid Erkek Günlük Ayakkabı"
     },
     "HF1078002": {
       "brand": "Nike",
@@ -11716,9 +12458,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2024/12/26/2268748/0ce8c07c-4ab0-4db3-b66b-186d25b59171.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115948+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272109+00:00",
-          "lowest_notified_price": 3569.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115948+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3569.9,
           "net_basket_price": 3569.9,
           "retail_price": 5499.9,
@@ -11776,9 +12518,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2024/12/24/2265105/84fc5d9d-9538-47dc-8fda-797168995c9e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115983+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272138+00:00",
-          "lowest_notified_price": 5399.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5399.9,
           "net_basket_price": 5399.9,
           "retail_price": 7199.9,
@@ -11806,9 +12548,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/18/75008968/bfb8ebc8-6036-49f7-99c5-46efe8c94e7e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116437+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272725+00:00",
-          "lowest_notified_price": 4999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4999.0,
           "net_basket_price": 4999.0,
           "retail_price": 9999.0,
@@ -11834,9 +12576,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/08/11/75008963/0b19e9d9-3463-4e68-9c61-2093cf66443f.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116343+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T13:24:11.116343+00:00",
-          "lowest_notified_price": 2649.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 2649.0,
           "net_basket_price": 2649.0,
           "retail_price": 5299.0,
@@ -11862,9 +12604,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2024/10/03/2250037/11c31d75-8ab6-4813-9829-762eee476c5b.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116023+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272172+00:00",
-          "lowest_notified_price": 4679.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116023+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4679.9,
           "net_basket_price": 4679.9,
           "retail_price": 7199.9,
@@ -11922,11 +12664,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/09/01/75008926/e28b28ce-4ba6-4232-8819-175e24f0e25b.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116464+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272784+00:00",
-          "lowest_notified_price": 4249.0,
-          "lowest_seen_price": 3399.2,
-          "net_basket_price": 3399.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116464+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 4249.0,
+          "net_basket_price": 4249.0,
           "retail_price": 8499.0,
           "sale_price": 4249.0,
           "site_name": "SuperStep",
@@ -11953,7 +12695,7 @@
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/18/75008776/dfd986de-b255-45b0-b961-55bf9ffed208.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272729+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2875.6,
           "net_basket_price": 2875.6,
@@ -11983,7 +12725,7 @@
           "campaign_name": "Sepette %35 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/16/49798050/446a9a5d-8d5b-401f-a94a-d6260b525dc1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272419+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2339.35,
           "net_basket_price": 2339.35,
@@ -12011,7 +12753,7 @@
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/HQ7368_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3496.3,
           "net_basket_price": 3496.3,
@@ -12042,9 +12784,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2025/04/15/2285942/34e7fccc-23df-4e36-b05a-1b359b3bb63e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115932+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272091+00:00",
-          "lowest_notified_price": 4479.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115932+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4479.9,
           "net_basket_price": 4479.9,
           "retail_price": 6399.9,
@@ -12106,9 +12848,9 @@
         "barcin": {
           "campaign_name": "campaign-slug",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2025/04/15/2287748/46454c37-a7c5-4209-ae4c-177dafa87c64.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115924+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272085+00:00",
-          "lowest_notified_price": 4619.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4619.9,
           "net_basket_price": 4619.9,
           "retail_price": 6599.9,
@@ -12134,11 +12876,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/05/15/21592121/57920fad-0078-4554-9e0a-106074ebca20.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116505+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272864+00:00",
-          "lowest_notified_price": 2275.0,
-          "lowest_seen_price": 1820.0,
-          "net_basket_price": 1820.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116505+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2275.0,
+          "net_basket_price": 2275.0,
           "retail_price": 4549.0,
           "sale_price": 2275.0,
           "site_name": "SuperStep",
@@ -12341,7 +13083,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2024/08/15/32163814/68499b24-f6ab-4ade-a061-9b45ff4ccdc8.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272442+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3772.3,
           "net_basket_price": 3772.3,
@@ -12366,43 +13108,45 @@
       },
       "title": "adidas Niteball iii Erkek Siyah Spor Ayakkabı"
     },
-    "IH2230400": {
-      "brand": "Nike",
-      "canonical_sku": "IH2230400",
-      "display_sku": "IH2230-400",
+    "IH1611": {
+      "brand": "Adidas",
+      "canonical_sku": "IH1611",
+      "display_sku": "IH1611",
       "sites": {
-        "superstep": {
-          "campaign_name": "Sepette %35 İndirim",
-          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/10/09/75792858/27797ee0-7fc7-401d-803d-7511f8f41cfd.jpg",
+        "korayspor": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/IH1611_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272506+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
           "lowest_notified_price": null,
-          "lowest_seen_price": 2973.1,
-          "net_basket_price": 2973.1,
-          "retail_price": 6099.0,
-          "sale_price": 4574.0,
-          "site_name": "SuperStep",
+          "lowest_seen_price": 5456.3,
+          "net_basket_price": 5456.3,
+          "retail_price": 7799.0,
+          "sale_price": 5456.3,
+          "site_name": "Korayspor",
           "size_labels": [
-            "41",
-            "42",
-            "42.5 [Son 1!]",
-            "43",
-            "44",
-            "45"
+            "37.5 [Son 1!]",
+            "38 [Son 1!]",
+            "38.5 [Son 1!]",
+            "39.5 [Son 1!]",
+            "40 [Son 1!]",
+            "40.5 [Son 1!]",
+            "41.5 [Son 1!]"
           ],
           "sizes": [
-            "41",
-            "42",
-            "42.5",
-            "43",
-            "44",
-            "45"
+            "37.5",
+            "38",
+            "38.5",
+            "39.5",
+            "40",
+            "40.5",
+            "41.5"
           ],
-          "total_discount_rate": 51.3,
-          "url": "https://www.superstep.com.tr/urun/nike-total-90-iii-sprite-erkek-sari-lacivert-spor-ayakkabi/ih2230/"
+          "total_discount_rate": 30.0,
+          "url": "https://www.korayspor.com/adidas-ayakkabi-originals-superstar-ii-w-ih1611"
         }
       },
-      "title": "Nike Total 90 III ?Sprite? Erkek Sarı/Lacivert Spor Ayakkabı"
+      "title": "SUPERSTAR II W Unisex Günlük Ayakkabı"
     },
     "IH4462100": {
       "brand": "Nike",
@@ -12412,9 +13156,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2025/07/30/2358630/33fc6633-96a6-4df0-ada2-b7ae07753192.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115940+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272102+00:00",
-          "lowest_notified_price": 4829.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115940+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4829.9,
           "net_basket_price": 4829.9,
           "retail_price": 6899.9,
@@ -12440,9 +13184,9 @@
         "barcin": {
           "campaign_name": "campaign-slug",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2024/09/13/1905628/f1b8bf30-5445-4fff-9663-5c2d16ab7c94.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115811+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.271984+00:00",
-          "lowest_notified_price": 2959.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2959.9,
           "net_basket_price": 2959.9,
           "retail_price": 3949.0,
@@ -12482,9 +13226,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2024/09/10/1915756/18f979a5-e1f6-4f99-aede-52937c5a4cd2.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115885+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272050+00:00",
-          "lowest_notified_price": 3149.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115885+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3149.9,
           "net_basket_price": 3149.9,
           "retail_price": 4499.0,
@@ -12521,7 +13265,7 @@
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/IH9141_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:16:07.671277+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3356.3,
           "net_basket_price": 3356.3,
@@ -12548,9 +13292,9 @@
         "barcin": {
           "campaign_name": "campaign-slug;campaign-garanti",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/16/2416710/2c2f8b9a-ea53-40d5-9663-d05e6eadfbc5.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115841+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272012+00:00",
-          "lowest_notified_price": 5399.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5399.9,
           "net_basket_price": 5399.9,
           "retail_price": 7199.9,
@@ -12626,9 +13370,9 @@
         "barcin": {
           "campaign_name": "campaign-slug;campaign-garanti",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/2389788/ce316cc6-11c8-44ac-af09-16e7cdbef110.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115832+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272003+00:00",
-          "lowest_notified_price": 3779.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3779.9,
           "net_basket_price": 3779.9,
           "retail_price": 5399.9,
@@ -12664,9 +13408,9 @@
         "barcin": {
           "campaign_name": "2 ve Üzerine Sepette Ek %10 İndirim",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/2374650/f00a27e9-74c0-49ae-a35c-88a59e356723.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115971+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272125+00:00",
-          "lowest_notified_price": 5399.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5399.9,
           "net_basket_price": 5399.9,
           "retail_price": 7199.9,
@@ -12702,9 +13446,9 @@
         "barcin": {
           "campaign_name": "2 ve Üzerine Sepette Ek %10 İndirim",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/01/02/2374596/6592700e-b9b4-439c-8af2-db1b81cb4779.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115904+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272067+00:00",
-          "lowest_notified_price": 4949.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4949.9,
           "net_basket_price": 4949.9,
           "retail_price": 6599.9,
@@ -12736,9 +13480,9 @@
         "barcin": {
           "campaign_name": "campaign-slug;campaign-garanti",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/2418662/c9fa76e0-ffde-4276-a423-70d4fba4da81.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115862+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272040+00:00",
-          "lowest_notified_price": 5399.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115862+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5399.9,
           "net_basket_price": 5399.9,
           "retail_price": 7199.9,
@@ -12780,9 +13524,9 @@
         "barcin": {
           "campaign_name": "campaign-slug;campaign-garanti",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/17/2394176/1443a189-c42e-42aa-87e4-1ed836b81a53.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115821+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.271995+00:00",
-          "lowest_notified_price": 5039.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5039.9,
           "net_basket_price": 5039.9,
           "retail_price": 7199.9,
@@ -12818,9 +13562,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/03/25/2389796/ce0defd2-3cef-4dd3-9763-c0ab6587bc57.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115800+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.271972+00:00",
-          "lowest_notified_price": 5039.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.494863+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5039.9,
           "net_basket_price": 5039.9,
           "retail_price": 7199.9,
@@ -12860,9 +13604,9 @@
         "barcin": {
           "campaign_name": "campaign-slug;campaign-garanti",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/07/16/2417008/2ae143b8-3171-4892-9574-9ea63c1d189b.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115853+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272022+00:00",
-          "lowest_notified_price": 5039.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115853+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5039.9,
           "net_basket_price": 5039.9,
           "retail_price": 7199.9,
@@ -12971,7 +13715,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75010161/aa833ca3-a35f-438c-9ef8-753c0d188637.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272376+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2694.3,
           "net_basket_price": 2694.3,
@@ -13108,9 +13852,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/04/28/52098010/a46a684e-8d48-4976-8bbc-97ac74481141.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116162+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272312+00:00",
-          "lowest_notified_price": 2829.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2263.2,
           "net_basket_price": 2263.2,
           "retail_price": 5649.0,
@@ -13140,7 +13884,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/03/28/52683488/18a5b1cf-5132-43f3-be61-42fb39f969e9.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272233+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2694.3,
           "net_basket_price": 2694.3,
@@ -13204,9 +13948,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/09/17/52098192/c3011bfa-8a71-44cb-935f-29dfb1404a54.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116210+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272403+00:00",
-          "lowest_notified_price": 2599.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2079.2,
           "net_basket_price": 2079.2,
           "retail_price": 5199.0,
@@ -13232,7 +13976,10 @@
           "url": "https://www.superstep.com.tr/urun/adidas-jabbar-hi-unisex-beyaz-sneaker/ji3445/"
         }
       },
-      "title": "adidas Jabbar Hi Unisex Beyaz Sneaker"
+      "title": "adidas Jabbar Hi Unisex Beyaz Sneaker",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Adidas+jabbar+hi+Sneaker",
+      "verified_market_floor_price": 2268.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Adidas Jabbar Hi Sneaker)"
     },
     "JI3446": {
       "brand": "Adidas",
@@ -13272,9 +14019,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2025/01/17/2263898/7a03c5f9-9cca-435b-b622-35957d4656bc.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115894+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272058+00:00",
-          "lowest_notified_price": 3569.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115894+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3569.9,
           "net_basket_price": 3569.9,
           "retail_price": 5099.0,
@@ -13374,6 +14121,42 @@
       },
       "title": "adidas Superstar Unisex Beyaz Spor Ayakkabı"
     },
+    "JQ1871": {
+      "brand": "Adidas",
+      "canonical_sku": "JQ1871",
+      "display_sku": "JQ1871",
+      "sites": {
+        "korayspor": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/JQ1871_1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2936.3,
+          "net_basket_price": 2936.3,
+          "retail_price": 4199.0,
+          "sale_price": 2936.3,
+          "site_name": "Korayspor",
+          "size_labels": [
+            "37.5 [Son 1!]",
+            "38 [Son 1!]",
+            "38.5 [Son 1!]",
+            "39.5 [Son 1!]",
+            "40 [Son 1!]"
+          ],
+          "sizes": [
+            "37.5",
+            "38",
+            "38.5",
+            "39.5",
+            "40"
+          ],
+          "total_discount_rate": 30.1,
+          "url": "https://www.korayspor.com/adidas-kosu-ayakkabisi-ultrarun-5-j-jq1871"
+        }
+      },
+      "title": "ULTRARUN 5 J Kadın Koşu Ayakkabısı"
+    },
     "JQ3216": {
       "brand": "Adidas",
       "canonical_sku": "JQ3216",
@@ -13445,7 +14228,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75031399/d0217311-88fa-4fc5-a3ad-1245f5e0ea41.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272734+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3429.3,
           "net_basket_price": 3429.3,
@@ -13472,88 +14255,6 @@
       },
       "title": "adidas Japan Decon Kadın Beyaz Spor Ayakkabı"
     },
-    "JQ8433": {
-      "brand": "Adidas",
-      "canonical_sku": "JQ8433",
-      "display_sku": "JQ8433",
-      "sites": {
-        "superstep": {
-          "campaign_name": "Sepette %30 İndirim",
-          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75032705/5162562e-a4ad-48e0-b439-57a7f1a367ea.jpg",
-          "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272624+00:00",
-          "lowest_notified_price": null,
-          "lowest_seen_price": 2939.3,
-          "net_basket_price": 2939.3,
-          "retail_price": 5999.0,
-          "sale_price": 4199.0,
-          "site_name": "SuperStep",
-          "size_labels": [
-            "41 [Son 3!]",
-            "42 [Son 3!]",
-            "43 [Son 1!]",
-            "45 [Son 1!]"
-          ],
-          "sizes": [
-            "41",
-            "42",
-            "43",
-            "45"
-          ],
-          "total_discount_rate": 51.0,
-          "url": "https://www.superstep.com.tr/urun/adidas-jabbar-hi-erkek-mavi-spor-ayakkabi/jq8433-3/"
-        }
-      },
-      "title": "adidas Jabbar HI Erkek Mavi Spor Ayakkabı"
-    },
-    "JQ8742": {
-      "brand": "Adidas",
-      "canonical_sku": "JQ8742",
-      "display_sku": "JQ8742",
-      "sites": {
-        "superstep": {
-          "campaign_name": "Sepette %30 İndirim",
-          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75030505/7786c719-4168-462b-90cf-adeae7aaad77.jpg",
-          "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272491+00:00",
-          "lowest_notified_price": null,
-          "lowest_seen_price": 4899.3,
-          "net_basket_price": 4899.3,
-          "retail_price": 9999.0,
-          "sale_price": 6999.0,
-          "site_name": "SuperStep",
-          "size_labels": [
-            "37",
-            "38",
-            "38.5",
-            "39",
-            "40",
-            "41",
-            "42",
-            "42.5",
-            "43",
-            "44",
-            "45"
-          ],
-          "sizes": [
-            "37",
-            "38",
-            "38.5",
-            "39",
-            "40",
-            "41",
-            "42",
-            "42.5",
-            "43",
-            "44",
-            "45"
-          ],
-          "total_discount_rate": 51.0,
-          "url": "https://www.superstep.com.tr/urun/adidas-adistar-hrmy-unisex-siyah-spor-ayakkabi/jq8742-5/"
-        }
-      },
-      "title": "adidas Adistar Hrmy Unisex Siyah Spor Ayakkabı"
-    },
     "JQ8743": {
       "brand": "Adidas",
       "canonical_sku": "JQ8743",
@@ -13563,7 +14264,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75032714/bb67b4f6-88a4-41f3-af6c-82c0ef085795.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272388+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 4899.3,
           "net_basket_price": 4899.3,
@@ -13611,7 +14312,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75030061/0b0460c2-5128-4439-8584-dd02dff2142b.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272694+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3184.3,
           "net_basket_price": 3184.3,
@@ -13636,6 +14337,78 @@
       },
       "title": "adidas Japan Kadın Beyaz Spor Ayakkabı"
     },
+    "JQ9401": {
+      "brand": "Adidas",
+      "canonical_sku": "JQ9401",
+      "display_sku": "JQ9401",
+      "sites": {
+        "korayspor": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/JQ9401_1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2761.3,
+          "net_basket_price": 2761.3,
+          "retail_price": 3949.0,
+          "sale_price": 2761.3,
+          "site_name": "Korayspor",
+          "size_labels": [
+            "37.5 [Son 1!]",
+            "38 [Son 1!]",
+            "38.5 [Son 1!]",
+            "39.5 [Son 1!]",
+            "40 [Son 1!]"
+          ],
+          "sizes": [
+            "37.5",
+            "38",
+            "38.5",
+            "39.5",
+            "40"
+          ],
+          "total_discount_rate": 30.1,
+          "url": "https://www.korayspor.com/adidas-kosu-ayakkabisi-runfalcon-5-w-jq9401"
+        }
+      },
+      "title": "RUNFALCON 5 W Kadın Koşu Ayakkabısı"
+    },
+    "JQ9403": {
+      "brand": "Adidas",
+      "canonical_sku": "JQ9403",
+      "display_sku": "JQ9403",
+      "sites": {
+        "korayspor": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/JQ9403_1.jpg",
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2761.3,
+          "net_basket_price": 2761.3,
+          "retail_price": 3949.0,
+          "sale_price": 2761.3,
+          "site_name": "Korayspor",
+          "size_labels": [
+            "37.5 [Son 1!]",
+            "38 [Son 1!]",
+            "38.5 [Son 1!]",
+            "39.5 [Son 1!]",
+            "40 [Son 1!]"
+          ],
+          "sizes": [
+            "37.5",
+            "38",
+            "38.5",
+            "39.5",
+            "40"
+          ],
+          "total_discount_rate": 30.1,
+          "url": "https://www.korayspor.com/adidas-kosu-ayakkabisi-runfalcon-5-w-jq9403"
+        }
+      },
+      "title": "RUNFALCON 5 W Unisex Koşu Ayakkabısı"
+    },
     "JR0882": {
       "brand": "Adidas",
       "canonical_sku": "JR0882",
@@ -13645,7 +14418,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75032723/e08c9ee6-012e-41bd-ac1b-57fcff550551.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272295+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 3184.3,
           "net_basket_price": 3184.3,
@@ -13682,7 +14455,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75030598/0d437691-ebca-4efe-960c-040f11d5ef89.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272396+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2694.3,
           "net_basket_price": 2694.3,
@@ -13726,7 +14499,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75033243/5c5ac8d3-b931-422e-b04a-084efb46be01.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272364+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2449.3,
           "net_basket_price": 2449.3,
@@ -13756,7 +14529,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75030106/f526cde3-0179-4058-b2ca-f674113ebb7d.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272287+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2449.3,
           "net_basket_price": 2449.3,
@@ -13854,48 +14627,6 @@
       },
       "title": "adidas Samba Og Kadın Sarı Spor Ayakkabı"
     },
-    "JS0806": {
-      "brand": "Adidas",
-      "canonical_sku": "JS0806",
-      "display_sku": "JS0806",
-      "sites": {
-        "superstep": {
-          "campaign_name": "Sepette %30 İndirim",
-          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75030679/0de15267-0670-402a-82e4-1b38d8770b8b.jpg",
-          "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272499+00:00",
-          "lowest_notified_price": null,
-          "lowest_seen_price": 2694.3,
-          "net_basket_price": 2694.3,
-          "retail_price": 5499.0,
-          "sale_price": 3849.0,
-          "site_name": "SuperStep",
-          "size_labels": [
-            "38 [Son 1!]",
-            "40 [Son 1!]",
-            "41",
-            "42",
-            "42.5",
-            "43",
-            "44",
-            "45"
-          ],
-          "sizes": [
-            "38",
-            "40",
-            "41",
-            "42",
-            "42.5",
-            "43",
-            "44",
-            "45"
-          ],
-          "total_discount_rate": 51.0,
-          "url": "https://www.superstep.com.tr/urun/adidas-jabbar-lo-unisex-pembe-spor-ayakkabi/js0806-5/"
-        }
-      },
-      "title": "adidas Jabbar Lo Unisex Pembe Spor Ayakkabı"
-    },
     "JS0807": {
       "brand": "Adidas",
       "canonical_sku": "JS0807",
@@ -13905,7 +14636,7 @@
           "campaign_name": "Sepette %30 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/07/02/75032263/bca0ea78-05e6-476c-8f0e-8d797b47190c.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272369+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2694.3,
           "net_basket_price": 2694.3,
@@ -14056,11 +14787,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/01/13/76805272/eaca0580-be7b-4661-bfbe-aaeabbef76dc.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116459+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272757+00:00",
-          "lowest_notified_price": 3900.0,
-          "lowest_seen_price": 3120.0,
-          "net_basket_price": 3120.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116459+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 3900.0,
+          "net_basket_price": 3900.0,
           "retail_price": 7799.0,
           "sale_price": 3900.0,
           "site_name": "SuperStep",
@@ -14087,7 +14818,7 @@
           "campaign_name": "Sepette %15 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/01/13/76802401/d5c6e060-d3a9-4afd-b9c5-54df5b313292.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272656+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 4844.15,
           "net_basket_price": 4844.15,
@@ -14125,9 +14856,9 @@
         "superstep": {
           "campaign_name": "Sepette %15 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/01/13/76803001/0a17ac84-817c-4dc3-b0e3-22814e5f5932.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116385+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272649+00:00",
-          "lowest_notified_price": 5309.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496755+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4512.65,
           "net_basket_price": 4512.65,
           "retail_price": 8849.0,
@@ -14194,9 +14925,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/10/06/2277674/f1a1ede0-9202-4927-96ef-a7dde99c2a8b.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116033+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272182+00:00",
-          "lowest_notified_price": 5249.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116033+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 5249.9,
           "net_basket_price": 5249.9,
           "retail_price": 7499.99,
@@ -14230,9 +14961,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/06/12/2277749/4c3fd9cd-214d-4200-bd67-fb5f3d642a36.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.115955+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272116+00:00",
-          "lowest_notified_price": 4869.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.115955+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4869.9,
           "net_basket_price": 4869.9,
           "retail_price": 7499.99,
@@ -14258,33 +14989,33 @@
       },
       "title": "Salomon DRX Defy Grvl Erkek Koşu Ayakkabısı"
     },
-    "L47860800": {
-      "brand": "Salomon",
-      "canonical_sku": "L47860800",
-      "display_sku": "L47860800",
+    "ML565ANT": {
+      "brand": "New Balance",
+      "canonical_sku": "ML565ANT",
+      "display_sku": "ML565ANT",
       "sites": {
-        "superstep": {
-          "campaign_name": "Sepette %35 İndirim",
-          "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2025/09/17/75611911/82f5bdc0-4d49-4865-918a-389920f0f262.jpg",
+        "korayspor": {
+          "campaign_name": "Vitrin İndirimi",
+          "image_url": "https://p-korayspor.sm.mncdn.com/mnresize/640/-/korayspor/products/ML565ANT_1.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272620+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.495373+00:00",
           "lowest_notified_price": null,
-          "lowest_seen_price": 4874.35,
-          "net_basket_price": 4874.35,
-          "retail_price": 9999.0,
-          "sale_price": 7499.0,
-          "site_name": "SuperStep",
+          "lowest_seen_price": 3449.25,
+          "net_basket_price": 3449.25,
+          "retail_price": 4599.0,
+          "sale_price": 3449.25,
+          "site_name": "Korayspor",
           "size_labels": [
-            "42 [Son 1!]"
+            "45 [Son 1!]"
           ],
           "sizes": [
-            "42"
+            "45"
           ],
-          "total_discount_rate": 51.3,
-          "url": "https://www.superstep.com.tr/urun/salomon-xt-pathway-2-unisex-bej-spor-ayakkabi/l47860800/"
+          "total_discount_rate": 25.0,
+          "url": "https://www.korayspor.com/new-balance-ayakkabi-gunluk-565-gri-modeli-koleksiyonu-ml565ant"
         }
       },
-      "title": "Salomon XT Pathway 2 Unisex Bej Spor Ayakkabı"
+      "title": "565 Gri Modeli Koleksiyonu Erkek Günlük Ayakkabı"
     },
     "NT600T": {
       "brand": "Nautica",
@@ -14722,9 +15453,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2026/04/20/2273472/7c3f45f5-a4e2-4153-ab66-4a96786e08f4.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116044+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272191+00:00",
-          "lowest_notified_price": 4549.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116044+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4549.9,
           "net_basket_price": 4549.9,
           "retail_price": 6999.0,
@@ -14752,9 +15483,9 @@
         "superstep": {
           "campaign_name": "BESTSELLER",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/25/76770731/4f4ee04a-8f24-4132-8e1a-373e78ec482c.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116118+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272256+00:00",
-          "lowest_notified_price": 4349.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 4349.0,
           "net_basket_price": 4349.0,
           "retail_price": 7249.0,
@@ -14830,9 +15561,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2022/02/23/192798/27520037-790f-4a52-9314-8e8ba4f0d84f.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116109+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272249+00:00",
-          "lowest_notified_price": 2499.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2499.0,
           "net_basket_price": 2499.0,
           "retail_price": 4999.0,
@@ -14860,9 +15591,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329359/c2c6bed9-a9f2-40e9-93d8-5f3652a96027.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116379+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272640+00:00",
-          "lowest_notified_price": 2149.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2149.0,
           "net_basket_price": 2149.0,
           "retail_price": 4299.0,
@@ -14948,9 +15679,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/27/77329394/8617082f-0234-4567-801c-94ab94f50cbd.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116195+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272341+00:00",
-          "lowest_notified_price": 2599.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2599.0,
           "net_basket_price": 2599.0,
           "retail_price": 5199.0,
@@ -14978,9 +15709,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/10/19/77329652/286fd22e-62dd-4b7d-8d1c-62f2b5bcbf85.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116321+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272592+00:00",
-          "lowest_notified_price": 2999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116321+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2999.0,
           "net_basket_price": 2999.0,
           "retail_price": 5999.0,
@@ -15010,9 +15741,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77355446/a9847664-aae7-41f2-b8c7-77bb40d8b6ef.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116246+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272453+00:00",
-          "lowest_notified_price": 2999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2399.2,
           "net_basket_price": 2399.2,
           "retail_price": 5999.0,
@@ -15030,7 +15761,10 @@
           "url": "https://www.superstep.com.tr/urun/vans-old-skool-unisex-beyaz-sneaker/vn000d6wcj71/"
         }
       },
-      "title": "Vans Old Skool Unisex Beyaz Sneaker"
+      "title": "Vans Old Skool Unisex Beyaz Sneaker",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Vans+old+skool+Sneaker",
+      "verified_market_floor_price": 2199.0,
+      "verified_market_floor_source": "Akakçe En Ucuz (Vans Old Skool Unisex Siyah Sneake)"
     },
     "VN000D6WJVY1": {
       "brand": "Vans",
@@ -15040,11 +15774,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329602/66f814ca-4709-4020-ba40-0e8d1aa72b76.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116261+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272469+00:00",
-          "lowest_notified_price": 2849.0,
-          "lowest_seen_price": 2279.2,
-          "net_basket_price": 2279.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116261+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2849.0,
+          "net_basket_price": 2849.0,
           "retail_price": 5699.0,
           "sale_price": 2849.0,
           "site_name": "SuperStep",
@@ -15070,9 +15804,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329577/389eb76a-48d9-450d-8cd4-b84fe92efddd.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116100+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272241+00:00",
-          "lowest_notified_price": 2399.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 1919.2,
           "net_basket_price": 1919.2,
           "retail_price": 4799.0,
@@ -15103,9 +15837,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329507/2c4429c4-df1d-44ec-86a6-4c4ddca772b8.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116326+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272601+00:00",
-          "lowest_notified_price": 2649.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116326+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2649.0,
           "net_basket_price": 2649.0,
           "retail_price": 5299.0,
@@ -15133,9 +15867,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329439/045bfa97-7fe9-41bd-ab3d-901ad16edc99.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116454+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272753+00:00",
-          "lowest_notified_price": 2849.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116454+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2849.0,
           "net_basket_price": 2849.0,
           "retail_price": 5699.0,
@@ -15163,11 +15897,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329365/3cd3e20a-b863-4f01-9bbb-f12e52fe06be.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116331+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272606+00:00",
-          "lowest_notified_price": 2649.0,
-          "lowest_seen_price": 2119.2,
-          "net_basket_price": 2119.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116331+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2649.0,
+          "net_basket_price": 2649.0,
           "retail_price": 5299.0,
           "sale_price": 2649.0,
           "site_name": "SuperStep",
@@ -15193,9 +15927,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/27/77329370/f7b201ff-01fb-472a-9f55-f05ae8faa47e.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116185+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272335+00:00",
-          "lowest_notified_price": 2999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2999.0,
           "net_basket_price": 2999.0,
           "retail_price": 5999.0,
@@ -15223,11 +15957,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77355571/1963adb1-533a-4042-8d94-4adfa55475df.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116281+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272486+00:00",
-          "lowest_notified_price": 2999.0,
-          "lowest_seen_price": 2399.2,
-          "net_basket_price": 2399.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116281+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2999.0,
+          "net_basket_price": 2999.0,
           "retail_price": 5999.0,
           "sale_price": 2999.0,
           "site_name": "SuperStep",
@@ -15289,9 +16023,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/05/04/77329445/a2f273c0-7da4-404e-97da-cd254d8bde7c.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116255+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272464+00:00",
-          "lowest_notified_price": 2999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2999.0,
           "net_basket_price": 2999.0,
           "retail_price": 5999.0,
@@ -15325,9 +16059,9 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/05/04/77329775/78a0238b-2200-46df-8a65-fb2e87b791a4.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116250+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272458+00:00",
-          "lowest_notified_price": 2999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2399.2,
           "net_basket_price": 2399.2,
           "retail_price": 5999.0,
@@ -15349,7 +16083,10 @@
           "url": "https://www.superstep.com.tr/urun/vans-lx-authentic-44-unisex-renkli-sneaker/vn000db8cyk1-2/"
         }
       },
-      "title": "Vans Lx Authentic 44 Unisex Renkli Sneaker"
+      "title": "Vans Lx Authentic 44 Unisex Renkli Sneaker",
+      "verified_akakce_url": "https://www.akakce.com/arama/?q=Vans+lx+authentic+44+Sneaker",
+      "verified_market_floor_price": 2039.55,
+      "verified_market_floor_source": "Akakçe En Ucuz (Vans LX Authentic 44 Sneaker)"
     },
     "VN000EDYBM81": {
       "brand": "Vans",
@@ -15359,9 +16096,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/03/27/77329786/8b7db721-a8f0-47a6-a337-051eb2ce8511.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116265+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272473+00:00",
-          "lowest_notified_price": 2999.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116265+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 2999.0,
           "net_basket_price": 2999.0,
           "retail_price": 5999.0,
@@ -15389,11 +16126,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77355549/c0b651a1-44a7-49e2-a946-63e2e6a2c345.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116270+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272477+00:00",
-          "lowest_notified_price": 2499.0,
-          "lowest_seen_price": 1999.2,
-          "net_basket_price": 1999.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116270+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2499.0,
+          "net_basket_price": 2499.0,
           "retail_price": 4999.0,
           "sale_price": 2499.0,
           "site_name": "SuperStep",
@@ -15420,7 +16157,7 @@
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329532/1c107fbf-c321-444e-a6d3-0573776d04b7.jpg",
           "last_notified_at": null,
-          "last_seen_at": "2026-10-27T07:43:36.272349+00:00",
+          "last_seen_at": "2026-10-27T08:04:53.496246+00:00",
           "lowest_notified_price": null,
           "lowest_seen_price": 2499.0,
           "net_basket_price": 2499.0,
@@ -15450,11 +16187,11 @@
         "superstep": {
           "campaign_name": "Sepette %20 İndirim",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329503/facbb5b3-c653-46c1-b8be-ee70ba487afc.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116274+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272482+00:00",
-          "lowest_notified_price": 2299.0,
-          "lowest_seen_price": 1839.2,
-          "net_basket_price": 1839.2,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116274+00:00",
+          "lowest_notified_price": null,
+          "lowest_seen_price": 2299.0,
+          "net_basket_price": 2299.0,
           "retail_price": 4599.0,
           "sale_price": 2299.0,
           "site_name": "SuperStep",
@@ -15486,9 +16223,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/02/11/77329678/bef18428-6386-4c9c-8087-1bc670461780.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116062+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272208+00:00",
-          "lowest_notified_price": 3499.0,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-27T08:04:53.495916+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3499.0,
           "net_basket_price": 3499.0,
           "retail_price": 6999.0,
@@ -15516,9 +16253,9 @@
         "superstep": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://8f08a8-ss.akinoncloudcdn.com/products/2026/06/23/77329713/59cdd66c-e6e4-47fe-b9cd-b164c0a198ae.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116368+00:00",
+          "last_notified_at": null,
           "last_seen_at": "2026-10-26T13:24:11.116368+00:00",
-          "lowest_notified_price": 3499.0,
+          "lowest_notified_price": null,
           "lowest_seen_price": 3499.0,
           "net_basket_price": 3499.0,
           "retail_price": 6999.0,
@@ -15544,9 +16281,9 @@
         "barcin": {
           "campaign_name": "Vitrin İndirimi",
           "image_url": "https://9b6e8d-barcin.akinoncloudcdn.com/products/2023/01/30/1101712/a30b0f20-77bf-4e42-9724-9f4e2c2df6d1.jpg",
-          "last_notified_at": "2026-10-26T13:24:11.116003+00:00",
-          "last_seen_at": "2026-10-27T07:43:36.272152+00:00",
-          "lowest_notified_price": 3569.9,
+          "last_notified_at": null,
+          "last_seen_at": "2026-10-26T13:24:11.116003+00:00",
+          "lowest_notified_price": null,
           "lowest_seen_price": 3569.9,
           "net_basket_price": 3569.9,
           "retail_price": 5499.0,

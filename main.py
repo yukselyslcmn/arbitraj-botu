@@ -58,6 +58,36 @@ def _scrape_single_site_worker(
         scraper.client.close()
 
 
+def _interleave_candidates_by_site(products: list[ScrapedProduct]) -> list[ScrapedProduct]:
+    """
+    Tek bir mağazanın (Örn: yüksek outlet indirimli Occasion) tüm Akakçe sorgu kotasını
+    tekeline almasını önlemek için her mağazanın en yüksek indirimli ürünlerini
+    Round-Robin (sırayla 1 SuperStep, 1 Occasion, 1 Korayspor, 1 Barçın, 1 InStreet)
+    düzeninde harmanlar.
+    """
+    by_site: dict[str, list[ScrapedProduct]] = {}
+    for p in products:
+        by_site.setdefault(p.site_key, []).append(p)
+
+    for s_key in by_site:
+        by_site[s_key].sort(
+            key=lambda x: (x.basket_discount_rate > 0, x.total_discount_rate),
+            reverse=True,
+        )
+
+    interleaved: list[ScrapedProduct] = []
+    max_len = max((len(v) for v in by_site.values()), default=0)
+    site_keys = list(by_site.keys())
+
+    for idx in range(max_len):
+        for s_key in site_keys:
+            site_list = by_site[s_key]
+            if idx < len(site_list):
+                interleaved.append(site_list[idx])
+
+    return interleaved
+
+
 def run_arbitrage_cycle(
     target_sites: list[str],
     max_pages: int = config.MAX_PAGES_PER_CATEGORY,
@@ -105,19 +135,16 @@ def run_arbitrage_cycle(
     notified_count = 0
     skipped_first_run_count = 0
 
-    # 2. Ön filtreleri geçen ürünler için piyasa dip fiyatını sorgula ve birim ekonomisini hesapla
-    # En yüksek indirim oranına sahip adaylara öncelik ver
-    sorted_candidates = sorted(all_scraped, key=lambda x: x.total_discount_rate, reverse=True)
+    # 2. Ön filtreleri geçen ürünler için site-dengeli (Round-Robin) sırada piyasa dip fiyatını sorgula
+    balanced_candidates = _interleave_candidates_by_site(all_scraped)
     live_akakce_queries = 0
-    max_live_akakce_per_cycle = 30
+    max_live_akakce_per_cycle = 35
 
-    for prod in sorted_candidates:
+    for prod in balanced_candidates:
         passed_pre, _ = ArbitrageEngine.check_pre_filters(prod)
         if not passed_pre:
             continue
 
-        # İlk çalışma koruması veya daha önce aynı fiyattan bildirilmiş ürünlerde
-        # gereksiz canlı Akakçe HTTP trafiği oluşturma
         should_send_preview, preview_type = storage.should_notify(prod)
         use_live_akakce = should_send_preview and (live_akakce_queries < max_live_akakce_per_cycle)
         if use_live_akakce:
