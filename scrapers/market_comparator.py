@@ -431,12 +431,24 @@ class MarketComparator:
 
         sorted_offers = sorted(unique_offers.values(), key=lambda x: x.price)
         best_offer = sorted_offers[0] if sorted_offers else None
-        floor_price = best_offer.price if best_offer else round(product.retail_price * 0.72, 2)
-        floor_source = (
-            f"Resmi Satıcı Kıyaslaması ({best_offer.platform} / {best_offer.seller_name}: {best_offer.price:,.0f} TL)"
-            if best_offer
-            else "Tahmini Piyasa Dip (Liste x0.72)"
-        )
+
+        # Taranan kaynak mağaza dışındaki DİĞER resmi satıcıların teklifleri (Rakip piyasa dip fiyatı):
+        current_site_lower = product.site_name.lower().strip()
+        other_competitor_offers = [
+            off for off in sorted_offers
+            if current_site_lower not in off.platform.lower() and current_site_lower not in off.seller_name.lower()
+        ]
+
+        if other_competitor_offers:
+            best_competitor = other_competitor_offers[0]
+            floor_price = best_competitor.price
+            floor_source = (
+                f"Resmi Satıcı Kıyaslaması ({best_competitor.platform} / {best_competitor.seller_name}: {best_competitor.price:,.0f} TL)"
+            )
+        else:
+            # Başka resmi mağazada bulunamadıysa liste fiyatı x 0.72 piyasa referansı alınır
+            floor_price = round(product.retail_price * 0.72, 2)
+            floor_source = "Liste Fiyatı x 0.72 (Tahmini Piyasa Değeri)"
 
         # Rütbeli döküm listesi hazırla (🏆, 🥈, 🥉, ▫️)
         breakdown: list[str] = []
