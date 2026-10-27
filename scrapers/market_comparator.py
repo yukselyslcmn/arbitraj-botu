@@ -37,7 +37,8 @@ class MarketComparator:
         r"sneaker|günlük|gunluk|koşu|kosu|yürüyüş|yuruyus|antrenman|basketbol|tenis|"
         r"beyaz|siyah|lacivert|mavi|kırmızı|kirmizi|yeşil|yesil|gri|bej|krem|kahverengi|"
         r"pembe|mor|turuncu|sarı|sari|haki|bordo|antrasit|renkli|çok|cok|açık|acik|koyu|"
-        r"deri|süet|suet|kanvas|canvas|fileli|tekstil|hakiki|nubuk|sentetik|mesh)\b",
+        r"deri|süet|suet|kanvas|canvas|fileli|tekstil|hakiki|nubuk|sentetik|mesh|"
+        r"low|mid|high|retro|classic|klasik|casual|lifestyle|comfort|essential|essentials)\b",
         re.IGNORECASE,
     )
 
@@ -181,6 +182,10 @@ class MarketComparator:
         varsa doğrulanmış Akakçe URL'sini `product.verified_akakce_url` alanına atar.
         """
         cache_key = f"{product.canonical_sku}:{product.site_key}"
+        queries = self.build_search_queries(product)
+        if queries and not product.verified_akakce_url:
+            product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
+
         if cache_key in self._cache:
             cached_price, cached_src, cached_url = self._cache[cache_key]
             if cached_url:

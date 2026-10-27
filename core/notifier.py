@@ -5,7 +5,7 @@ from typing import Optional
 
 import config
 from core.arbitrage_engine import ArbitrageAnalysis
-from core.http_client import StealthHttpClient
+from core.http_client import StealthHttpClient, mask_sensitive
 
 logger = logging.getLogger("arbitraj.notifier")
 
@@ -179,10 +179,10 @@ class TelegramNotifier:
                 logger.warning(
                     "sendPhoto başarısız oldu (HTTP %s: %s), sendMessage'a düşülüyor...",
                     resp.status_code if resp else "None",
-                    resp.text[:160] if resp else "No response",
+                    mask_sensitive(resp.text[:160]) if resp else "No response",
                 )
             except Exception as exc:
-                logger.warning("sendPhoto isteği sırasında hata (%s), sendMessage'a düşülüyor...", exc)
+                logger.warning("sendPhoto isteği sırasında hata (%s), sendMessage'a düşülüyor...", mask_sensitive(exc))
 
         # 2. Yedek Metin Gönderimi (sendMessage)
         try:
@@ -203,9 +203,9 @@ class TelegramNotifier:
             logger.error(
                 "Telegram sendMessage hatası (HTTP %s): %s",
                 resp.status_code if resp else "None",
-                resp.text[:250] if resp else "No response",
+                mask_sensitive(resp.text[:250]) if resp else "No response",
             )
         except Exception as exc:
-            logger.error("Telegram sendMessage bağlantı hatası: %s", exc)
+            logger.error("Telegram sendMessage bağlantı hatası: %s", mask_sensitive(exc))
 
         return False

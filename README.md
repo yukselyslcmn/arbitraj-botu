@@ -45,7 +45,7 @@ Sistem yalnızca **%100 orijinal ve faturalı** ürün satan Türkiye'nin 5 büy
 
 ## 📱 Telegram Bildirim Kartı Önizlemesi
 
-Fırsat yakalandığında `@ArbitrajRadarii_bot` üzerinden ürün fotoğrafı, tam maliyet/kâr tablosu, altın beden listesi ve tek tıkla satın alma / kontrol butonlarıyla birlikte anında telefonunuza düşer:
+Fırsat yakalandığında Telegram botunuz üzerinden ürün fotoğrafı, tam maliyet/kâr tablosu, altın beden listesi ve tek tıkla satın alma / kontrol butonlarıyla birlikte anında telefonunuza düşer:
 
 <div align="center">
   <img src="assets/telegram-card-preview.svg" alt="Telegram Bildirim Kartı Önizlemesi" width="540" />
@@ -132,10 +132,10 @@ python -m venv venv
 Proje kök dizininde `.env.example` dosyasını `.env` olarak kopyalayın ve Telegram bilgilerinizi girin:
 
 ```env
-TELEGRAM_BOT_TOKEN=8638073609:AA...
-TELEGRAM_CHAT_ID=5784345886
-MIN_NET_PROFIT_TL=500
-MIN_ROI_PERCENT=25
+TELEGRAM_BOT_TOKEN=1234567890:AAH_ornek_bot_token_buraya_gelecek
+TELEGRAM_CHAT_ID=-1001234567890
+MIN_NET_PROFIT_TL=550
+MIN_ROI_PERCENT=30
 MAX_BASKET_PRICE=5500
 MIN_TOTAL_DISCOUNT_RATE=40
 ```

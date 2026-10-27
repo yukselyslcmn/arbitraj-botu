@@ -72,6 +72,6 @@ jobs:
             echo "Durum dosyasında (data/products_state.json) değişiklik yok, commit atlanıyor."
           else
             git commit -m "chore(state): sync arbitrage product state"
-            git pull --rebase origin "${GITHUB_REF_NAME:-main}"
+            git pull --rebase -X theirs origin "${GITHUB_REF_NAME:-main}"
             git push origin "HEAD:${GITHUB_REF_NAME:-main}"
           fi

@@ -226,8 +226,30 @@ class StateStorage:
                             if "kadın" not in entry_title and "kadin" not in entry_title and "unisex" not in entry_title:
                                 gender_ok = False
 
-                        if gender_ok and all(tok in entry_title for tok in sig_tokens[:2]):
-                            is_model_match = True
+                        if gender_ok:
+                            has_specific_single = len(sig_tokens) == 1 and (
+                                any(c.isdigit() or c == "-" for c in sig_tokens[0])
+                                or sig_tokens[0]
+                                in {
+                                    "shox",
+                                    "gazelle",
+                                    "samba",
+                                    "campus",
+                                    "spezial",
+                                    "palermo",
+                                    "superstar",
+                                    "forum",
+                                    "cortez",
+                                    "vomero",
+                                    "pegasus",
+                                    "dunk",
+                                    "blazer",
+                                }
+                            )
+                            if (len(sig_tokens) >= 2 and all(tok in entry_title for tok in sig_tokens[:2])) or (
+                                has_specific_single and sig_tokens[0] in entry_title
+                            ):
+                                is_model_match = True
 
                 if not (is_sku_match or is_model_match):
                     continue
@@ -237,7 +259,7 @@ class StateStorage:
                         continue
                     price = s_data.get("net_basket_price") or s_data.get("sale_price")
                     s_name = str(s_data.get("site_name") or s_key)
-                    if isinstance(price, (int, float)) and price > 0:
+                    if isinstance(price, (int, float)) and price >= 650.0:
                         if is_sku_match:
                             sku_matches.append((float(price), s_name))
                         else:
