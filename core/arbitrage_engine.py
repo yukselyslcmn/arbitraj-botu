@@ -318,11 +318,21 @@ class ArbitrageEngine:
         is_buy_source_cheapest = True
         cheaper_source_alert: Optional[str] = None
         if best_official_price is not None and best_official_price > 0:
-            if buy_cost >= best_official_price:
+            # Satın alınacak kaynak mağaza zaten piyasadaki en ucuz teklif mi?
+            # 1. Alış maliyeti best_official_price ile aynı/yakınsa (fark <= 20 TL) en ucuzdur.
+            # 2. Veya ürünün site_name'i best_official_platform ile eşleşiyorsa kendisidir.
+            is_same_deal = (
+                buy_cost <= best_official_price + 20.0
+                or (best_official_platform and (
+                    best_official_platform.lower() in product.site_name.lower()
+                    or product.site_name.lower() in best_official_platform.lower()
+                ))
+            )
+            if not is_same_deal and buy_cost > best_official_price + 20.0:
                 is_buy_source_cheapest = False
                 cheaper_source_alert = (
                     f"⚠️ Piyasada daha ucuz resmi satıcı var: {best_official_platform or 'Pazaryeri'} "
-                    f"({best_official_seller or 'Resmi Satıcı'}) {best_official_price:,.0f} TL <= {buy_cost:,.0f} TL"
+                    f"({best_official_seller or 'Resmi Satıcı'}) {best_official_price:,.0f} TL < {buy_cost:,.0f} TL"
                 ).replace(",", ".")
                 if is_profitable:
                     is_profitable = False
