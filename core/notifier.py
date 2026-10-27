@@ -249,3 +249,46 @@ class TelegramNotifier:
             logger.error("Telegram sendMessage bağlantı hatası: %s", mask_sensitive(exc))
 
         return False
+
+    def send_message(self, text: str, reply_markup: Optional[dict] = None) -> bool:
+        """Doğrudan HTML formatlı metin mesajı gönderir (sistem/test mesajları için)."""
+        if not self.is_configured:
+            logger.warning("Telegram yapılandırılmamış, mesaj gönderilemedi.")
+            return False
+
+        self._respect_flood_limit()
+        base_api = f"https://api.telegram.org/bot{self.bot_token}"
+        msg_payload = {
+            "chat_id": self.chat_id,
+            "text": text,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": False,
+        }
+        if reply_markup:
+            msg_payload["reply_markup"] = reply_markup
+
+        try:
+            resp = self.client.post(f"{base_api}/sendMessage", json_payload=msg_payload, skip_throttle=True)
+            if resp and resp.status_code == 200 and resp.json().get("ok"):
+                logger.info("Telegram metin mesajı başarıyla iletildi.")
+                return True
+            logger.error("Telegram sendMessage başarısız: %s", resp.text if resp else "No response")
+        except Exception as exc:
+            logger.error("Telegram sendMessage bağlantı hatası: %s", mask_sensitive(exc))
+        return False
+
+    def get_bot_info(self) -> Optional[dict]:
+        """Bot kimliğini doğrulamak için getMe çağrısı yapar."""
+        if not self.is_configured:
+            return None
+        base_api = f"https://api.telegram.org/bot{self.bot_token}"
+        try:
+            resp = self.client.get(f"{base_api}/getMe", skip_throttle=True)
+            if resp and resp.status_code == 200:
+                data = resp.json()
+                if data.get("ok"):
+                    return data.get("result")
+        except Exception as exc:
+            logger.warning("Telegram getMe çağrısı başarısız: %s", mask_sensitive(exc))
+        return None
+
