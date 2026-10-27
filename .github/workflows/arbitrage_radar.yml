@@ -9,7 +9,7 @@ on:
       sites:
         description: 'Taranacak siteler (virgülle ayrılmış)'
         required: false
-        default: 'occasion,superstep,instreet,barcin,korayspor'
+        default: 'occasion,superstep,instreet,barcin,korayspor,sportive,fashfed'
       max_pages:
         description: 'Kategori başına maksimum sayfa sayısı'
         required: false
@@ -59,7 +59,7 @@ jobs:
           INPUT_SITES: ${{ github.event.inputs.sites }}
           INPUT_MAX_PAGES: ${{ github.event.inputs.max_pages }}
         run: |
-          SITES="${INPUT_SITES:-occasion,superstep,instreet,barcin,korayspor}"
+          SITES="${INPUT_SITES:-occasion,superstep,instreet,barcin,korayspor,sportive,fashfed}"
           MAX_PAGES="${INPUT_MAX_PAGES:-4}"
           .venv/bin/python main.py --once --sites "$SITES" --max-pages "$MAX_PAGES"
 

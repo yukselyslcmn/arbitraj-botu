@@ -267,4 +267,22 @@ SITE_TARGETS: dict[str, dict] = {
             {"url": "https://www.korayspor.com/kadin-spor-ayakkabi/", "gender": "Kadın"},
         ],
     },
+    "sportive": {
+        "name": "Sportive",
+        "base_url": "https://www.sportive.com.tr",
+        "categories": [
+            {"url": "https://www.sportive.com.tr/outlet/", "gender": "Unisex"},
+            {"url": "https://www.sportive.com.tr/erkek-spor-ayakkabi/", "gender": "Erkek"},
+            {"url": "https://www.sportive.com.tr/kadin-spor-ayakkabi/", "gender": "Kadın"},
+        ],
+    },
+    "fashfed": {
+        "name": "FashFed",
+        "base_url": "https://www.fashfed.com",
+        "categories": [
+            {"url": "https://www.fashfed.com/flash-indirim/", "gender": "Unisex"},
+            {"url": "https://www.fashfed.com/erkek-ayakkabi/", "gender": "Erkek"},
+            {"url": "https://www.fashfed.com/kadin-ayakkabi/", "gender": "Kadın"},
+        ],
+    },
 }

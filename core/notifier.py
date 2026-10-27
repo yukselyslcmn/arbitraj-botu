@@ -6,6 +6,7 @@ from typing import Optional
 import config
 from core.arbitrage_engine import ArbitrageAnalysis
 from core.http_client import StealthHttpClient, mask_sensitive
+from core.listing_generator import ListingGenerator
 
 logger = logging.getLogger("arbitraj.notifier")
 
@@ -41,7 +42,7 @@ class TelegramNotifier:
 
     @staticmethod
     def format_tl(amount: float) -> str:
-        """Sayısı Türkçe binlik noktalı formata çevirir (Örn: 2499.9 -> '2.500 TL')."""
+        """Sayıyı Türkçe binlik noktalı formata çevirir (Örn: 2499.9 -> '2.500 TL')."""
         rounded = int(round(amount))
         return f"{rounded:,} TL".replace(",", ".")
 
@@ -55,6 +56,8 @@ class TelegramNotifier:
 
         if notification_type == "EXTRA_PRICE_CRASH":
             header = f"⚡ <b>EKSTRA FİYAT ÇÖKÜŞÜ! (Puan: {analysis.arbitrage_score}/100)</b>"
+        elif notification_type == "WATCHLIST_ALERT":
+            header = f"🎯 <b>TAKİP LİSTESİ FİYAT ALARMI! (Puan: {analysis.arbitrage_score}/100)</b>"
         else:
             header = f"🔥 <b>ARBİTRAJ FIRSATI (Puan: {analysis.arbitrage_score}/100)</b>"
 
@@ -98,6 +101,11 @@ class TelegramNotifier:
         safe_product_url = html.escape(p.url, quote=True)
         safe_akakce_url = html.escape(p.akakce_search_url, quote=True)
         safe_floor_source = html.escape(analysis.market_floor_source or "Akakçe / Piyasa")
+        safe_trend = html.escape(analysis.price_trend_badge or "📊 Aktif Kampanya Fiyatı")
+        inflated_warn = " <i>(⚠️ Şişirilmiş Liste Fiyatı)</i>" if analysis.is_inflated_retail_price else ""
+
+        listing_tpl = ListingGenerator.generate(analysis)
+        safe_listing_title = html.escape(listing_tpl.title)
 
         lines = [
             f"🚨 {header}",
@@ -106,12 +114,13 @@ class TelegramNotifier:
             f"👟 <b>Marka &amp; Model:</b> {safe_brand} - {safe_title} (<code>SKU: {safe_sku}</code>)",
             f"📏 <b>Stoktaki Hedef Numaralar:</b> [{sizes_text}]{stock_warning}",
             "",
-            "💳 <b>Alış Detayı:</b>",
-            f"  • Liste Fiyatı: <s>{retail_str}</s> | Vitrin: <code>{sale_str}</code>",
+            "💳 <b>Alış &amp; Fiyat Trendi:</b>",
+            f"  • Liste Fiyatı: <s>{retail_str}</s>{inflated_warn} | Vitrin: <code>{sale_str}</code>",
             (
                 f"  • 🛒 <b>Sepette Net Alış:</b> <b><code>{basket_str}</code></b> "
-                f"<i>(Toplam İndirim: <b>%{p.total_discount_rate:.0f}</b> | Kampanya: {safe_campaign})</i>"
+                f"<i>(İndirim: <b>%{p.total_discount_rate:.0f}</b> | {safe_campaign})</i>"
             ),
+            f"  • {safe_trend}",
             "",
             "📊 <b>Piyasa Kıyaslaması:</b>",
             f"  • 🌐 Diğer Sitelerde En Ucuz: <code>~{market_str}</code> <i>({safe_floor_source})</i>",
@@ -126,6 +135,8 @@ class TelegramNotifier:
                 f"  • 🟣 <b>Dolap Net:</b> "
                 f"<b><code>{profit_d_str}</code></b> (<b><code>%{analysis.roi_dolap:.0f}</code> Kâr</b>)"
             ),
+            "",
+            f"📋 <b>Hazır İlan Başlığı:</b> <code>{safe_listing_title}</code>",
             "",
             (
                 f'🔗 <a href="{safe_product_url}">🛒 Ürünü Hemen Sepete Ekle</a> | '

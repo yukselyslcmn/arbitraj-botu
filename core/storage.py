@@ -14,8 +14,9 @@ logger = logging.getLogger("arbitraj.storage")
 class StateStorage:
     """
     `data/products_state.json` üzerinde ürün durumlarını `canonical_sku` ve `site_key`
-    bazında saklayan, ilk çalışma spam korumasını, 5 yetkili orijinal mağaza (Occasion,
-    SuperStep, InStreet, Barçın, Korayspor) arası çapraz fiyat kıyaslamasını ve
+    bazında saklayan, ilk çalışma spam korumasını, 7 yetkili orijinal mağaza (Occasion,
+    SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed) arası çapraz fiyat kıyaslamasını,
+    fiyat geçmişi (price_history) trend analizini, özel takip listesini (`watchlist`) ve
     %5 ekstra fiyat düşüş kuralını yöneten sınıf.
     """
 
@@ -27,11 +28,15 @@ class StateStorage:
                 "initialized_at": None,
                 "last_updated_at": None,
                 "first_run_completed": False,
+                "last_telegram_update_id": 0,
+                "custom_filters": {},
             },
+            "watchlist": {},
             "products": {},
         }
         self.is_first_run: bool = True
         self._load()
+        self.apply_saved_filters_to_config()
 
     def _load(self) -> None:
         self.state_file.parent.mkdir(parents=True, exist_ok=True)
@@ -48,16 +53,77 @@ class StateStorage:
             loaded = json.loads(raw_text)
             if isinstance(loaded, dict) and "products" in loaded:
                 self.state = loaded
+                self.state.setdefault("meta", {})
+                self.state.setdefault("watchlist", {})
                 products_dict = self.state.get("products", {})
                 first_run_flag = self.state.get("meta", {}).get("first_run_completed", False)
                 self.is_first_run = not (first_run_flag and len(products_dict) > 0)
             elif isinstance(loaded, dict):
-                # Eski veya düz format uyumluluğu
                 self.state["products"] = loaded
                 self.is_first_run = len(loaded) == 0
         except Exception as exc:
             logger.warning("Durum dosyası okunamadı, yeni durum başlatılıyor (%s): %s", self.state_file, exc)
             self.is_first_run = True
+
+    def apply_saved_filters_to_config(self) -> None:
+        """Telegram `/filtre` komutuyla kaydedilmiş özel eşikler varsa `config`'e uygular."""
+        with self._lock:
+            cf = (self.state.get("meta") or {}).get("custom_filters") or {}
+            if isinstance(cf, dict):
+                if isinstance(cf.get("min_net_profit_tl"), (int, float)) and cf["min_net_profit_tl"] > 0:
+                    config.MIN_NET_PROFIT_TL = float(cf["min_net_profit_tl"])
+                if isinstance(cf.get("min_roi_percent"), (int, float)) and cf["min_roi_percent"] > 0:
+                    config.MIN_ROI_PERCENT = float(cf["min_roi_percent"])
+
+    def save_custom_filters(self, min_net_profit_tl: float, min_roi_percent: float) -> None:
+        with self._lock:
+            meta = self.state.setdefault("meta", {})
+            meta["custom_filters"] = {
+                "min_net_profit_tl": round(float(min_net_profit_tl), 2),
+                "min_roi_percent": round(float(min_roi_percent), 2),
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+            }
+
+    def get_last_telegram_update_id(self) -> int:
+        with self._lock:
+            return int((self.state.get("meta") or {}).get("last_telegram_update_id") or 0)
+
+    def set_last_telegram_update_id(self, update_id: int) -> None:
+        with self._lock:
+            self.state.setdefault("meta", {})["last_telegram_update_id"] = int(update_id)
+
+    def add_watchlist_item(self, sku_or_query: str, target_price: float) -> None:
+        with self._lock:
+            key = sku_or_query.upper().replace("-", "").strip()
+            self.state.setdefault("watchlist", {})[key] = {
+                "raw_query": sku_or_query.strip(),
+                "target_price": round(float(target_price), 2),
+                "added_at": datetime.now(timezone.utc).isoformat(),
+                "last_triggered_price": None,
+            }
+
+    def get_watchlist(self) -> dict[str, Any]:
+        with self._lock:
+            return dict(self.state.get("watchlist") or {})
+
+    def check_watchlist_hit(self, product: ScrapedProduct) -> Optional[float]:
+        """Ürün `/takip` listesindeyse ve hedef fiyatın altına düştüyse hedef fiyatı döndürür."""
+        with self._lock:
+            watchlist = self.state.get("watchlist") or {}
+            if not watchlist:
+                return None
+            c_sku = product.canonical_sku.upper()
+            for key, entry in watchlist.items():
+                if not isinstance(entry, dict):
+                    continue
+                target_p = float(entry.get("target_price") or 0)
+                last_trig = entry.get("last_triggered_price")
+                if key == c_sku or (len(key) >= 5 and key in c_sku):
+                    if 0 < product.net_basket_price <= target_p:
+                        if last_trig is None or product.net_basket_price < float(last_trig):
+                            entry["last_triggered_price"] = product.net_basket_price
+                            return target_p
+            return None
 
     def save(self) -> None:
         with self._lock:
@@ -77,7 +143,8 @@ class StateStorage:
 
     def upsert_scraped_product(self, product: ScrapedProduct) -> None:
         """
-        Kazınan her ürünü canonical_sku -> sites -> site_key altında günceller.
+        Kazınan her ürünü canonical_sku -> sites -> site_key altında günceller ve
+        fiyat geçmişi (price_history) ile en düşük/en yüksek görülen fiyatları kaydeder.
         """
         with self._lock:
             now_iso = datetime.now(timezone.utc).isoformat()
@@ -101,8 +168,20 @@ class StateStorage:
             if lowest_seen is None or product.net_basket_price < lowest_seen:
                 lowest_seen = product.net_basket_price
 
+            highest_seen = existing_site.get("highest_seen_price")
+            if highest_seen is None or product.net_basket_price > highest_seen:
+                highest_seen = product.net_basket_price
+
+            history: list[dict[str, Any]] = list(existing_site.get("price_history") or [])
+            if not history or abs(float(history[-1].get("price", 0)) - product.net_basket_price) >= 1.0:
+                history.append({"ts": now_iso[:16], "price": round(product.net_basket_price, 2)})
+                if len(history) > 15:
+                    history = history[-15:]
+
             new_sizes = [s.normalized_size for s in product.sizes] if product.sizes else existing_site.get("sizes", [])
-            new_labels = [s.display_label for s in product.sizes] if product.sizes else existing_site.get("size_labels", [])
+            new_labels = (
+                [s.display_label for s in product.sizes] if product.sizes else existing_site.get("size_labels", [])
+            )
 
             sites_map[product.site_key] = {
                 "site_name": product.site_name,
@@ -116,10 +195,29 @@ class StateStorage:
                 "sizes": new_sizes,
                 "size_labels": new_labels,
                 "lowest_seen_price": lowest_seen,
+                "highest_seen_price": highest_seen,
+                "price_history": history,
                 "lowest_notified_price": existing_site.get("lowest_notified_price"),
                 "last_notified_at": existing_site.get("last_notified_at"),
                 "last_seen_at": now_iso,
             }
+
+    def get_price_trend_summary(self, canonical_sku: str, site_key: str, current_price: float) -> str:
+        """Ürünün fiyat geçmişine göre dip fiyat / trend rozeti üretir."""
+        with self._lock:
+            sku_entry = self.state.get("products", {}).get(canonical_sku, {})
+            site_entry = (sku_entry.get("sites") or {}).get(site_key, {})
+            lowest = site_entry.get("lowest_seen_price")
+            highest = site_entry.get("highest_seen_price")
+            if isinstance(lowest, (int, float)) and isinstance(highest, (int, float)) and highest > lowest:
+                drop_from_high = round(((highest - current_price) / highest) * 100.0, 1)
+                if current_price <= lowest + 1.0 and drop_from_high >= 5.0:
+                    return f"📉 Tüm Zamanların En Dip Fiyatı! (Eski: {highest:,.0f} TL → -%{drop_from_high:.0f})".replace(
+                        ",", "."
+                    )
+            if isinstance(lowest, (int, float)) and current_price <= lowest + 1.0:
+                return "📉 Kayıtlı En Düşük Dip Fiyat"
+            return "📊 Aktif Kampanya Fiyatı"
 
     def should_notify(
         self,
@@ -130,8 +228,12 @@ class StateStorage:
         """
         Ürün için bildirim atılıp atılmayacağına karar verir.
         Dönüş: (bildirim_atilsin_mi, bildirim_tipi)
-        bildirim_tipi: 'NEW_OPPORTUNITY' | 'EXTRA_PRICE_CRASH' | 'SKIP_FIRST_RUN' | 'ALREADY_NOTIFIED'
+        bildirim_tipi: 'NEW_OPPORTUNITY' | 'EXTRA_PRICE_CRASH' | 'WATCHLIST_ALERT' | 'SKIP_FIRST_RUN' | 'ALREADY_NOTIFIED'
         """
+        watch_hit = self.check_watchlist_hit(product)
+        if watch_hit is not None:
+            return True, "WATCHLIST_ALERT"
+
         with self._lock:
             sku_entry = self.state["products"].get(product.canonical_sku, {})
             site_entry = sku_entry.get("sites", {}).get(product.site_key, {})
@@ -139,9 +241,6 @@ class StateStorage:
 
             # İlk çalışma spam koruması
             if self.is_first_run and not notify_on_first_run:
-                # İlk çalışmada gördüğümüz ürünlerin mevcut fiyatını baz fiyat olarak kaydedelim ki
-                # sonraki çalışmalarda mevcut eski ürünler bir anda "yeni fırsat" diye yağmasın,
-                # sadece yeni eklenenler veya %5 ekstra düşenler bildirilsin.
                 if site_entry and lowest_notified is None:
                     site_entry["lowest_notified_price"] = product.net_basket_price
                     site_entry["last_notified_at"] = datetime.now(timezone.utc).isoformat()
@@ -179,7 +278,7 @@ class StateStorage:
         model_tokens: Optional[list[str]] = None,
     ) -> Optional[tuple[float, str]]:
         """
-        5 yetkili orijinal mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor) arasında:
+        7 yetkili orijinal mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed) arasında:
         1. Birebir `canonical_sku` veya baz model kodu (ör. `747CFA0002` <-> `747CFA000221G`) eşleşmesi,
         2. Aynı Marka + Cinsiyet + Model Serisi (`model_tokens`) eşleşmesi
         yaparak diğer yetkili mağazalardaki en düşük satış/sepet fiyatını döndürür.
@@ -282,8 +381,6 @@ class StateStorage:
     ) -> None:
         """
         Akakçe'den doğrulanan piyasa dip fiyatını `data/products_state.json` içine kaydeder.
-        Böylece GitHub Actions (ABD/Avrupa veri merkezi IP'si) üzerinde Akakçe geo-block
-        uygulasa bile doğrulanmış piyasa fiyatı ve Akakçe linki korunur.
         """
         with self._lock:
             sku_entry = self.state["products"].get(canonical_sku)
