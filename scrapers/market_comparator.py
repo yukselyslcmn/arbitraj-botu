@@ -16,11 +16,11 @@ logger = logging.getLogger("arbitraj.market_comparator")
 
 class MarketComparator:
     """
-    5 Yetkili Orijinal Mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor) Çapraz Fiyat
+    7 Yetkili Orijinal Mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed) Çapraz Fiyat
     ve Akakçe Kesin Piyasa Doğrulayıcı (`market_comparator.py`).
 
     Çalışma Prensibi (%100 Doğrulanmış Piyasa Analizi + GitHub Actions US IP Koruması):
-    1. Öncelikle 5 yetkili orijinal mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor)
+    1. Öncelikle 7 yetkili orijinal mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed)
        arasında hem SKU / baz model kodu hem de Marka + Cinsiyet + Model Serisi bazında
        çapraz fiyat karşılaştırması yapar.
     2. Aynı zamanda ürünün spesifik Model Serisi + Cinsiyet ve Marka + SKU sorgularıyla

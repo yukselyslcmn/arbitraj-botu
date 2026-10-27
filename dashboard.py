@@ -118,7 +118,9 @@ def build_dashboard_payload(compact: bool = False) -> dict[str, Any]:
 
             item: dict[str, Any] = {
                 "sku": d_sku,
+                "canonical_sku": str(c_sku),
                 "site_name": s_name,
+                "site_key": s_key,
                 "brand": brand,
                 "title": title,
                 "gender": gender,
@@ -126,6 +128,7 @@ def build_dashboard_payload(compact: bool = False) -> dict[str, Any]:
                 "akakce_url": prod.akakce_search_url,
                 "image_url": prod.image_url,
                 "retail_price": round(prod.retail_price),
+                "buy_cost": round(prod.net_basket_price),
                 "net_basket_price": round(prod.net_basket_price),
                 "total_discount_rate": round(prod.total_discount_rate, 1),
                 "campaign_name": prod.campaign_name,
@@ -189,7 +192,13 @@ DASHBOARD_HTML = """<!DOCTYPE html>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#020617" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Arbitraj Radarı" />
   <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👟</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👟</text></svg>">
   <title>Arbitraj Radarı — Kontrol Paneli</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -220,6 +229,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         </div>
       </div>
       <div class="flex items-center gap-2 text-xs">
+        <button id="soundBtn" onclick="toggleSound()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-lg" title="Sesli Bildirim">🔔 <span id="soundLabel" class="hidden sm:inline">Ses</span></button>
         <button onclick="openShareModal()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-lg">📱 <span class="hidden sm:inline">Her Yerden Aç</span></button>
         <button onclick="exportCSV()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-lg">📥 <span class="hidden sm:inline">CSV</span></button>
         <button onclick="loadData(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-2 rounded-lg">🔄 <span class="hidden sm:inline">Yenile</span></button>
@@ -647,13 +657,69 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         renderCharts();
         runSim();
         filterAndRender();
-        if (manual) showToast('Veriler güncellendi!');
+        if (manual) {
+          showToast('Veriler güncellendi!');
+          playChime();
+        }
       } catch (e) {
         document.getElementById('itemsGrid').innerHTML = `<div class="col-span-full bg-rose-950/40 border border-rose-800 rounded-2xl p-8 text-center text-rose-200 text-sm">Veriler yüklenemedi. Bulut panel ilk kez kuruluyorsa birkaç dakika sonra tekrar deneyin.</div>`;
       }
     }
 
+    let soundEnabled = localStorage.getItem('soundEnabled') !== 'false';
+    function playChime() {
+      if (!soundEnabled) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, now);
+        osc.frequency.exponentialRampToValueAtTime(880.0, now + 0.12);
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } catch (err) {}
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem('soundEnabled', soundEnabled);
+      updateSoundUI();
+      if (soundEnabled) playChime();
+      showToast(soundEnabled ? 'Sesli bildirim açıldı' : 'Sesli bildirim kapatıldı');
+    }
+
+    function updateSoundUI() {
+      const btn = document.getElementById('soundBtn');
+      const lbl = document.getElementById('soundLabel');
+      if (btn && lbl) {
+        lbl.textContent = soundEnabled ? 'Ses Açık' : 'Sessiz';
+        btn.className = soundEnabled
+          ? 'bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-600/60 text-emerald-300 px-3 py-2 rounded-lg transition-colors'
+          : 'bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 px-3 py-2 rounded-lg transition-colors';
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== document.getElementById('searchInput')) {
+        e.preventDefault();
+        document.getElementById('searchInput')?.focus();
+      }
+      if (e.key === 'Escape') {
+        closeModal();
+        closeShareModal();
+      }
+    });
+
     renderSizeChips();
+    updateSoundUI();
     loadData(false);
   </script>
 </body>

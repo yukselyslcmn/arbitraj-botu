@@ -5,7 +5,7 @@ from typing import Any, Optional
 import config
 
 
-@dataclass
+@dataclass(slots=True)
 class NormalizedSizeInfo:
     """Beden çözümleme sonucunu hem orijinal metin hem de hedef numara olarak tutar."""
 
@@ -26,7 +26,7 @@ class NormalizedSizeInfo:
         return base
 
 
-@dataclass
+@dataclass(slots=True)
 class BasketPriceResult:
     """Ürünün liste, vitrin ve sepetteki net fiyatlarını ve indirim oranını tutar."""
 

@@ -7,7 +7,7 @@ import config
 from core.parsers import NormalizedSizeInfo
 
 
-@dataclass
+@dataclass(slots=True)
 class ScrapedProduct:
     """Kazıyıcılardan (scrapers) dönen standartlaştırılmış ürün veri modeli."""
 
@@ -52,7 +52,7 @@ class ScrapedProduct:
         return sum(counts) if counts else None
 
 
-@dataclass
+@dataclass(slots=True)
 class ArbitrageAnalysis:
     """Bir ürünün tüm birim ekonomisi, Gardrops/Dolap net kâr, ROI, trend ve puan analizi."""
 

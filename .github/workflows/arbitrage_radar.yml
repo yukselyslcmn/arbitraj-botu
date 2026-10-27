@@ -76,6 +76,7 @@ jobs:
             echo "Durum dosyasında ve bulut panelinde değişiklik yok, commit atlanıyor."
           else
             git commit -m "chore(state): sync arbitrage product state and cloud dashboard"
+            git fetch --depth=25 origin "${GITHUB_REF_NAME:-main}"
             git pull --rebase -X theirs origin "${GITHUB_REF_NAME:-main}"
             git push origin "HEAD:${GITHUB_REF_NAME:-main}"
           fi
