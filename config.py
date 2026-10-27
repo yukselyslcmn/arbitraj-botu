@@ -1,10 +1,40 @@
 import os
+import re
 from pathlib import Path
 from dotenv import load_dotenv
 
 # .env dosyasını yükle
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
+
+
+def _derive_public_dashboard_url() -> str:
+    """
+    Her yerden (mobil veri dahil) erişilebilen GitHub Pages bulut paneli adresini üretir.
+    Öncelik: PUBLIC_DASHBOARD_URL -> GITHUB_REPOSITORY (Actions) -> yerel .git/config origin adresi.
+    """
+    explicit = os.getenv("PUBLIC_DASHBOARD_URL", "").strip()
+    if explicit:
+        return explicit.rstrip("/") + "/"
+
+    repo = os.getenv("GITHUB_REPOSITORY", "").strip()
+    if not repo:
+        try:
+            git_cfg = (BASE_DIR / ".git" / "config").read_text(encoding="utf-8", errors="ignore")
+            match = re.search(
+                r"url\s*=\s*(?:https://github\.com/|git@github\.com:)([^/\s]+/[^/\s]+?)(?:\.git)?\s*$",
+                git_cfg,
+                re.MULTILINE,
+            )
+            if match:
+                repo = match.group(1)
+        except OSError:
+            repo = ""
+
+    if "/" in repo:
+        owner, name = repo.split("/", 1)
+        return f"https://{owner.lower()}.github.io/{name}/"
+    return ""
 
 
 def _get_bool(key: str, default: bool) -> bool:
@@ -42,6 +72,12 @@ TELEGRAM_CHAT_ID: str = os.getenv("TELEGRAM_CHAT_ID", "").strip()
 
 DATA_DIR: Path = BASE_DIR / "data"
 STATE_FILE_PATH: Path = DATA_DIR / "products_state.json"
+
+# GitHub Pages bulut paneli (docs/ klasörü) ve yerel panel portu
+PUBLIC_DASHBOARD_URL: str = _derive_public_dashboard_url()
+STATIC_DASHBOARD_DIR: Path = BASE_DIR / "docs"
+LOCAL_DASHBOARD_PORT: int = 8080
+IS_GITHUB_ACTIONS: bool = os.getenv("GITHUB_ACTIONS", "").strip().lower() == "true"
 
 NOTIFY_ON_FIRST_RUN: bool = _get_bool("NOTIFY_ON_FIRST_RUN", False)
 PRICE_DROP_RE_NOTIFY_PERCENT: float = _get_float("PRICE_DROP_RE_NOTIFY_PERCENT", 5.0)

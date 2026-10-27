@@ -63,15 +63,19 @@ jobs:
           MAX_PAGES="${INPUT_MAX_PAGES:-4}"
           .venv/bin/python main.py --once --sites "$SITES" --max-pages "$MAX_PAGES"
 
-      - name: Sync & Commit Updated Product State (data/products_state.json)
+      - name: Export Static Cloud Dashboard (docs/ for GitHub Pages)
+        run: |
+          .venv/bin/python dashboard.py --export-static docs
+
+      - name: Sync & Commit Updated Product State and Cloud Dashboard
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/products_state.json
+          git add data/products_state.json docs/
           if git diff --staged --quiet; then
-            echo "Durum dosyasında (data/products_state.json) değişiklik yok, commit atlanıyor."
+            echo "Durum dosyasında ve bulut panelinde değişiklik yok, commit atlanıyor."
           else
-            git commit -m "chore(state): sync arbitrage product state"
+            git commit -m "chore(state): sync arbitrage product state and cloud dashboard"
             git pull --rebase -X theirs origin "${GITHUB_REF_NAME:-main}"
             git push origin "HEAD:${GITHUB_REF_NAME:-main}"
           fi

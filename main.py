@@ -104,7 +104,8 @@ def run_arbitrage_cycle(
     comparator = MarketComparator(storage=storage)
     cmd_handler = TelegramCommandHandler(storage=storage, comparator=comparator)
 
-    if not dry_run:
+    if not dry_run and cmd_handler.is_configured:
+        cmd_handler.register_bot_interface()
         processed_cmds = cmd_handler.process_pending_commands()
         if processed_cmds > 0:
             logger.info("Telegram üzerinden %d kullanıcı komutu işlendi.", processed_cmds)
@@ -219,6 +220,8 @@ def run_telegram_command_listener() -> None:
     storage = StateStorage()
     comparator = MarketComparator(storage=storage)
     handler = TelegramCommandHandler(storage=storage, comparator=comparator)
+    if handler.is_configured:
+        handler.register_bot_interface()
     logger.info("Telegram İnteraktif Komut Botu dinlemede (/yardim, /durum, /firsatlar, /ara, /filtre, /takip)...")
     try:
         while True:

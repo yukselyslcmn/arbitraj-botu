@@ -170,6 +170,19 @@ class TelegramNotifier:
         base_api = f"https://api.telegram.org/bot{self.bot_token}"
         image_url: Optional[str] = analysis.product.image_url
 
+        public_dash_url = config.PUBLIC_DASHBOARD_URL or "https://yukselyslcmn.github.io/arbitraj-botu/"
+        reply_markup = {
+            "inline_keyboard": [
+                [
+                    {"text": "🛒 Hemen Sepete Ekle", "url": p.url},
+                    {"text": "📈 Akakçe Piyasa", "url": p.akakce_search_url},
+                ],
+                [
+                    {"text": "📊 Web Paneli (Bulut)", "url": public_dash_url},
+                ],
+            ]
+        }
+
         # 1. Görselli Gönderim (sendPhoto)
         if image_url and image_url.startswith("http"):
             try:
@@ -178,6 +191,7 @@ class TelegramNotifier:
                     "photo": image_url,
                     "caption": caption,
                     "parse_mode": "HTML",
+                    "reply_markup": reply_markup,
                 }
                 resp = self.client.post(f"{base_api}/sendPhoto", json_payload=photo_payload, skip_throttle=True)
                 if resp and resp.status_code == 200 and resp.json().get("ok"):
@@ -202,6 +216,7 @@ class TelegramNotifier:
                 "text": caption,
                 "parse_mode": "HTML",
                 "disable_web_page_preview": False,
+                "reply_markup": reply_markup,
             }
             resp = self.client.post(f"{base_api}/sendMessage", json_payload=msg_payload, skip_throttle=True)
             if resp and resp.status_code == 200 and resp.json().get("ok"):

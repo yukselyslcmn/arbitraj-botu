@@ -154,14 +154,63 @@ class TelegramCommandHandler:
             # Kullanıcı herhangi serbest bir metin yazdığında hem panel linkini hem komutları ver
             self._send_friendly_default_reply(raw_text)
 
-    def _get_panel_urls(self) -> tuple[str, str]:
-        local_url = "http://localhost:8080"
+    def _get_panel_urls(self) -> tuple[str, str, str]:
+        public_url = config.PUBLIC_DASHBOARD_URL or "https://yukselyslcmn.github.io/arbitraj-botu/"
         lan_ip = get_local_network_ip()
-        lan_url = f"http://{lan_ip}:8080"
-        return local_url, lan_url
+        lan_url = f"http://{lan_ip}:{config.LOCAL_DASHBOARD_PORT}"
+        local_url = f"http://localhost:{config.LOCAL_DASHBOARD_PORT}"
+        return public_url, lan_url, local_url
+
+    def register_bot_interface(self) -> dict[str, bool]:
+        """
+        Telegram Bot API üzerinden:
+        1. setMyCommands: Komut menüsünü (/panel, /durum, /firsatlar vb.) kaydeder.
+        2. setChatMenuButton: Sohbet kutusunun soluna kalıcı '[📊 Web Paneli]' Mini App butonunu yerleştirir.
+        """
+        if not self.is_configured:
+            return {"commands": False, "menu_button": False}
+
+        base_api = f"https://api.telegram.org/bot{self.bot_token}"
+        results = {"commands": False, "menu_button": False}
+
+        # 1. Komut listesini kaydet
+        commands_payload = {
+            "commands": [
+                {"command": "panel", "description": "🌐 Bulut Web Paneli (Her Yerden Mobil Erişim)"},
+                {"command": "firsatlar", "description": "🔥 En Yüksek Kârlı İlk 5 Fırsat"},
+                {"command": "durum", "description": "📊 Sistem Durumu ve Eşikler"},
+                {"command": "ara", "description": "🔍 Model/SKU Ara ve Hazır İlan Al"},
+                {"command": "filtre", "description": "⚙️ Minimum Kâr ve ROI Eşiklerini Güncelle"},
+                {"command": "takip", "description": "🎯 Özel Model Fiyat Takip Alarmı Kur"},
+                {"command": "yardim", "description": "ℹ️ Bot Kullanım Kılavuzu"},
+            ]
+        }
+        try:
+            r1 = self.client.post(f"{base_api}/setMyCommands", json_payload=commands_payload, skip_throttle=True)
+            results["commands"] = bool(r1 and r1.status_code == 200 and r1.json().get("ok"))
+        except Exception as exc:
+            logger.warning("setMyCommands hatası: %s", mask_sensitive(exc))
+
+        # 2. Kalıcı Sohbet Menü Butonunu (Telegram Mini App) kaydet
+        public_url, _, _ = self._get_panel_urls()
+        menu_payload = {
+            "chat_id": int(self.chat_id) if self.chat_id.isdigit() else self.chat_id,
+            "menu_button": {
+                "type": "web_app",
+                "text": "📊 Web Paneli",
+                "web_app": {"url": public_url},
+            },
+        }
+        try:
+            r2 = self.client.post(f"{base_api}/setChatMenuButton", json_payload=menu_payload, skip_throttle=True)
+            results["menu_button"] = bool(r2 and r2.status_code == 200 and r2.json().get("ok"))
+        except Exception as exc:
+            logger.warning("setChatMenuButton hatası: %s", mask_sensitive(exc))
+
+        return results
 
     def _send_web_panel_link(self) -> None:
-        local_url, lan_url = self._get_panel_urls()
+        public_url, lan_url, local_url = self._get_panel_urls()
         products = self.storage.state.get("products", {})
         total_skus = len(products)
 
@@ -169,33 +218,45 @@ class TelegramCommandHandler:
             [
                 "🌐 <b>E-TİCARET ARBİTRAJ WEB KONTROL PANELİ</b>",
                 "",
-                "Verileri grafikler, kâr simülatörü, beden filtreleri ve hazır ilan şablonlarıyla tarayıcınızda açmak için aşağıdaki linkleri kullanabilirsiniz:",
+                "İşyerindeyken, dışarıdayken veya evde Wi-Fi olmadan telefonunuzdan mobil veriyle dilediğiniz zaman erişebilirsiniz:",
                 "",
-                f"🖥️ <b>Bilgisayarınız İçin:</b>\n👉 <a href=\"{local_url}\">{local_url}</a>",
+                f"🌍 <b>Mobil / Bulut Erişimi (Her Yerden):</b>\n👉 <a href=\"{public_url}\">{public_url}</a>",
                 "",
-                f"📱 <b>Telefonunuz İçin (Aynı Wi-Fi):</b>\n👉 <a href=\"{lan_url}\">{lan_url}</a>",
+                f"🖥️ <b>Ev/Ofis Bilgisayarı (Lokal):</b>\n👉 <a href=\"{local_url}\">{local_url}</a>",
                 "",
-                f"📊 <b>Veritabanı Durumu:</b> <code>{total_skus} benzersiz model</code> hazır!",
-                "💡 <i>Eğer panel bilgisayarınızda henüz açık değilse <code>5_WEB_PANELINI_AC.bat</code> dosyasına çift tıklayarak başlatabilirsiniz.</i>",
+                f"📱 <b>Yerel Wi-Fi Ağı:</b>\n👉 <a href=\"{lan_url}\">{lan_url}</a>",
+                "",
+                f"📊 <b>Veritabanı:</b> <code>{total_skus} benzersiz model</code> analiz edildi.",
+                "💡 <i>Aşağıdaki <b>'🚀 Bulut Web Paneli'</b> butonuna veya sol alttaki <b>'📊 Web Paneli'</b> menü tuşuna basarak anında açabilirsiniz!</i>",
             ]
         )
         reply_markup = {
             "inline_keyboard": [
-                [{"text": "🌐 Web Panelini Aç (Bilgisayar)", "url": local_url}],
-                [{"text": "📱 Web Panelini Aç (Telefon / Wi-Fi)", "url": lan_url}],
+                [
+                    {"text": "🚀 Bulut Web Paneli (Her Yerden Aç)", "url": public_url},
+                ],
+                [
+                    {"text": "📱 Telegram İçi Mini App", "web_app": {"url": public_url}},
+                ],
+                [
+                    {"text": "💻 Bilgisayar (Lokal)", "url": local_url},
+                    {"text": "📶 Ev Wi-Fi", "url": lan_url},
+                ],
             ]
         }
         self.send_reply(text, reply_markup=reply_markup)
 
     def _send_help_and_panel(self) -> None:
-        local_url, lan_url = self._get_panel_urls()
+        public_url, lan_url, local_url = self._get_panel_urls()
         text = "\n".join(
             [
                 "🤖 <b>Türkiye E-Ticaret Arbitraj &amp; Flipping Radarı</b>",
                 "",
                 "🌐 <b>Web Paneli:</b> Tarayıcıda açmak için <code>/panel</code> yazabilir veya aşağıdaki butonlara tıklayabilirsiniz.",
+                f"👉 <b>Mobil Bulut Paneli:</b> <a href=\"{public_url}\">{public_url}</a>",
                 "",
                 "<b>Kullanabileceğiniz Komutlar:</b>",
+                "🌐 <code>/panel</code> — Mobil ve bulut kontrol paneli bağlantıları",
                 "📊 <code>/durum</code> — 7 yetkili mağaza istatistikleri ve aktif eşikler",
                 "🔥 <code>/firsatlar</code> — En yüksek kârlı ilk 5 fırsat",
                 "🔍 <code>/ara &lt;model/SKU&gt;</code> — Canlı arama ve anında ilan şablonu (Örn: <code>/ara IF6491</code>)",
@@ -205,29 +266,31 @@ class TelegramCommandHandler:
         )
         reply_markup = {
             "inline_keyboard": [
-                [{"text": "🌐 Web Kontrol Panelini Aç", "url": local_url}],
+                [{"text": "🚀 Bulut Web Panelini Aç", "url": public_url}],
+                [{"text": "📱 Telegram Mini App", "web_app": {"url": public_url}}],
             ]
         }
         self.send_reply(text, reply_markup=reply_markup)
 
     def _send_friendly_default_reply(self, user_msg: str) -> None:
-        local_url, lan_url = self._get_panel_urls()
+        public_url, lan_url, local_url = self._get_panel_urls()
         safe_msg = html.escape(user_msg[:60])
         text = "\n".join(
             [
                 f"👋 <i>'{safe_msg}'</i> mesajınızı aldım!",
                 "",
-                "Tüm fırsatları, filtreleri ve grafikleri incelemek için <b>Web Kontrol Panelini</b> açabilirsiniz:",
-                f"👉 <b>Bilgisayarınızda:</b> <a href=\"{local_url}\">{local_url}</a>",
-                f"👉 <b>Telefonunuzda (Wi-Fi):</b> <a href=\"{lan_url}\">{lan_url}</a>",
+                "Tüm fırsatları, filtreleri, kâr simülatörünü ve grafikleri dilediğiniz yerden açabilirsiniz:",
+                f"👉 <b>Bulut Paneli (Mobil Veri Uyumlu):</b>\n<a href=\"{public_url}\">{public_url}</a>",
                 "",
-                "🔍 Ayrıca doğrudan bir model aramak isterseniz: <code>/ara IF6491</code>",
-                "📋 Tüm komutları görmek için: <code>/yardim</code>",
+                "🔍 Doğrudan model aramak için: <code>/ara IF6491</code>",
+                "📊 Mağaza durumunu görmek için: <code>/durum</code>",
+                "📋 Tüm komutları listelemek için: <code>/yardim</code>",
             ]
         )
         reply_markup = {
             "inline_keyboard": [
-                [{"text": "🌐 Web Panelini Aç", "url": local_url}],
+                [{"text": "🚀 Bulut Web Paneli", "url": public_url}],
+                [{"text": "📱 Telegram İçi Mini App", "web_app": {"url": public_url}}],
             ]
         }
         self.send_reply(text, reply_markup=reply_markup)
@@ -245,7 +308,7 @@ class TelegramCommandHandler:
 
         stores_str = ", ".join(f"<b>{html.escape(k)}:</b> {v}" for k, v in sorted(store_counts.items())) or "Henüz yok"
         watchlist = self.storage.get_watchlist()
-        local_url, _ = self._get_panel_urls()
+        public_url, _, local_url = self._get_panel_urls()
 
         return "\n".join(
             [
@@ -261,7 +324,8 @@ class TelegramCommandHandler:
                 f"  • Minimum Gardrops Net Kâr: <code>{config.MIN_NET_PROFIT_TL:.0f} TL</code>",
                 f"  • Minimum ROI: <code>%{config.MIN_ROI_PERCENT:.0f}</code>",
                 "",
-                f"🌐 <b>Web Paneli:</b> <a href=\"{local_url}\">{local_url}</a>",
+                f"🌐 <b>Bulut Web Paneli:</b> <a href=\"{public_url}\">{public_url}</a>",
+                f"💻 <b>Lokal Panel:</b> <a href=\"{local_url}\">{local_url}</a>",
             ]
         )
 
