@@ -170,43 +170,6 @@ def run_arbitrage_cycle(
             comparison_details=comparison_details,
         )
 
-        # Eğer taranan mağaza (ör. Sportive 2.220 TL) en ucuz değilse ve Akakçe/Amazon/idefix üzerinde
-        # daha ucuz bir resmi satıcı (ör. Korayspor 1.799 TL) varsa ve kârlıysa, en ucuz satıcıyı fırsat olarak bildir:
-        if not analysis.is_profitable_opportunity and not comparison_details.is_scraped_site_cheapest:
-            best_off = comparison_details.best_official_offer
-            if best_off and best_off.price > 0 and prod.retail_price > best_off.price:
-                alt_discount_rate = round(((prod.retail_price - best_off.price) / prod.retail_price) * 100.0, 1)
-                best_deal_prod = ScrapedProduct(
-                    site_key=best_off.platform.lower().replace(" ", "_"),
-                    site_name=f"{best_off.platform} (Satıcı: {best_off.seller_name})",
-                    canonical_sku=prod.canonical_sku,
-                    display_sku=prod.display_sku,
-                    brand=prod.brand,
-                    title=prod.title,
-                    gender=prod.gender,
-                    url=best_off.url or comparison_details.verified_url or prod.url,
-                    image_url=prod.image_url,
-                    retail_price=prod.retail_price,
-                    sale_price=best_off.price,
-                    net_basket_price=best_off.price,
-                    total_discount_rate=alt_discount_rate,
-                    basket_discount_rate=0.0,
-                    campaign_name="Resmi Satıcı Dip Fiyat",
-                    sizes=prod.sizes,
-                    total_stock=prod.total_stock,
-                    verified_akakce_url=comparison_details.verified_url,
-                )
-                alt_analysis = ArbitrageEngine.evaluate(
-                    product=best_deal_prod,
-                    market_floor_price=comparison_details.floor_price,
-                    market_floor_source=comparison_details.floor_source,
-                    price_trend_badge="🏆 Piyasada En Ucuz Doğrulanmış Resmi Satıcı",
-                    comparison_details=comparison_details,
-                )
-                if alt_analysis.is_profitable_opportunity:
-                    analysis = alt_analysis
-                    prod = best_deal_prod
-
         if not analysis.is_profitable_opportunity and preview_type != "WATCHLIST_ALERT":
             continue
 

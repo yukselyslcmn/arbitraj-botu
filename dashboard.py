@@ -58,6 +58,8 @@ def build_dashboard_payload(compact: bool = False) -> dict[str, Any]:
             continue
         brand = str(sku_entry.get("brand") or "Diğer")
         title = str(sku_entry.get("title") or "")
+        if not ArbitrageEngine.is_footwear(title):
+            continue
         gender = str(sku_entry.get("gender") or "Unisex")
         d_sku = str(sku_entry.get("display_sku") or c_sku)
         verified_floor = sku_entry.get("verified_market_floor_price")
