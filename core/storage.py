@@ -378,9 +378,12 @@ class StateStorage:
         floor_price: float,
         floor_source: str,
         akakce_url: Optional[str] = None,
+        best_official_seller: Optional[str] = None,
+        best_official_platform: Optional[str] = None,
+        official_breakdown: Optional[list[str]] = None,
     ) -> None:
         """
-        Akakçe'den doğrulanan piyasa dip fiyatını `data/products_state.json` içine kaydeder.
+        Akakçe'den doğrulanan piyasa dip fiyatını ve resmi satıcı dökümünü `data/products_state.json` içine kaydeder.
         """
         with self._lock:
             sku_entry = self.state["products"].get(canonical_sku)
@@ -390,6 +393,12 @@ class StateStorage:
             sku_entry["verified_market_floor_source"] = floor_source
             if akakce_url:
                 sku_entry["verified_akakce_url"] = akakce_url
+            if best_official_seller:
+                sku_entry["best_official_seller"] = best_official_seller
+            if best_official_platform:
+                sku_entry["best_official_platform"] = best_official_platform
+            if official_breakdown:
+                sku_entry["official_sellers_breakdown"] = official_breakdown
 
     def get_verified_market_floor(self, canonical_sku: str) -> Optional[tuple[float, str, Optional[str]]]:
         """Daha önce doğrulanıp kaydedilmiş Akakçe piyasa dip fiyatını döndürür."""

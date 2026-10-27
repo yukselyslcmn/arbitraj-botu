@@ -79,6 +79,14 @@ class ArbitrageAnalysis:
     price_trend_badge: str = "📊 Aktif Kampanya Fiyatı"
     is_inflated_retail_price: bool = False
 
+    # Çoklu Resmi Satıcı ve Pazaryeri Kıyaslaması (Yeni)
+    best_official_price: Optional[float] = None
+    best_official_seller: Optional[str] = None
+    best_official_platform: Optional[str] = None
+    official_sellers_breakdown: list[str] = field(default_factory=list)
+    is_buy_source_cheapest: bool = True
+    cheaper_source_alert: Optional[str] = None
+
 
 class ArbitrageEngine:
     """
@@ -215,10 +223,31 @@ class ArbitrageEngine:
         market_floor_price: Optional[float] = None,
         market_floor_source: str = "Piyasa Referansı",
         price_trend_badge: str = "📊 Aktif Kampanya Fiyatı",
+        best_official_price: Optional[float] = None,
+        best_official_seller: Optional[str] = None,
+        best_official_platform: Optional[str] = None,
+        official_sellers_breakdown: Optional[list[str]] = None,
+        comparison_details: Optional[object] = None,
     ) -> ArbitrageAnalysis:
         """
         Ürün için Gardrops/Sahibinden/Letgo ve Dolap senaryolarını kuruşu kuruşuna hesaplar.
+        Aynı zamanda Akakçe, Amazon, idefix vb. resmi satıcılar arasında en ucuz alış kontrolünü yapar.
         """
+        # comparison_details nesnesi verilmişse alanları otomatik çek
+        if comparison_details is not None:
+            if market_floor_price is None or market_floor_price <= 0:
+                market_floor_price = getattr(comparison_details, "floor_price", None)
+            if not market_floor_source or market_floor_source == "Piyasa Referansı":
+                market_floor_source = getattr(comparison_details, "floor_source", market_floor_source)
+            if best_official_price is None:
+                best_off = getattr(comparison_details, "best_official_offer", None)
+                if best_off:
+                    best_official_price = getattr(best_off, "price", None)
+                    best_official_seller = getattr(best_off, "seller_name", None)
+                    best_official_platform = getattr(best_off, "platform", None)
+            if official_sellers_breakdown is None:
+                official_sellers_breakdown = getattr(comparison_details, "official_sellers_breakdown", [])
+
         buy_cost = round(product.net_basket_price, 2)
 
         if market_floor_price is None or market_floor_price <= 0:
@@ -256,6 +285,22 @@ class ArbitrageEngine:
         is_profitable = passed_pre
         rejection_reason = pre_reason
 
+        # Çoklu Resmi Satıcı / Pazaryeri Fiyat Koruması:
+        # Eğer bu ürün Amazon, idefix, Hepsiburada gibi yerlerde başka bir resmi satıcıda
+        # taranan sitemizden daha ucuza satılıyorsa, bu mağazadan almak zarar ettirir!
+        is_buy_source_cheapest = True
+        cheaper_source_alert: Optional[str] = None
+        if best_official_price is not None and best_official_price > 0:
+            if buy_cost > best_official_price + 20.0:
+                is_buy_source_cheapest = False
+                cheaper_source_alert = (
+                    f"⚠️ Piyasada daha ucuz resmi satıcı var: {best_official_platform or 'Pazaryeri'} "
+                    f"({best_official_seller or 'Resmi Satıcı'}) {best_official_price:,.0f} TL < {buy_cost:,.0f} TL"
+                ).replace(",", ".")
+                if is_profitable:
+                    is_profitable = False
+                    rejection_reason = cheaper_source_alert
+
         if is_profitable:
             if net_profit_gardrops < config.MIN_NET_PROFIT_TL:
                 is_profitable = False
@@ -283,4 +328,10 @@ class ArbitrageEngine:
             rejection_reason=rejection_reason,
             price_trend_badge=price_trend_badge,
             is_inflated_retail_price=is_inflated_retail,
+            best_official_price=best_official_price,
+            best_official_seller=best_official_seller,
+            best_official_platform=best_official_platform,
+            official_sellers_breakdown=official_sellers_breakdown or [],
+            is_buy_source_cheapest=is_buy_source_cheapest,
+            cheaper_source_alert=cheaper_source_alert,
         )

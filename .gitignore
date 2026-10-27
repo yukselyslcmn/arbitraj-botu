@@ -41,6 +41,7 @@ Thumbs.db
 logs/
 tmp/
 temp/
+scratch/
 
 # ÖNEMLİ: GitHub Actions state takibi için data/products_state.json HARİÇ TUTULMAZ!
 !data/

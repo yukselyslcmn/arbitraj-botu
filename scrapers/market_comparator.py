@@ -1,6 +1,7 @@
 import logging
 import re
 import time
+from dataclasses import dataclass, field
 from typing import Optional
 from urllib.parse import quote_plus
 
@@ -14,23 +15,74 @@ from core.storage import StateStorage
 logger = logging.getLogger("arbitraj.market_comparator")
 
 
+@dataclass(slots=True)
+class OfficialOfferInfo:
+    """Tek bir resmi satıcı veya yetkili platform teklifi."""
+
+    platform: str
+    seller_name: str
+    price: float
+    is_official: bool = True
+    url: str = ""
+
+
+@dataclass(slots=True)
+class MarketComparisonDetails:
+    """Tüm yetkili mağazalar ve Akakçe pazaryerleri resmi satıcı kıyaslama detayları."""
+
+    floor_price: float
+    floor_source: str
+    verified_url: Optional[str] = None
+    best_official_offer: Optional[OfficialOfferInfo] = None
+    all_official_offers: list[OfficialOfferInfo] = field(default_factory=list)
+    official_sellers_breakdown: list[str] = field(default_factory=list)
+    is_scraped_site_cheapest: bool = True
+    cheaper_official_seller_alert: Optional[str] = None
+
+
 class MarketComparator:
     """
-    7 Yetkili Orijinal Mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed) Çapraz Fiyat
-    ve Akakçe Kesin Piyasa Doğrulayıcı (`market_comparator.py`).
-
-    Çalışma Prensibi (%100 Doğrulanmış Piyasa Analizi + GitHub Actions US IP Koruması):
-    1. Öncelikle 7 yetkili orijinal mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed)
-       arasında hem SKU / baz model kodu hem de Marka + Cinsiyet + Model Serisi bazında
-       çapraz fiyat karşılaştırması yapar.
-    2. Aynı zamanda ürünün spesifik Model Serisi + Cinsiyet ve Marka + SKU sorgularıyla
-       Akakçe'de canlı arama yapar; Trendyol Plus, Hepsiburada, Amazon, Boyner vb. tüm satıcıların
-       listelendiği kartları (`span.pt_v9`, `span.pt_v8`) ayrıştırarak en ucuz doğrulanmış fiyatı bulur.
-    3. Eşleşen gerçek Akakçe arama/ürün sayfasının adresini `product.verified_akakce_url` ve
-       `StateStorage` (`data/products_state.json`) içine kaydeder.
-    4. Hem 5 yetkili mağaza çapraz kıyaslaması hem de Akakçe fiyatı mevcutsa ikisinden daha düşük
-       (daha muhafazakâr) olan dip fiyatı baz alır ve kaynağı şeffafça raporlar.
+    7 Yetkili Orijinal Mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed)
+    ve Akakçe Canlı Pazaryeri (idefix, Amazon, Hepsiburada, Pazarama, Trendyol vb.)
+    Resmi Satıcı Çapraz Fiyat Doğrulayıcısı.
     """
+
+    AUTHORIZED_OFFICIAL_SELLERS = {
+        "korayspor",
+        "koray spor",
+        "sportive",
+        "barcin",
+        "barçın",
+        "superstep",
+        "super step",
+        "occasion",
+        "instreet",
+        "in street",
+        "flo",
+        "fashfed",
+        "fash fed",
+        "amazon",
+        "amazon türkiye",
+        "amazon.com.tr",
+        "hepsiburada",
+        "boyner",
+        "yalı spor",
+        "yalispor",
+        "beymen",
+        "puma",
+        "nike",
+        "adidas",
+        "under armour",
+        "skechers",
+        "asics",
+        "salomon",
+        "columbia",
+        "lacoste",
+        "the north face",
+        "converse",
+        "vans",
+        "timberland",
+    }
 
     GENERIC_SHOE_AND_COLOR_WORDS = re.compile(
         r"\b(?:erkek|kadın|kadin|unisex|spor|ayakkabı|ayakkabi|ayakkabısı|ayakkabisi|"
@@ -96,9 +148,9 @@ class MarketComparator:
         http_client: Optional[StealthHttpClient] = None,
         storage: Optional[StateStorage] = None,
     ) -> None:
-        self.client = http_client or StealthHttpClient(min_delay=0.75, max_delay=1.35, max_retries=1, timeout=12)
+        self.client = http_client or StealthHttpClient(min_delay=0.4, max_delay=0.9, max_retries=2, timeout=15)
         self.storage = storage
-        self._cache: dict[str, tuple[float, str, Optional[str]]] = {}
+        self._cache: dict[str, MarketComparisonDetails] = {}
         self._akakce_blocked_until: float = 0.0
         self._akakce_429_streak: int = 0
 
@@ -116,17 +168,27 @@ class MarketComparator:
         )
 
     @classmethod
+    def is_official_seller(cls, seller_name: str, platform: str, brand: str = "") -> bool:
+        s_norm = cls._normalize_tr_ascii(seller_name)
+        p_norm = cls._normalize_tr_ascii(platform)
+        b_norm = cls._normalize_tr_ascii(brand)
+
+        for auth in cls.AUTHORIZED_OFFICIAL_SELLERS:
+            auth_norm = cls._normalize_tr_ascii(auth)
+            if auth_norm in s_norm or auth_norm in p_norm:
+                return True
+        if b_norm and len(b_norm) >= 3 and (b_norm in s_norm or b_norm in p_norm):
+            return True
+        return False
+
+    @classmethod
     def extract_model_tokens(cls, title: str, brand: str, display_sku: str) -> list[str]:
-        """
-        Ürün başlığından marka, renk, cinsiyet ve genel ayakkabı kelimelerini çıkararak
-        gerçek model serisi kelimelerini (Örn: ['t-clip'], ['chuck', '70'], ['rx', '737'],
-        ['run', 'star', 'trainer'], ['handball', 'spezial'], ['l002', 'evo']) döndürür.
-        """
         cleaned = title
         if brand:
             cleaned = re.sub(re.escape(brand), " ", cleaned, flags=re.IGNORECASE)
         if display_sku:
-            cleaned = re.sub(re.escape(display_sku), " ", cleaned, flags=re.IGNORECASE)
+            clean_sku = re.escape(display_sku.strip())
+            cleaned = re.sub(rf"{clean_sku}\d*", " ", cleaned, flags=re.IGNORECASE)
 
         cleaned = cls.GENERIC_SHOE_AND_COLOR_WORDS.sub(" ", cleaned)
         cleaned = re.sub(r"[^a-zA-Z0-9ğüşıöçĞÜŞİÖÇ\.\-]", " ", cleaned)
@@ -135,6 +197,8 @@ class MarketComparator:
         model_tokens: list[str] = []
         for tok in raw_tokens:
             norm_tok = cls._normalize_tr_ascii(tok)
+            if norm_tok.isdigit() and len(norm_tok) <= 3:
+                continue
             if norm_tok not in model_tokens:
                 model_tokens.append(norm_tok)
         return model_tokens
@@ -143,7 +207,7 @@ class MarketComparator:
     def build_search_queries(cls, product: ScrapedProduct) -> list[tuple[str, bool]]:
         queries: list[tuple[str, bool]] = []
         sku = (product.display_sku or "").strip()
-        brand_low = (product.brand or "").lower().strip()
+        brand_clean = (product.brand or "").strip()
         model_tokens = cls.extract_model_tokens(product.title, product.brand, sku)
 
         gender_word = ""
@@ -153,23 +217,269 @@ class MarketComparator:
         elif "erkek" in g_low:
             gender_word = "Erkek"
 
-        # 1. Saf Model Serisi + Cinsiyet + Sneaker Sorgusu
+        # 1. ÖNCELİK: Marka + Üretici SKU (Akakçe ve pazaryerlerinde %100 kesin eşleşme)
+        is_internal_numeric_sku = sku.isdigit() and len(sku) >= 8 and sku.startswith("10")
+        if sku and len(sku) >= 5 and not is_internal_numeric_sku:
+            queries.append((f"{brand_clean} {sku}".strip(), True))
+            base_sku = re.sub(r"(?:[\-_]\d{1,3}|[A-Z])$", "", sku)
+            if base_sku and len(base_sku) >= 6 and base_sku != sku:
+                queries.append((f"{brand_clean} {base_sku}".strip(), True))
+
+        # 2. ÖNCELİK: Temiz Model Serisi + Cinsiyet + Sneaker Sorgusu
         if model_tokens:
-            core_model_str = " ".join(model_tokens[:4])
-            core_q = f"{product.brand} {core_model_str} {gender_word} Sneaker"
+            core_model_str = " ".join(model_tokens[:3])
+            core_q = f"{brand_clean} {core_model_str} {gender_word} Sneaker"
             core_q = re.sub(r"\s+", " ", core_q).strip()
             queries.append((core_q, False))
 
-        # 2. Marka + SKU Sorgusu
-        is_internal_numeric_sku = sku.isdigit() and len(sku) >= 8 and sku.startswith("10")
-        if sku and len(sku) >= 5 and not is_internal_numeric_sku:
-            base_sku = re.sub(r"(?:[\-_]\d{1,3}|[A-Z])$", "", sku)
-            if brand_low in cls.SKU_INDEXED_BRANDS or not model_tokens:
-                if base_sku and len(base_sku) >= 6 and base_sku != sku:
-                    queries.append((f"{product.brand} {base_sku}".strip(), True))
-                queries.append((f"{product.brand} {sku}".strip(), True))
+        return queries[:3]
 
-        return queries[:2]
+    def _fetch_detail_page_offers(self, detail_url: str, brand: str) -> list[OfficialOfferInfo]:
+        """Akakçe ürün detay sayfasından (ul#PL li) tüm resmi distribütör tekliflerini çeker."""
+        if not detail_url:
+            return []
+        try:
+            resp = self.client.get(detail_url, is_json=False)
+            if not resp or not resp.ok or not resp.text:
+                return []
+            soup = BeautifulSoup(resp.text, "html.parser")
+            offers: list[OfficialOfferInfo] = []
+
+            for li in soup.select("ul#PL li"):
+                pt_el = li.select_one("span.pt_v9, span.pt_v8, .pt_v9, .pt_v8, .price")
+                if not pt_el:
+                    continue
+                txt = pt_el.get_text(" ", strip=True)
+                txt = re.sub(r"\s*,\s*", ",", txt)
+                m = re.search(r"(\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?)\s*TL", txt, re.I)
+                if not m:
+                    continue
+                price = BasketPromotionParser.parse_turkish_price(m.group(1))
+                if price <= 0:
+                    continue
+
+                s_tag = li.select_one(".v_v8, .s_v8, .seller, .merchant")
+                seller_raw = s_tag.get_text(" ", strip=True) if s_tag else ""
+                seller = re.sub(r"^(?:sat[ıi]c[ıi]\s*:\s*|/|\s)+", "", seller_raw, flags=re.I).strip()
+
+                img = li.select_one("img[alt]")
+                plat = img.get("alt", "").strip() if img else ""
+                if not plat:
+                    a_tag = li.select_one("a[title]")
+                    plat = a_tag.get("title", "").strip() if a_tag else ""
+                if not plat:
+                    plat = "Akakçe Mağaza"
+
+                is_off = self.is_official_seller(seller, plat, brand)
+                if is_off:
+                    offers.append(
+                        OfficialOfferInfo(
+                            platform=plat,
+                            seller_name=seller or plat,
+                            price=round(price, 2),
+                            is_official=True,
+                            url=detail_url,
+                        )
+                    )
+            offers.sort(key=lambda x: x.price)
+            return offers
+        except Exception as exc:
+            logger.debug("Akakçe detay sayfası satıcı ayrıştırma hatası (%s): %s", detail_url, exc)
+            return []
+
+    def get_detailed_market_comparison(
+        self,
+        product: ScrapedProduct,
+        all_current_run_products: Optional[list[ScrapedProduct]] = None,
+        allow_live_query: bool = True,
+    ) -> MarketComparisonDetails:
+        """
+        Ürün için 7 yetkili site + Akakçe'deki tüm resmi satıcıları (Amazon, idefix, Hepsiburada, Pazarama vb.)
+        karşılaştırarak en dip fiyatı, en uygun resmi satıcıyı ve tam dökümü döndürür.
+        """
+        cache_key = f"{product.canonical_sku}:{product.site_key}"
+        if cache_key in self._cache:
+            cached_res = self._cache[cache_key]
+            if cached_res.verified_url:
+                product.verified_akakce_url = cached_res.verified_url
+            return cached_res
+
+        model_tokens = self.extract_model_tokens(product.title, product.brand, product.display_sku)
+        all_official_offers: list[OfficialOfferInfo] = []
+
+        # 1. Mevcut çalışma sırasındaki diğer 6 yetkili sitedeki eşleşmeler
+        if all_current_run_products:
+            for other in all_current_run_products:
+                if other.canonical_sku == product.canonical_sku and other.net_basket_price > 0:
+                    all_official_offers.append(
+                        OfficialOfferInfo(
+                            platform=other.site_name,
+                            seller_name=f"{other.site_name} (Kendi Sitesi)",
+                            price=round(other.net_basket_price, 2),
+                            is_official=True,
+                            url=other.url,
+                        )
+                    )
+
+        # 2. StateStorage içindeki kayıtlı diğer mağazalar
+        if self.storage is not None:
+            sku_entry = self.storage.state.get("products", {}).get(product.canonical_sku, {})
+            for s_key, s_data in (sku_entry.get("sites") or {}).items():
+                p_val = s_data.get("net_basket_price") or s_data.get("sale_price")
+                s_name = str(s_data.get("site_name") or s_key)
+                if isinstance(p_val, (int, float)) and p_val >= 650.0:
+                    all_official_offers.append(
+                        OfficialOfferInfo(
+                            platform=s_name,
+                            seller_name=f"{s_name} (Kendi Sitesi)",
+                            price=round(float(p_val), 2),
+                            is_official=True,
+                            url=str(s_data.get("url") or ""),
+                        )
+                    )
+
+        # 3. Akakçe Canlı Sorgusu ve Pazaryerlerindeki Resmi Satıcılar
+        verified_url: Optional[str] = None
+        queries = self.build_search_queries(product)
+        if queries and not product.verified_akakce_url:
+            verified_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
+            product.verified_akakce_url = verified_url
+
+        if allow_live_query and time.time() >= self._akakce_blocked_until:
+            min_plausible_price = max(650.0, product.net_basket_price * 0.50)
+            max_plausible_price = max(product.retail_price * 1.40, product.net_basket_price * 2.8)
+
+            for q_str, is_sku in queries:
+                search_url = f"https://www.akakce.com/arama/?q={quote_plus(q_str)}"
+                try:
+                    resp = self.client.get(search_url, is_json=False)
+                    if not resp:
+                        self._akakce_429_streak += 1
+                        if self._akakce_429_streak >= 3:
+                            self._akakce_blocked_until = time.time() + 120.0
+                        continue
+                    if resp.status_code in (429, 403):
+                        self._akakce_429_streak += 1
+                        if self._akakce_429_streak >= 3:
+                            self._akakce_blocked_until = time.time() + 120.0
+                        continue
+                    if not resp.ok or not resp.text:
+                        continue
+
+                    self._akakce_429_streak = 0
+                    soup = BeautifulSoup(resp.text, "html.parser")
+                    cards = soup.select("ul#APL li, ul.pl_v8 li, li[data-pr]")
+                    if not cards:
+                        continue
+
+                    verified_cards = self._extract_verified_cards_from_akakce_html(
+                        html_text=resp.text,
+                        product=product,
+                        model_tokens=model_tokens,
+                        min_price=min_plausible_price,
+                        max_price=max_plausible_price,
+                    )
+
+                    detail_page_hit = False
+                    for card_price, card_title, card_detail_url in verified_cards[:3]:
+                        if card_detail_url:
+                            verified_url = card_detail_url
+                            product.verified_akakce_url = verified_url
+                            offers = self._fetch_detail_page_offers(card_detail_url, product.brand)
+                            if offers:
+                                all_official_offers.extend(offers)
+                                detail_page_hit = True
+
+                    if not detail_page_hit and verified_cards:
+                        card_price, card_title, card_detail_url = verified_cards[0]
+                        all_official_offers.append(
+                            OfficialOfferInfo(
+                                platform="Akakçe En Ucuz Satıcı",
+                                seller_name="Akakçe Doğrulamalı",
+                                price=round(card_price, 2),
+                                is_official=True,
+                                url=card_detail_url or search_url,
+                            )
+                        )
+                        verified_url = card_detail_url or search_url
+                        product.verified_akakce_url = verified_url
+
+                    if all_official_offers:
+                        break
+                except Exception as exc:
+                    logger.debug("Akakçe arama sorgu hatası (%s): %s", search_url, exc)
+                    continue
+
+        # Kendi mağaza fiyatını da teklifler listesine dahil et
+        if product.net_basket_price > 0:
+            all_official_offers.append(
+                OfficialOfferInfo(
+                    platform=product.site_name,
+                    seller_name=f"{product.site_name} (Kendi Sitesi)",
+                    price=round(product.net_basket_price, 2),
+                    is_official=True,
+                    url=product.url,
+                )
+            )
+
+        # Satıcı ve Platform bazında tekilleştir ve fiyata göre sırala
+        unique_offers: dict[tuple[str, str], OfficialOfferInfo] = {}
+        for off in all_official_offers:
+            key = (off.platform.lower().strip(), off.seller_name.lower().strip())
+            if key not in unique_offers or off.price < unique_offers[key].price:
+                unique_offers[key] = off
+
+        sorted_offers = sorted(unique_offers.values(), key=lambda x: x.price)
+        best_offer = sorted_offers[0] if sorted_offers else None
+        floor_price = best_offer.price if best_offer else round(product.retail_price * 0.72, 2)
+        floor_source = (
+            f"Resmi Satıcı Kıyaslaması ({best_offer.platform} / {best_offer.seller_name}: {best_offer.price:,.0f} TL)"
+            if best_offer
+            else "Tahmini Piyasa Dip (Liste x0.72)"
+        )
+
+        # Rütbeli döküm listesi hazırla (🏆, 🥈, 🥉, ▫️)
+        breakdown: list[str] = []
+        rank_emojis = ["🏆", "🥈", "🥉", "▫️", "▫️", "▫️"]
+        for idx, off in enumerate(sorted_offers[:5]):
+            emo = rank_emojis[idx] if idx < len(rank_emojis) else "▫️"
+            breakdown.append(f"{emo} {off.platform} ({off.seller_name}): {off.price:,.0f} TL".replace(",", "."))
+
+        # Taranan kaynak mağaza en ucuz mu?
+        is_scraped_cheapest = True
+        cheaper_alert: Optional[str] = None
+        if best_offer and product.net_basket_price > best_offer.price + 20.0:
+            is_scraped_cheapest = False
+            cheaper_alert = (
+                f"⚠️ Dikkat: Aynı ürün {best_offer.platform} ({best_offer.seller_name}) "
+                f"üzerinde {best_offer.price:,.0f} TL ile daha ucuz! (Alış: {product.net_basket_price:,.0f} TL)"
+            ).replace(",", ".")
+
+        details = MarketComparisonDetails(
+            floor_price=floor_price,
+            floor_source=floor_source,
+            verified_url=verified_url,
+            best_official_offer=best_offer,
+            all_official_offers=sorted_offers,
+            official_sellers_breakdown=breakdown,
+            is_scraped_site_cheapest=is_scraped_cheapest,
+            cheaper_official_seller_alert=cheaper_alert,
+        )
+        self._cache[cache_key] = details
+
+        # StateStorage içine de kaydet
+        if self.storage is not None and best_offer is not None:
+            self.storage.save_verified_market_floor(
+                canonical_sku=product.canonical_sku,
+                floor_price=floor_price,
+                floor_source=floor_source,
+                akakce_url=verified_url,
+                best_official_seller=best_offer.seller_name,
+                best_official_platform=best_offer.platform,
+                official_breakdown=breakdown,
+            )
+
+        return details
 
     def get_market_floor_price(
         self,
@@ -177,179 +487,13 @@ class MarketComparator:
         all_current_run_products: Optional[list[ScrapedProduct]] = None,
         allow_live_query: bool = True,
     ) -> tuple[float, str]:
-        """
-        Ürün için `(market_floor_price, kaynak_açıklaması)` döndürür ve
-        varsa doğrulanmış Akakçe URL'sini `product.verified_akakce_url` alanına atar.
-        """
-        cache_key = f"{product.canonical_sku}:{product.site_key}"
-        queries = self.build_search_queries(product)
-        if queries and not product.verified_akakce_url:
-            product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
-
-        if cache_key in self._cache:
-            cached_price, cached_src, cached_url = self._cache[cache_key]
-            if cached_url:
-                product.verified_akakce_url = cached_url
-            return cached_price, cached_src
-
-        model_tokens = self.extract_model_tokens(product.title, product.brand, product.display_sku)
-
-        # 1. Mevcut çalışma sırasındaki diğer yetkili mağazalarda aynı canonical_sku var mı kontrol et
-        cross_site_candidates: list[tuple[float, str]] = []
-        if all_current_run_products:
-            for other in all_current_run_products:
-                if other.canonical_sku == product.canonical_sku and other.site_key != product.site_key:
-                    if other.net_basket_price > 0:
-                        cross_site_candidates.append((other.net_basket_price, other.site_name))
-
-        # 2. StateStorage veritabanında 5 yetkili mağaza (Occasion, SuperStep, InStreet, Barçın, Korayspor)
-        #    arasında SKU, baz model kodu ve Marka + Model Serisi eşleşmesiyle fiyatları kontrol et
-        if self.storage is not None:
-            stored_cross = self.storage.get_cross_site_floor_price(
-                canonical_sku=product.canonical_sku,
-                exclude_site_key=product.site_key,
-                brand=product.brand,
-                gender=product.gender,
-                model_tokens=model_tokens,
-            )
-            if stored_cross is not None:
-                cross_site_candidates.append(stored_cross)
-
-        # 3. Akakçe Canlı Arama Sorgusu (`https://www.akakce.com/arama/?q=...`)
-        if allow_live_query and time.time() >= self._akakce_blocked_until:
-            akakce_res = self._query_akakce_floor_price(product)
-            if akakce_res is not None:
-                akakce_price, matched_url, match_label = akakce_res
-                if matched_url:
-                    product.verified_akakce_url = matched_url
-                if self.storage is not None:
-                    self.storage.save_verified_market_floor(
-                        canonical_sku=product.canonical_sku,
-                        floor_price=akakce_price,
-                        floor_source=match_label,
-                        akakce_url=matched_url,
-                    )
-
-                if cross_site_candidates:
-                    cross_site_candidates.sort(key=lambda x: x[0])
-                    best_cp, best_cs = cross_site_candidates[0]
-                    if best_cp < akakce_price:
-                        res_tuple = (
-                            round(best_cp, 2),
-                            f"Yetkili Mağaza Kıyaslaması ({best_cs}) [Akakçe: {akakce_price:.0f} TL]",
-                        )
-                        self._cache[cache_key] = (res_tuple[0], res_tuple[1], matched_url)
-                        return res_tuple
-                    res_tuple = (
-                        round(akakce_price, 2),
-                        f"{match_label} [Yetkili Mağaza {best_cs}: {best_cp:.0f} TL]",
-                    )
-                    self._cache[cache_key] = (res_tuple[0], res_tuple[1], matched_url)
-                    return res_tuple
-
-                res_tuple = (round(akakce_price, 2), match_label)
-                self._cache[cache_key] = (res_tuple[0], res_tuple[1], matched_url)
-                return res_tuple
-
-        # 4. Yedek 1: 5 Yetkili Orijinal Mağaza veritabanımızdaki en düşük fiyat (diğer mağazadaki en ucuz fiyat)
-        if cross_site_candidates:
-            cross_site_candidates.sort(key=lambda x: x[0])
-            best_cross_price, best_cross_site = cross_site_candidates[0]
-            queries = self.build_search_queries(product)
-            if queries and not product.verified_akakce_url:
-                product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
-            result = (round(best_cross_price, 2), f"Yetkili Mağaza Kıyaslaması ({best_cross_site})")
-            self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
-            return result
-
-        # 5. Yedek 2: StateStorage içinde daha önce doğrulanmış Akakçe fiyatı (GitHub Actions US IP koruması)
-        if self.storage is not None:
-            saved_verified = self.storage.get_verified_market_floor(product.canonical_sku)
-            if saved_verified is not None:
-                sv_price, sv_source, sv_url = saved_verified
-                if sv_url:
-                    product.verified_akakce_url = sv_url
-                result = (round(sv_price, 2), sv_source)
-                self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
-                return result
-
-        # 6. Yedek 3: GitHub Actions (Yurt Dışı IP) Sepet Kampanyası Korumalı Referans Formülü
-        if model_tokens and product.basket_discount_rate >= 25.0 and product.sale_price > product.net_basket_price:
-            queries = self.build_search_queries(product)
-            if queries and not product.verified_akakce_url:
-                product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
-            protected_floor = round(min(product.retail_price * 0.72, product.sale_price * 0.88), 2)
-            result = (protected_floor, "Vitrin & Sepet Korumalı Dip Fiyat (Min Liste x0.72 / Vitrin x0.88)")
-            self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
-            return result
-
-        # 7. Doğrulanamayan / Sepet İndirimsiz Standart Ürün Koruması (Sahte Sinyal Önleyici)
-        unverified_floor = round(min(product.retail_price * 0.72, product.net_basket_price), 2)
-        result = (unverified_floor, "Doğrulanamadı (Akakçe/Çapraz Eşleşme Yok)")
-        self._cache[cache_key] = (result[0], result[1], product.verified_akakce_url)
-        return result
-
-    def _query_akakce_floor_price(self, product: ScrapedProduct) -> Optional[tuple[float, str, str]]:
-        model_tokens = self.extract_model_tokens(product.title, product.brand, product.display_sku)
-        brand_low = (product.brand or "").lower().strip()
-
-        if not model_tokens and brand_low not in self.SKU_INDEXED_BRANDS:
-            return None
-
-        queries = self.build_search_queries(product)
-        if not queries:
-            return None
-
-        product.verified_akakce_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
-
-        min_plausible_price = max(650.0, product.net_basket_price * 0.55)
-        max_plausible_price = max(product.retail_price * 1.40, product.net_basket_price * 2.8)
-
-        for q_str, is_sku_query in queries:
-            search_url = f"https://www.akakce.com/arama/?q={quote_plus(q_str)}"
-            try:
-                resp = self.client.get(search_url, is_json=False)
-                if not resp:
-                    self._akakce_429_streak += 1
-                    if self._akakce_429_streak >= 3:
-                        self._akakce_blocked_until = time.time() + 120.0
-                    continue
-                if resp.status_code in (429, 403):
-                    self._akakce_429_streak += 1
-                    if self._akakce_429_streak >= 3:
-                        self._akakce_blocked_until = time.time() + 120.0
-                    continue
-                if not resp.ok or not resp.text:
-                    continue
-
-                self._akakce_429_streak = 0
-                html_lower = resp.text.lower()
-
-                if "herhangi bir ürün bulunamadı" in html_lower or "ürün bulunamadı" in html_lower:
-                    continue
-
-                matched_cards = self._extract_verified_cards_from_akakce_html(
-                    html_text=resp.text,
-                    product=product,
-                    model_tokens=model_tokens,
-                    min_price=min_plausible_price,
-                    max_price=max_plausible_price,
-                )
-                if matched_cards:
-                    matched_cards.sort(key=lambda x: x[0])
-                    lowest_price, best_card_title, best_card_url = matched_cards[0]
-                    product.verified_akakce_url = search_url
-                    source_label = (
-                        "Akakçe SKU Doğrulamalı En Ucuz"
-                        if is_sku_query
-                        else f"Akakçe En Ucuz ({best_card_title[:34]})"
-                    )
-                    return lowest_price, search_url, source_label
-            except Exception as exc:
-                logger.debug("Akakçe sorgu hatası (%s): %s", search_url, exc)
-                continue
-
-        return None
+        """Geriye dönük uyumluluk metodu (floor_price, floor_source)."""
+        details = self.get_detailed_market_comparison(
+            product=product,
+            all_current_run_products=all_current_run_products,
+            allow_live_query=allow_live_query,
+        )
+        return round(details.floor_price, 2), details.floor_source
 
     @classmethod
     def _extract_verified_cards_from_akakce_html(
@@ -360,7 +504,7 @@ class MarketComparator:
         min_price: float,
         max_price: float,
     ) -> list[tuple[float, str, str]]:
-        soup = BeautifulSoup(html_text, "lxml")
+        soup = BeautifulSoup(html_text, "html.parser")
         cards = soup.select("ul#APL li, ul.pl_v8 li, li[data-pr]")
         verified: list[tuple[float, str, str]] = []
 
@@ -376,7 +520,6 @@ class MarketComparator:
                 continue
 
             card_norm = cls._normalize_tr_ascii(card_title)
-
             if any(bad in card_norm for bad in cls.EXCLUDED_CARD_WORDS):
                 continue
 
@@ -424,7 +567,7 @@ class MarketComparator:
 
     @staticmethod
     def _parse_card_price(li_tag) -> float:
-        pt_el = li_tag.select_one("span.pt_v9, span.pt_v8, .pt_v9, .pt_v8")
+        pt_el = li_tag.select_one("span.pt_v9, span.pt_v8, .pt_v9, .pt_v8, .price")
         if not pt_el:
             return 0.0
         txt = pt_el.get_text(" ", strip=True)

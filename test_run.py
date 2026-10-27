@@ -109,14 +109,15 @@ def print_site_products_report(
         return
 
     for idx, prod in enumerate(products[:5], start=1):
-        market_floor, floor_src = comparator.get_market_floor_price(
+        comp_details = comparator.get_detailed_market_comparison(
             product=prod,
             all_current_run_products=all_collected,
         )
         analysis = ArbitrageEngine.evaluate(
             product=prod,
-            market_floor_price=market_floor,
-            market_floor_source=floor_src,
+            market_floor_price=comp_details.floor_price,
+            market_floor_source=comp_details.floor_source,
+            comparison_details=comp_details,
         )
 
         sizes_str = ", ".join(s.display_label for s in prod.sizes)
@@ -143,6 +144,10 @@ def print_site_products_report(
             f"    • Piyasa & Satış Hedefi : Piyasa Dip: ~{floor_fmt} TL ({analysis.market_floor_source}) | "
             f"🎯 Önerilen Hızlı Satış: {sell_fmt} TL"
         )
+        if analysis.official_sellers_breakdown:
+            print("    • Resmi Satıcı Kıyaslama: " + " | ".join(analysis.official_sellers_breakdown[:3]))
+        if analysis.cheaper_source_alert:
+            print(f"    • ⚠️ FİYAT UYARISI     : {analysis.cheaper_source_alert}")
         print(
             f"    • Birim Ekonomisi & ROI : "
             f"🟢 Gardrops/Sahibinden Net: {g_profit_fmt} TL (%{analysis.roi_gardrops:.1f} ROI) | "

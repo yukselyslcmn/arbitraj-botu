@@ -122,8 +122,21 @@ class TelegramNotifier:
             ),
             f"  • {safe_trend}",
             "",
-            "📊 <b>Piyasa Kıyaslaması:</b>",
-            f"  • 🌐 Diğer Sitelerde En Ucuz: <code>~{market_str}</code> <i>({safe_floor_source})</i>",
+            "📊 <b>Piyasa &amp; Resmi Satıcı Kıyaslaması:</b>",
+            f"  • 🌐 Piyasa Dip Fiyatı: <code>~{market_str}</code> <i>({safe_floor_source})</i>",
+        ]
+
+        if analysis.official_sellers_breakdown:
+            lines.append("  • 🏪 <b>Resmi Satıcılar (Pazaryerleri Dahil):</b>")
+            for line_item in analysis.official_sellers_breakdown[:4]:
+                lines.append(f"     ▫️ {html.escape(line_item)}")
+
+        if analysis.cheaper_source_alert:
+            lines.append(f"  • {html.escape(analysis.cheaper_source_alert)}")
+        elif analysis.is_buy_source_cheapest:
+            lines.append("  • ✅ <b>En Uygun Resmi Satıcı Fiyatı Doğrulandı!</b>")
+
+        lines.extend([
             f"  • 🎯 <b>Önerilen Satış Fiyatımız:</b> <b><code>{sell_str}</code></b>",
             "",
             "💰 <b>Tahmini Net Kâr Tablosu:</b>",
@@ -139,10 +152,10 @@ class TelegramNotifier:
             f"📋 <b>Hazır İlan Başlığı:</b> <code>{safe_listing_title}</code>",
             "",
             (
-                f'🔗 <a href="{safe_product_url}">🛒 Ürünü Hemen Sepete Ekle</a> | '
-                f'🔍 <a href="{safe_akakce_url}">📈 Akakçe\'de Piyasa Fiyatını Gör</a>'
+                f'🔗 <a href="{safe_product_url}">🛒 Ürünü Hemen Satın Al / İncele</a> | '
+                f'🔍 <a href="{safe_akakce_url}">📈 Akakçe Fiyat Karşılaştırması</a>'
             ),
-        ]
+        ])
         return "\n".join(lines)
 
     def _respect_flood_limit(self) -> None:
