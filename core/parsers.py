@@ -379,6 +379,18 @@ class BasketPromotionParser:
     (net_basket_price) kuruşu kuruşuna bulan motor.
     """
 
+    # Tekil ürün sepet indirimi OLMAYAN, şartlı, çoklu alım veya genel kategori sloganı filtreleri:
+    # Örn: "Sepette %60'a varan indirim", "%50'ye varan fırsatlar", "2. Ürüne %50", "3 Al 2 Öde"
+    DISQUALIFIED_PATTERNS = [
+        re.compile(r"['’]?[aeıyuoöü]\s*varan\b", re.IGNORECASE),
+        re.compile(r"\bvaran\b", re.IGNORECASE),
+        re.compile(r"\bkadar\b", re.IGNORECASE),
+        re.compile(r"\b(?:2\.|ikinci)\s*(?:ürün|çift|tek|parça|ye)\b", re.IGNORECASE),
+        re.compile(r"\b\d\s*al\s*\d\s*öde\b", re.IGNORECASE),
+        re.compile(r"\bçift\s*alım\b", re.IGNORECASE),
+        re.compile(r"\b(?:kupon|kod(?:u)?|çek|hediye\s*çeki)\b", re.IGNORECASE),
+    ]
+
     # 1. "Sepette %25 İndirim", "Sepette Ekstra %20 İndirim", "%30 Sepet İndirimi"
     PERCENT_DISCOUNT_PATTERNS = [
         re.compile(
@@ -515,6 +527,7 @@ class BasketPromotionParser:
         texts = [t.strip() for t in (campaign_texts or []) if t and str(t).strip()]
 
         for text in texts:
+            is_disqualified = any(p.search(text) for p in cls.DISQUALIFIED_PATTERNS)
             # A) Kademeli TL İndirimi: "3000 TL Üzerine 750 TL İndirim"
             matched_tiered_tl = False
             for pattern in cls.TIERED_TL_PATTERNS:
@@ -538,17 +551,19 @@ class BasketPromotionParser:
                     candidates.append((computed, f"{int(threshold)} TL Üzerine %{int(pct)} İndirim"))
 
             # C) Yüzdelik Sepet İndirimi: "Sepette %25 İndirim" veya "Sepette Ekstra %20"
-            for pattern in cls.PERCENT_DISCOUNT_PATTERNS:
-                match = pattern.search(text)
-                if match:
-                    pct = float(match.group(1))
-                    if 0 < pct <= 75:
-                        computed = round(s_price * (1.0 - pct / 100.0), 2)
-                        candidates.append((computed, f"Sepette %{int(pct)} İndirim"))
-                        break
+            # 'Varan', 'kadar', '2. ürüne' gibi tek ürün indirimi olmayan sloganları kesinlikle reddet!
+            if not is_disqualified:
+                for pattern in cls.PERCENT_DISCOUNT_PATTERNS:
+                    match = pattern.search(text)
+                    if match:
+                        pct = float(match.group(1))
+                        if 0 < pct <= 75:
+                            computed = round(s_price * (1.0 - pct / 100.0), 2)
+                            candidates.append((computed, f"Sepette %{int(pct)} İndirim"))
+                            break
 
             # D) Sabit TL Sepet İndirimi (Eğer kademeli TL indirimi değilse): "Sepette 500 TL İndirim"
-            if not matched_tiered_tl:
+            if not matched_tiered_tl and not is_disqualified:
                 flat_match = cls.FLAT_TL_DISCOUNT_PATTERN.search(text)
                 if flat_match:
                     discount_tl = cls.parse_turkish_price(flat_match.group(1))
@@ -557,7 +572,7 @@ class BasketPromotionParser:
                         candidates.append((computed, f"Sepette {int(discount_tl)} TL İndirim"))
 
             # E) Doğrudan Sepet Fiyatı Metni: "Sepette 1.899 TL"
-            if "%" not in text and not matched_tiered_tl:
+            if "%" not in text and not matched_tiered_tl and not is_disqualified:
                 for pattern in cls.DIRECT_BASKET_PRICE_PATTERNS:
                     match = pattern.search(text)
                     if match:

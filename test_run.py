@@ -77,6 +77,7 @@ def verify_core_parsers() -> None:
         ("4.999 TL", "3.500 TL", None, ["3000 TL Üzerine 750 TL İndirim"]),
         ("3.999 TL", "2.499 TL", None, ["Sepette 1.899 TL"]),
         ("6.000 TL", "4.500 TL", "3.600 TL", ["Sepette Ekstra %20"]),
+        ("18.999 TL", "13.299 TL", None, ["Sepette %60'a varan indirim"]),
     ]
     print("\n[C] BasketPromotionParser (Sepette Net Fiyat Hesaplayıcı) Çıktıları:")
     for retail, sale, api_basket, texts in promo_samples:
