@@ -245,18 +245,25 @@ class MarketComparator:
         queries: list[tuple[str, bool]] = []
         sku = (product.display_sku or "").strip()
         brand_clean = (product.brand or "").strip()
+        brand_lower = brand_clean.lower()
         model_tokens = cls.extract_model_tokens(product.title, product.brand, sku)
 
-        gender_word = ""
-        g_low = (product.gender or "").lower()
-        if "kadın" in g_low or "kadin" in g_low:
-            gender_word = "Kadın"
-        elif "erkek" in g_low:
-            gender_word = "Erkek"
-
-        # 1. ÖNCELİK: Marka + Üretici SKU (Akakçe ve pazaryerlerinde %100 kesin eşleşme)
+        is_sku_brand = brand_lower in cls.SKU_INDEXED_BRANDS
         is_internal_numeric_sku = sku.isdigit() and len(sku) >= 8 and sku.startswith("10")
         title_sku = SKUNormalizer.extract_sku_from_text(product.title)
+
+        core_model_str = " ".join(model_tokens[:3]) if model_tokens else ""
+
+        # A) Eğer marka küresel SKU kullanan bir marka DEĞİLSE (Lacoste, Converse, Vans vb.)
+        # VEYA model kodu dahili barkod ise:
+        # En etkili Akakçe sorgusu doğrudan Temiz Model Adı'dır:
+        if not is_sku_brand and core_model_str:
+            queries.append((f"{brand_clean} {core_model_str}".strip(), False))
+            if len(model_tokens) >= 2:
+                # 2 kelimelik daha odaklı varyasyon (Örn: Lacoste AG-LT25)
+                queries.append((f"{brand_clean} {' '.join(model_tokens[:2])}".strip(), False))
+
+        # B) Küresel SKU ile arama (Nike, Adidas, Puma, Salomon vb.)
         if title_sku and title_sku != sku:
             queries.append((f"{brand_clean} {title_sku}".strip(), True))
 
@@ -266,14 +273,20 @@ class MarketComparator:
             if base_sku and len(base_sku) >= 6 and base_sku != sku:
                 queries.append((f"{brand_clean} {base_sku}".strip(), True))
 
-        # 2. ÖNCELİK: Temiz Model Serisi + Cinsiyet + Sneaker Sorgusu
-        if model_tokens:
-            core_model_str = " ".join(model_tokens[:3])
-            core_q = f"{brand_clean} {core_model_str} {gender_word} Sneaker"
-            core_q = re.sub(r"\s+", " ", core_q).strip()
-            queries.append((core_q, False))
+        # C) Küresel SKU markasıysa ama model tokens varsa yedek olarak model sorgusu ekle
+        if is_sku_brand and core_model_str:
+            queries.append((f"{brand_clean} {core_model_str}".strip(), False))
 
-        return queries[:3]
+        # Tekilleştir ve ilk 3 sorguyu döndür
+        seen_q = set()
+        unique_queries = []
+        for q, is_s in queries:
+            q_clean = re.sub(r"\s+", " ", q).strip()
+            if q_clean and q_clean.lower() not in seen_q:
+                seen_q.add(q_clean.lower())
+                unique_queries.append((q_clean, is_s))
+
+        return unique_queries[:3]
 
     def _fetch_detail_page_offers(self, detail_url: str, brand: str) -> list[OfficialOfferInfo]:
         """Akakçe ürün detay sayfasından (ul#PL li) tüm resmi distribütör tekliflerini çeker."""
@@ -400,11 +413,11 @@ class MarketComparator:
                 )
 
         # 3. Akakçe Canlı Sorgusu ve Pazaryerlerindeki Resmi Satıcılar
-        verified_url: Optional[str] = None
+        verified_url: Optional[str] = product.verified_akakce_url
         queries = self.build_search_queries(product)
-        if queries and not product.verified_akakce_url:
-            verified_url = f"https://www.akakce.com/arama/?q={quote_plus(queries[0][0])}"
-            product.verified_akakce_url = verified_url
+        # Varsayılan URL: ürünün akıllı akakce_search_url özelliği
+        if not verified_url:
+            verified_url = product.akakce_search_url
 
         if allow_live_query and time.time() >= self._akakce_blocked_until:
             min_plausible_price = max(650.0, product.net_basket_price * 0.50)
@@ -577,6 +590,10 @@ class MarketComparator:
         min_price: float,
         max_price: float,
     ) -> list[tuple[float, str, str]]:
+        # Akakçe 'herhangi bir ürün bulunamadı' uyarısı vermişse alttaki tavsiye kartları geçersizdir!
+        if "için herhangi bir ürün bulunamadı" in html_text or "rw_v8" in html_text:
+            return []
+
         soup = BeautifulSoup(html_text, "html.parser")
         cards = soup.select("ul#APL li, ul.pl_v8 li, li[data-pr]")
         verified: list[tuple[float, str, str]] = []

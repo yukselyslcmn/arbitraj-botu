@@ -34,9 +34,18 @@ class ScrapedProduct:
     def akakce_search_url(self) -> str:
         if self.verified_akakce_url:
             return self.verified_akakce_url
+        brand_low = (self.brand or "").lower().strip()
+        # Global SKU kullanmayan veya dahili mağaza barkodu kullanan markalarda (Lacoste vb.)
+        # Akakçe'de arama modeli SKU yerine doğrudan Temiz Model Adı ile yapılmalıdır:
+        if brand_low not in ("nike", "adidas", "puma", "new balance", "asics", "salomon", "skechers", "under armour"):
+            from scrapers.market_comparator import MarketComparator
+            tokens = MarketComparator.extract_model_tokens(self.title, self.brand, self.display_sku)
+            if tokens:
+                model_str = " ".join(tokens[:3])
+                q_text = f"{self.brand} {model_str}".strip()
+                return f"https://www.akakce.com/arama/?q={quote_plus(q_text)}"
         query = f"{self.brand} {self.display_sku}".strip()
         return f"https://www.akakce.com/arama/?q={quote_plus(query)}"
-
     @property
     def is_low_stock(self) -> bool:
         if self.total_stock is not None and 0 < self.total_stock <= 3:

@@ -4,90 +4,99 @@
 
 <br/>
 
-[![Arbitrage Radar CI/CD](https://img.shields.io/github/actions/workflow/status/yukselyslcmn/arbitraj-botu/arbitrage_radar.yml?branch=main&label=7%2F24%20Arbitraj%20Radar%C4%B1&logo=githubactions&style=for-the-badge)](https://github.com/yukselyslcmn/arbitraj-botu/actions)
+[![Live Cloud Dashboard](https://img.shields.io/badge/Canl%C4%B1%20Web%20Paneli-GitHub%20Pages-4f46e5?style=for-the-badge&logo=googlechrome&logoColor=white)](https://yukselyslcmn.github.io/arbitraj-botu/)
+[![Arbitrage Radar CI/CD](https://img.shields.io/github/actions/workflow/status/yukselyslcmn/arbitraj-botu/arbitrage_radar.yml?branch=main&label=7%2F24%20Bulut%20Radar%C4%B1&logo=githubactions&style=for-the-badge)](https://github.com/yukselyslcmn/arbitraj-botu/actions)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Anti-Bot Engine](https://img.shields.io/badge/Stealth-curl__cffi%20%7C%20TLS%20Impersonation-10b981?style=for-the-badge&logo=cloudflare&logoColor=white)](#%EF%B8%8F-proje-dizin-ve-mod%C3%BCl-mimarisi)
-[![Telegram Interactive Bot](https://img.shields.io/badge/Telegram-Foto%C4%9Frafl%C4%B1%20Alarm%20%2B%20Komut%20Botu-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](#-telegram-bildirim-kart%C4%B1-ve-interaktif-komutlar)
+[![Anti-Bot Engine](https://img.shields.io/badge/Stealth-curl__cffi%20%7C%20TLS%20Impersonation-10b981?style=for-the-badge&logo=cloudflare&logoColor=white)](#-ak%C4%B1ll%C4%B1-veri-kaz%C4%B1ma-ve-stealth-altyap%C4%B1)
+[![Telegram Interactive Bot](https://img.shields.io/badge/Telegram-Foto%C4%9Frafl%C4%B1%20Alarm%20%2B%20Komut%20Botu-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](#-telegram-bildirim-ve-interaktif-komut-istasyonu)
 
-**Türkiye'deki 7 yetkili orijinal spor ayakkabı distribütörünü (`Occasion`, `SuperStep`, `InStreet`, `Barçın`, `Korayspor`, `Sportive`, `FashFed`) eşzamanlı tarayan, sepetteki gizli indirimleri hesaplayan, `7 Mağaza Çapraz Fiyat İndeksi + Akakçe` ile gerçek piyasa dip fiyatını doğrulayan, ikinci el platformları (`Gardrops`, `Sahibinden`, `Letgo`, `Dolap`) için net kâr / ROI analizi + hazır ilan şablonu üreten ve Görsel Web Kontrol Paneli sunan otonom arbitraj radarı.**
+**Türkiye'nin 7 büyük yetkili orijinal spor ayakkabı distribütörünü (`Occasion`, `SuperStep`, `InStreet`, `Barçın`, `Korayspor`, `Sportive`, `FashFed`) eşzamanlı tarayan, sepetteki gizli indirimleri sahte afişlerden arındırarak hesaplayan, `Çapraz Mağaza İndeksi + Akakçe Model/SKU Hibrit Doğrulaması` ile gerçek piyasa dip fiyatını bulan, ikinci el platformları (`Gardrops`, `Sahibinden`, `Letgo`, `Dolap`) için net kâr / ROI analizi ve hazır ilan şablonu üreten otonom arbitraj radarı.**
+
+[🌐 Canlı Bulut Kontrol Panelini Aç (GitHub Pages)](https://yukselyslcmn.github.io/arbitraj-botu/) • [🤖 Telegram Bot Entegrasyonu](#-telegram-bildirim-ve-interaktif-komut-istasyonu) • [📊 Mimari Akış](#-mimari-ak%C4%B1%C5%9F-%C5%9Femas%C4%B1) • [🚀 Kurulum](#-h%C4%B1zl%C4%B1-kurulum-ve-%C3%A7al%C4%B1%C5%9Ft%C4%B1rma)
 
 </div>
 
 ---
 
-## 🎯 Neden Bu Sistem?
+## 💡 Neden Bu Sistem? (Fark Yaratan Çekirdek Yetenekler)
 
-Standart fiyat takip botları yalnızca **vitrin fiyatına** ve **şişirilmiş liste fiyatına** bakar. Oysa gerçek flipping ve arbitraj fırsatları:
-1. **Sepette Ekstra İndirimlerde** (*"Sepette %30 İndirim"*, *"3000 TL Üzerine 750 TL İndirim"*),
-2. **En Hızlı Nakde Dönen Altın Bedenlerde** (`Erkek: 41–46`, `Kadın: 37–40.5` — `42 2/3` ve `40.5` gibi kesirli/buçuklu bedenler dahil),
-3. **7 Yetkili Orijinal Mağaza + Akakçe Çapraz Fiyat Doğrulamasında**,
-4. **Fiyat Geçmişi (`price_history`) ve Sahte İndirim Tespiti (`is_inflated_retail_price`)** analizinde gizlidir.
+Geleneksel fiyat takip araçları yalnızca **vitrin fiyatına** veya **şişirilmiş liste fiyatına** odaklanır. Arbitraj botu ise piyasada gerçek kârlılık yaratan kritik detayları milimetrik çözer:
 
-<div align="center">
-  <img src="assets/architecture-flow.svg" alt="Uçtan Uca Arbitraj Mimarisi" width="100%" />
-</div>
-
----
-
-## 🏪 Taranan 7 Yetkili Orijinal Mağaza ve Çapraz Kıyaslama
-
-Sistem yalnızca **%100 orijinal ve faturalı** ürün satan Türkiye'nin 7 büyük yetkili distribütörünü tarar ve her mağazanın hem indirimli hem de normal fiyatlı kataloglarını `data/products_state.json` içinde indeksleyerek **birbirleriyle ve Akakçe ile** kıyaslar:
-
-| Yetkili Mağaza | Altyapı / Veri Kaynağı | Yakalanan Özel Kampanya & Veri Türü |
-| :--- | :--- | :--- |
-| **Occasion** (`occasion.com.tr`) | Akinon JSON API + Detay Zenginleştirme | Sepette ekstra `%` / `TL` indirimler, kesirli beden stokları (`1/3`, `2/3`, `.5`) |
-| **SuperStep** (`superstep.com.tr`) | Akinon JSON API + Kampanya Rozetleri | Outlet + Yeni sezon sneaker kataloğu, sepet içi otomatik indirim kuralları |
-| **InStreet** (`instreet.com.tr`) | Next.js App Router (`self.__next_f.push`) | `ruleInfo` sepet fiyatları, `animatedBadgeList` kampanyaları, varyant bazlı stok |
-| **Barçın** (`barcin.com`) | Akinon JSON + HTML Fallback | Nike / Jordan / Adidas yetkili distribütör stokları ve outlet sepet indirimleri |
-| **Korayspor** (`korayspor.com`) | Next.js `__NEXT_DATA__` SSR + Detay Beden | İndirimli ve sezon spor ayakkabı kataloğu, anlık beden kırılımı |
-| **Sportive** (`sportive.com.tr`) | Akinon JSON API + Outlet Kataloğu | Nike, Adidas, Puma, Asics, Salomon yetkili distribütör outlet & sezon fiyatları |
-| **FashFed** (`fashfed.com`) | Akinon JSON API + Flash İndirimler | Dunk, Handball Spezial, Air Force 1, Gazelle, New Balance 530/9060 flaş indirimleri |
-| **Akakçe** (`akakce.com`) | Canlı Piyasa Doğrulayıcı (`span.pt_v9/v8`) | Trendyol Plus, Hepsiburada, Amazon, Boyner dahil **en ucuz satıcı** doğrulaması |
+1. **Sepetteki Gizli İndirimleri Yakalar, Genel Sloganları Reddeder:**  
+   *"Sepette %25 İndirim"*, *"3.000 TL Üzerine 750 TL İndirim"* gibi net sepet indirimlerini kuruşu kuruşuna çözerken; *"Sepette %60'a varan indirim"*, *"2. ürüne %50"* gibi afiş niteliğindeki yanıltıcı kampanya metinlerini filtreleyerek sahte kâr alarmlarını (%100) engeller.
+2. **Altın Beden & Kesirli Numara Normalizasyonu (`SizeNormalizer`):**  
+   Hızlı nakde dönen erkek (`41–46`) ve kadın (`37–40.5`) bedenlerini hedefler. Adidas, Salomon ve New Balance kesirli numaralarını (`42 2/3`, `43 1/3`, `40.5`) otomatik olarak standart buçuklu numaralara dönüştürerek stoğu teyit eder.
+3. **Akıllı Çift Katmanlı Piyasa Doğrulaması (`MarketComparator`):**  
+   * **Global SKU Markaları (Nike, Adidas, Puma, Salomon vb.):** Üretici model kodu (`CW2288-111`, `ID1488`, `L47440800`) ile Akakçe'deki tüm pazar yeri satıcılarını eşleştirir.
+   * **Model Bazlı Markalar (Lacoste, Converse, Vans, Timberland vb.):** Mağazaların dahili ERP barkodları yerine temiz model adıyla (`Lacoste AG-LT25 Lite`, `Lacoste Baseshot`, `Converse Chuck 70`) Akakçe'de arama yapar; alakasız ürün ve boş sonuç çıkmasını önler.
+4. **Birebir Doğru Yönlendirme:**  
+   Telegram bildirimlerinde ve web panelinde yer alan **"Hemen Sepete Ekle"** butonu her zaman doğrudan orijinal distribütör ürün sayfasına; **"Akakçe Piyasa"** butonu ise Akakçe'deki ilgili modelin piyasa fiyat sayfasına yönlendirir.
 
 ---
 
-## 📱 Telegram Bildirim Kartı ve İnteraktif Komutlar
+## 📊 Mimari Akış Şeması
 
-Fırsat yakalandığında Telegram botunuz üzerinden ürün fotoğrafı, tam maliyet/kâr tablosu, fiyat geçmişi trend rozeti (`📉 Tüm Zamanların En Dip Fiyatı!`), **tek tıkla kopyalanabilir hazır Gardrops/Dolap ilan başlığı** ve satın alma butonlarıyla birlikte anında telefonunuza düşer:
+```mermaid
+flowchart TD
+    A["7 Yetkili Distribütör Mağaza<br/>(Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed)"] --> B["StealthHttpClient<br/>(TLS Impersonation • Chrome/Safari Cins Taklit • Fallback Zinciri)"]
+    B --> C["Çekirdek Normalizasyon Motoru<br/>• SKUNormalizer (Model Kodu Standartlaştırma)<br/>• SizeNormalizer (Kesirli '42 2/3' -> Buçuklu '42.5')<br/>• BasketPromotionParser (Gerçek Sepet İndirimi)"]
+    C --> D["StateStorage & Çapraz Mağaza İndeksi<br/>(Tüm Fiyatlar, price_history ve İndirim Trendleri Saklanır)"]
+    D --> E{"Ön Filtre Kontrolü<br/>• Hedef Marka & Kategori mi?<br/>• Altın Beden Stokta Var mı?<br/>• Net Sepet <= 5.500 TL & İndirim >= %35"}
+    E -- Hayır --> Z["Piyasa Karşılaştırma Referansı Olarak Kaydet"]
+    E -- Evet --> F["Çift Katmanlı Piyasa Dip Fiyat Teyidi<br/>1) Diğer 6 Yetkili Distribütör Fiyatları<br/>2) Akakçe Canlı Piyasa En Ucuz Satıcı Taraması"]
+    F --> G["Birim Ekonomisi & Sahte İndirim Analizi<br/>• Hızlı Satış = Piyasa Dip x 0.88<br/>• Gardrops Net (%6 + 95 TL) | Dolap Net (%15 + 95 TL)<br/>• Otomatik Hazır İlan Şablonu (ListingGenerator)"]
+    G --> H{"Arbitraj Eşiği Geçildi mi?<br/>Net Kâr >= 550 TL VE ROI >= %25"}
+    H -- Evet --> I["Telegram Fotoğraflı Alarm & Web Paneli Senkronizasyonu<br/>(Doğrudan Mağaza Sepet Linki + Doğrulanmış Akakçe Butonu)"]
+```
+
+---
+
+## 🏪 Taranan 7 Yetkili Distribütör ve Veri Kaynakları
+
+Sistem yalnızca **%100 orijinal ve resmi faturalı** ürün satan Türkiye distribütörlerini tarar:
+
+| Mağaza | Altyapı | Yakalanan Veri & Kampanyalar | Doğrulama Yöntemi |
+| :--- | :--- | :--- | :--- |
+| **Occasion** (`occasion.com.tr`) | Akinon JSON API | Lacoste, Gant, Nautica, Converse sepet indirimleri & kesirli bedenler | Model Adı + Çapraz Mağaza |
+| **SuperStep** (`superstep.com.tr`) | Akinon JSON API | Outlet & Yeni sezon sneaker kataloğu, buçuklu/kesirli stoklar | Model Adı + Akakçe |
+| **InStreet** (`instreet.com.tr`) | Next.js App Router | `ruleInfo` sepet kampanyaları, `animatedBadgeList` indirimleri | Model Kodu / SKU |
+| **Barçın** (`barcin.com`) | Akinon + HTML | Nike, Jordan, Puma yetkili distribütör stokları ve outlet sepeti | Global SKU |
+| **Korayspor** (`korayspor.com`) | Next.js SSR | İndirimli spor ayakkabı kataloğu, anlık numara stok matrisi | Global SKU |
+| **Sportive** (`sportive.com.tr`) | Akinon JSON API | Nike, Adidas, Puma, Asics, Salomon outlet ve sezon fırsatları | Global SKU |
+| **FashFed** (`fashfed.com`) | Akinon JSON API | Dunk, Spezial, Gazelle, New Balance 530/9060 flaş sepet indirimleri | Global SKU |
+| **Akakçe** (`akakce.com`) | Canlı Piyasa API | Amazon, Hepsiburada, Trendyol, idefix, Pazarama en ucuz resmi satıcı teklifleri | Akıllı Hibrit (SKU / Model) |
+
+---
+
+## 📱 Telegram Bildirim ve İnteraktif Komut İstasyonu
+
+Arbitraj fırsatı yakalandığında fotoğrafı, hedef numaraları, net alış/satış tutarları ve **tek tıkla kopyalanabilir ilan başlığıyla** anında Telegram'a gönderilir:
 
 <div align="center">
   <img src="assets/telegram-card-preview.svg" alt="Telegram Bildirim Kartı Önizlemesi" width="540" />
 </div>
 
-### 🤖 İnteraktif Telegram Komutları (`core/telegram_bot_commands.py`)
-Bota Telegram üzerinden doğrudan mesaj göndererek sistemi yönetebilirsiniz:
-* `/durum` — 7 yetkili mağazadan indekslenen benzersiz model sayısını, mağaza dağılımını ve aktif filtre eşiklerini gösterir.
-* `/firsatlar` — Veritabanındaki en yüksek net kârlı ve ROI'li ilk 5 arbitraj fırsatını listeler.
-* `/ara <model veya SKU>` — Örneğin `/ara IF6491` veya `/ara Handball Spezial` yazdığınızda tüm yetkili mağaza fiyatlarını, Akakçe dip fiyatını, net kâr hesabını ve **kopyalanmaya hazır ilan şablonunu** döndürür.
-* `/filtre <min_kar_tl> <min_roi_yuzde>` — Bildirim eşiklerini (Örn: `/filtre 600 30`) kalıcı olarak günceller.
-* `/takip <SKU> <hedef_fiyat>` — Belirtilen ürünü (Örn: `/takip IF6491 3200`) özel fiyat alarm listesine ekler.
+### 🤖 Kullanılabilir Telegram Komutları
 
----
+Botla Telegram üzerinden konuşarak tüm sistemi uzaktan yönetebilirsiniz:
 
-## 🧠 Algoritma ve Karar Akış Şeması
-
-```mermaid
-flowchart TD
-    A["7 Yetkili Mağaza Eşzamanlı Tarama<br/>(Occasion, SuperStep, InStreet, Barçın, Korayspor, Sportive, FashFed)"] --> B["StealthHttpClient<br/>(curl_cffi TLS Impersonation -> cloudscraper -> httpx)"]
-    B --> C["Veri Normalizasyonu<br/>• Kanonik SKU (747CFA0002)<br/>• Kesirli Beden (42 2/3 -> 42.5)<br/>• Net Sepet Fiyatı (BasketPromotionParser)"]
-    C --> D["StateStorage İndeksleme & Fiyat Geçmişi<br/>(7 Mağazanın Tüm Kataloğu + price_history Kaydedilir)"]
-    D --> E{"Ön Filtreler Geçildi mi?<br/>• Hedef Marka & Ayakkabı Kategorisi<br/>• Altın Beden Stokta Var mı?<br/>• Net Sepet <= 5.500 TL & İndirim >= %40"}
-    E -- Hayır --> Z["Çapraz Mağaza Referans Fiyatı Olarak Sakla"]
-    E -- Evet --> F["Çift Katmanlı Piyasa Dip Fiyat Doğrulaması<br/>1) Diğer 6 Yetkili Mağazadaki En Düşük Fiyat<br/>2) Akakçe Canlı En Ucuz Satıcı Fiyatı"]
-    F --> G["Birim Ekonomisi & Sahte İndirim Analizi<br/>• Önerilen Satış = Piyasa Dip x 0.88<br/>• Gardrops (%6 + 95 TL) | Dolap (%15 + 95 TL)<br/>• Hazır İlan Şablonu (ListingGenerator)"]
-    G --> H{"Kârlılık Kriteri veya /takip Alarmı mı?<br/>Net Kâr >= 550 TL VE ROI >= %30"}
-    H -- Evet --> I["Telegram Fotoğraflı Alarm Gönder<br/>(İlk Çalışma & %5 Ekstra Fiyat Çöküş Korumalı)"]
-```
+* `/panel` — Güncel fırsatları ve piyasa verilerini gösteren [Canlı Bulut Web Paneli Linkini](https://yukselyslcmn.github.io/arbitraj-botu/) anında iletir.
+* `/durum` — Veritabanındaki ürün sayısını, mağaza dağılımını ve aktif kârlılık filtrelerini özetler.
+* `/firsatlar` — Sistemde o an bulunan en yüksek kârlı ve en popüler ilk 5 fırsatı listeler.
+* `/ara <model veya SKU>` — Örneğin `/ara IF6491` veya `/ara AG-LT25` yazdığınızda tüm mağaza fiyatlarını, piyasa dip fiyatını ve kopyalanmaya hazır ilan metnini üretir.
+* `/filtre <min_kar_tl> <min_roi>` — Bildirim eşiklerini (Örn: `/filtre 600 30`) anında ve kalıcı olarak günceller.
+* `/takip <SKU> <hedef_fiyat>` — Belirtilen ürünü özel fiyat alarm listesine alır; fiyat o seviyeye düştüğünde anında alarm verir.
 
 ---
 
 ## 🧮 Matematiksel Kâr, ROI ve Puanlama Formülleri
 
-Bot, ürünün şişirilmiş liste fiyatına (`retail_price`) **asla güvenmez**; liste fiyatı piyasa dip fiyatının `1.55` katından yüksekse `⚠️ Şişirilmiş Liste Fiyatı` uyarısı basar ve kâr hesabını yalnızca **7 yetkili mağaza çapraz kıyaslaması ve Akakçe'deki en ucuz satıcı fiyatından (`market_floor_price`)** yapar:
+> [!IMPORTANT]
+> Sistem, mağazaların şişirilmiş liste fiyatlarına (`retail_price`) **asla güvenmez**; kâr hesabı yalnızca **7 yetkili distribütörün çapraz fiyatı ve Akakçe'deki en ucuz satıcı dip fiyatı (`market_floor_price`)** baz alınarak yapılır.
 
 1. **Hızlı Nakde Dönüş (Quick-Flip) Satış Fiyatı:**
-   $$\text{Önerilen Satış Fiyatı} = \text{Piyasa Dip Fiyatı} \times (1 - 0.12)$$
-2. **Gardrops / Sahibinden / Letgo Net Kârı (`%6` Hizmet Bedeli + `95 TL` Kargo/Paketleme):**
+   $$\text{Önerilen Satış Fiyatı} = \text{Piyasa Dip Fiyatı} \times 0.88$$
+2. **Gardrops / Sahibinden / Letgo Net Kârı (`%6` Hizmet Bedeli + `95 TL` Kargo):**
    $$\text{Net Kâr}_{\text{Gardrops}} = (\text{Önerilen Satış} \times 0.94) - 95\,\text{TL} - \text{Sepette Net Alış}$$
 3. **Dolap Net Kârı (`%14` Komisyon + `%1` Hizmet + `95 TL` Kargo):**
    $$\text{Net Kâr}_{\text{Dolap}} = (\text{Önerilen Satış} \times 0.85) - 95\,\text{TL} - \text{Sepette Net Alış}$$
@@ -96,84 +105,74 @@ Bot, ürünün şişirilmiş liste fiyatına (`retail_price`) **asla güvenmez**
 
 ---
 
-## 🗂️ Proje Dizin ve Modül Mimarisi
+## 🌐 Görsel Web Kontrol Paneli (`dashboard.py`)
 
-```text
-arbitraj-botu/
-├── assets/
-│   ├── hero-banner.svg              # README üst kapak görseli
-│   ├── architecture-flow.svg        # 4 aşamalı mimari akış görseli
-│   └── telegram-card-preview.svg    # Telegram bildirim kartı görseli
-├── core/
-│   ├── http_client.py               # TLS Impersonation (curl_cffi -> cloudscraper -> httpx) + Token Maskeleme
-│   ├── parsers.py                   # SizeNormalizer (kesirli/buçuklu beden) & BasketPromotionParser
-│   ├── arbitrage_engine.py          # Net kâr, ROI, Sahte İndirim Tespiti ve Arbitraj Puanı (1-100)
-│   ├── listing_generator.py         # Gardrops / Dolap / Sahibinden hazır ilan başlığı ve açıklama üretici
-│   ├── storage.py                   # 7 mağaza çapraz fiyat veritabanı, price_history ve /takip listesi
-│   ├── notifier.py                  # Telegram Bot API (sendPhoto + sendMessage fallback)
-│   └── telegram_bot_commands.py     # İnteraktif Telegram komut işleyici (/durum, /firsatlar, /ara, /filtre, /takip)
-├── scrapers/
-│   ├── base_scraper.py              # Ortak kazıyıcı şablonu ve JSON-LD / Next.js ayrıştırıcı
-│   ├── akinon_scraper.py            # Occasion, SuperStep, Barçın, Sportive ve FashFed kazıyıcısı
-│   ├── instreet_scraper.py          # InStreet Next.js App Router (__next_f) kazıyıcısı
-│   ├── barcin_koray_scraper.py      # Korayspor (__NEXT_DATA__ SSR) ve Barçın hibrit kazıyıcısı
-│   └── market_comparator.py         # 7 Yetkili Mağaza + Akakçe canlı piyasa doğrulayıcı
-├── data/
-│   └── products_state.json          # Çapraz mağaza fiyat indeksi, fiyat geçmişi ve bildirim hafızası
-├── .github/workflows/
-│   └── arbitrage_radar.yml          # GitHub Actions 7/24 bulut otomasyon iş akışı
-├── config.py                        # Eşik değerleri, altın bedenler, hedef markalar ve 7 mağaza hedefi
-├── main.py                          # Çoklu iş parçacıklı (ThreadPool) ana orkestratör
-├── dashboard.py                     # Görsel Web Kontrol Paneli ve Canlı Kâr/ROI Simülatörü (Port 8080)
-├── 1_KURULUM_YAP.bat                # Tek tıkla Windows sanal ortam ve kütüphane kurulumu
-├── 2_TEK_SEFERLIK_TEST_ET.bat       # Tek tıkla canlı test taraması
-├── 3_BOTU_7_24_DONGUDE_CALISTIR.bat # Tek tıkla yerel 15 dakikalık kesintisiz döngü
-├── 4_TELEGRAM_KOMUT_BOTU.bat        # Tek tıkla interaktif Telegram komut dinleyicisi
-└── 5_WEB_PANELINI_AC.bat            # Tek tıkla görsel Web Kontrol Paneli başlatıcı
-```
+Proje, hem yerel makinenizde (`localhost:8080`) çalıştırılabilen dinamik bir FastAPI sunucusu hem de GitHub Pages üzerinde 7/24 barındırılabilen statik bir bulut arayüzü sunar:
+
+* **Filtreleme & Arama:** Marka, mağaza, cinsiyet, asgari kâr (TL), asgari ROI (%) ve model koduna göre anlık arama.
+* **Canlı Kâr Simülatörü:** Alış fiyatı veya piyasa dip fiyatı değiştiğinde kârı canlı hesaplama.
+* **Doğrudan Mağaza & Akakçe Butonları:** Her fırsat kartında tek tıkla sepete ekleme ve tek tıkla Akakçe fiyat karşılaştırma butonları.
+
+> [!TIP]
+> [Canlı Bulut Web Panelini Ziyaret Edin](https://yukselyslcmn.github.io/arbitraj-botu/)
 
 ---
 
 ## 🚀 Hızlı Kurulum ve Çalıştırma
 
-### 1. Ortamı Kurun
-Windows üzerinde tek tıkla kurulum için `1_KURULUM_YAP.bat` dosyasına çift tıklayabilir veya terminalden çalıştırabilirsiniz:
+### 1. Depoyu Klonlayın ve Sanal Ortamı Hazırlayın
 
 ```powershell
+git clone https://github.com/yukselyslcmn/arbitraj-botu.git
+cd arbitraj-botu
+
 python -m venv venv
 .\venv\Scripts\pip.exe install -r requirements.txt
 ```
 
-### 2. `.env` Yapılandırması
-Proje kök dizininde `.env.example` dosyasını `.env` olarak kopyalayın ve kendi bilgilerinizi girin:
+### 2. Ortam Değişkenlerini (`.env`) Ayarlayın
+
+`.env.example` dosyasını `.env` olarak kopyalayın ve Telegram bilgilerinizi tanımlayın:
 
 ```env
 TELEGRAM_BOT_TOKEN=1234567890:AAH_ornek_bot_token_buraya_gelecek
-TELEGRAM_CHAT_ID=-1001234567890
+TELEGRAM_CHAT_ID=5784345886
 MIN_NET_PROFIT_TL=550
-MIN_ROI_PERCENT=30
+MIN_ROI_PERCENT=25
 MAX_BASKET_PRICE=5500
-MIN_TOTAL_DISCOUNT_RATE=40
+MIN_TOTAL_DISCOUNT_RATE=35
+PUBLIC_DASHBOARD_URL=https://yukselyslcmn.github.io/arbitraj-botu/
 ```
 
-### 3. Çalıştırma Modları
+### 3. Çalıştırma Seçenekleri
 
-* **Tüm 7 Yetkili Mağazayı Tek Seferlik Canlı Tarama:**
+* **Tek Seferlik Canlı Tarama ve Rapor:**
   ```powershell
   .\venv\Scripts\python.exe main.py --once
   ```
-* **Görsel Web Kontrol Panelini Açma (`http://127.0.0.1:8080`):**
-  `5_WEB_PANELINI_AC.bat` dosyasına çift tıklayın veya:
-  ```powershell
-  .\venv\Scripts\python.exe dashboard.py
-  ```
-* **İnteraktif Telegram Komut Botunu Dinleme (`/ara`, `/firsatlar`, `/filtre`, `/takip`):**
-  `4_TELEGRAM_KOMUT_BOTU.bat` dosyasına çift tıklayın veya:
+* **İnteraktif Telegram Komut Botunu Başlatma:**
   ```powershell
   .\venv\Scripts\python.exe main.py --listen-commands
   ```
-* **Bilgisayarda 7/24 Kesintisiz (Tam 15 Dakikada Bir) Çalıştırma:**
-  `3_BOTU_7_24_DONGUDE_CALISTIR.bat` dosyasına çift tıklayın veya:
+* **Görsel Web Kontrol Panelini Açma (`http://127.0.0.1:8080`):**
   ```powershell
-  .\venv\Scripts\python.exe main.py --loop
+  .\venv\Scripts\python.exe dashboard.py
   ```
+* **Statik Bulut Paneli Verilerini Derleme (`docs/data.json`):**
+  ```powershell
+  .\venv\Scripts\python.exe dashboard.py --export-static docs
+  ```
+
+---
+
+## 🛡️ Güvenlik ve Anti-Bot Teknolojisi
+
+* **TLS Fingerprint Impersonation:** `curl_cffi` altyapısı sayesinde Cloudflare, Datadome ve Akamai gibi koruma duvarlarına takılmadan gerçek Chrome/Safari tarayıcı imzalarıyla istek atar.
+* **Token ve Gizlilik Maskeleme:** Hata günlüklerinde Telegram token ve kullanıcı kimlikleri maskelenerek güvenli tutulur.
+* **Otomatik Yedekleme & Fallback:** Cloudscraper ve HTTPX zincirleri ile bağlantı kopmalarına karşı 3 katmanlı yedeklilik sağlar.
+
+---
+
+<div align="center">
+  <sub>Geliştirici &amp; Mimari: Yüksel Yeşilçimen • 7/24 Kesintisiz Otonom Arbitraj Radarı</sub>
+</div>
