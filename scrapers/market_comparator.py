@@ -379,6 +379,26 @@ class MarketComparator:
                         )
                     )
 
+            # Çapraz model serisi ve diğer 6 yetkili mağaza kontrolü
+            cross = self.storage.get_cross_site_floor_price(
+                canonical_sku=product.canonical_sku,
+                exclude_site_key=product.site_key,
+                brand=product.brand,
+                gender=product.gender,
+                model_tokens=model_tokens,
+            )
+            if cross:
+                c_price, c_source = cross
+                all_official_offers.append(
+                    OfficialOfferInfo(
+                        platform=c_source.split()[0],
+                        seller_name=c_source,
+                        price=round(float(c_price), 2),
+                        is_official=True,
+                        url="",
+                    )
+                )
+
         # 3. Akakçe Canlı Sorgusu ve Pazaryerlerindeki Resmi Satıcılar
         verified_url: Optional[str] = None
         queries = self.build_search_queries(product)

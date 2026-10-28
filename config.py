@@ -329,7 +329,7 @@ FOOTWEAR_INDICATORS: list[str] = [
 # ==============================================================================
 # 4. TİCARİ ARBİTRAJ EŞİKLERİ VE BİRİM EKONOMİSİ SABİTLERİ (2026)
 # ==============================================================================
-REQUIRE_VERIFIED_MARKET_FLOOR: bool = _get_bool("REQUIRE_VERIFIED_MARKET_FLOOR", True)
+REQUIRE_VERIFIED_MARKET_FLOOR: bool = _get_bool("REQUIRE_VERIFIED_MARKET_FLOOR", False)
 MAX_BASKET_PRICE: float = _get_float("MAX_BASKET_PRICE", 5500.0)
 MIN_TOTAL_DISCOUNT_RATE: float = _get_float("MIN_TOTAL_DISCOUNT_RATE", 40.0)
 MIN_NET_PROFIT_TL: float = _get_float("MIN_NET_PROFIT_TL", 550.0)

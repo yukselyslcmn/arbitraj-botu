@@ -339,19 +339,32 @@ class ArbitrageEngine:
                     rejection_reason = cheaper_source_alert
 
         # Bağımsız resmi piyasa doğrulaması kontrolü:
-        # Eğer piyasada en az bir bağımsız rakip mağaza veya pazaryeri teklifi yoksa (yani sadece Liste x 0.72 kaldıysa),
-        # fırsat teyitsiz kabul edilir ve körü körüne arbitraj fırsatı ilan edilmez.
+        # Eğer piyasada en az bir bağımsız rakip mağaza veya pazaryeri teklifi yoksa ve REQUIRE_VERIFIED_MARKET_FLOOR aktifse,
+        # fırsat teyitsiz kabul edilir.
         has_independent_competitor = bool(
-            comparison_details is not None
-            and getattr(comparison_details, "all_official_offers", None)
-            and any(
-                product.site_name.lower().strip() not in off.platform.lower()
-                and product.site_name.lower().strip() not in off.seller_name.lower()
-                for off in comparison_details.all_official_offers
+            (
+                comparison_details is not None
+                and getattr(comparison_details, "all_official_offers", None)
+                and any(
+                    product.site_name.lower().strip() not in off.platform.lower()
+                    and product.site_name.lower().strip() not in off.seller_name.lower()
+                    for off in comparison_details.all_official_offers
+                )
+            )
+            or (
+                market_floor_source
+                and any(
+                    kw in market_floor_source.lower()
+                    for kw in (
+                        "resmi satıcı", "akakçe", "akakce", "çapraz", "fashfed",
+                        "superstep", "occasion", "barçın", "barcin", "korayspor",
+                        "sportive", "instreet", "amazon", "idefix"
+                    )
+                )
             )
         )
 
-        if getattr(config, "REQUIRE_VERIFIED_MARKET_FLOOR", True) and not has_independent_competitor:
+        if getattr(config, "REQUIRE_VERIFIED_MARKET_FLOOR", False) and not has_independent_competitor:
             is_buy_source_cheapest = False
             if is_profitable:
                 is_profitable = False
